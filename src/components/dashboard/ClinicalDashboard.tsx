@@ -15,9 +15,14 @@ import {
   Calendar,
   Flame,
   Thermometer,
-  Send
+  Send,
+  Globe,
+  Database
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
+import { useLanguageStore } from "@/lib/store/useLanguageStore";
+import { SUPPORTED_LANGUAGES, LanguageCode } from "@/lib/translationEngine";
+import { CloudBackupModal } from "@/components/compliance/CloudBackupModal";
 import { ActiveTab } from "../layout/Sidebar";
 
 interface ClinicalDashboardProps {
@@ -37,6 +42,8 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
     remediesCount: 40,
     recentPatients: [] as any[]
   });
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
+  const { currentLanguage, setLanguage } = useLanguageStore();
 
   const { clipboards } = useClipboardStore();
   const totalRubricsInClipboards = clipboards.reduce(
@@ -80,54 +87,90 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
   return (
     <div className="flex flex-col h-full space-y-6 overflow-y-auto pr-1 custom-scrollbar">
       {/* Hero Welcome Banner */}
-      <div className="shrink-0 p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/30 min-h-[200px] flex flex-col justify-center">
-        <div className="relative z-10 max-w-3xl space-y-2.5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30 text-xs font-semibold shadow-2xs w-fit">
+      <div className="shrink-0 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/30 min-h-[190px] flex flex-col justify-center">
+        <div className="relative z-10 max-w-2xl xl:max-w-3xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30 text-[11px] font-semibold shadow-2xs w-fit">
             <Activity className="w-3.5 h-3.5 text-teal-400" /> VitalFokus Clinical Intelligence Platform
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
             Precision Homeopathic Repertorisation &amp; Inference
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl font-normal">
+          <p className="text-xs text-slate-300 leading-relaxed max-w-xl font-normal">
             RadarOpus-level repertorisation precision combined with Kentian totality analysis, multi-clipboard symptom grading, and grounded VitalAI clinical inference.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-2.5 pt-1.5">
             <button
               onClick={() => setActiveTab("repertorisation")}
-              className="px-4 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs shadow-md shadow-teal-500/25 transition flex items-center gap-2 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs shadow-md shadow-teal-500/25 transition flex items-center gap-1.5 cursor-pointer"
             >
-              <Grid3X3 className="w-4 h-4" /> Open Repertorisation Grid
+              <Grid3X3 className="w-3.5 h-3.5" /> Open Repertorisation Grid
             </button>
             <button
               onClick={() => setActiveTab("vital-ai")}
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold text-xs border border-white/20 transition flex items-center gap-2 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold text-xs border border-white/20 transition flex items-center gap-1.5 cursor-pointer"
             >
-              <Bot className="w-4 h-4 text-indigo-400" /> VitalAI Assistant
+              <Bot className="w-3.5 h-3.5 text-indigo-400" /> VitalAI Assistant
             </button>
             {onOpenRemotePortal && (
               <button
                 onClick={onOpenRemotePortal}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500/20 to-indigo-500/20 hover:from-teal-500/30 hover:to-indigo-500/30 backdrop-blur-md text-teal-300 font-bold text-xs border border-teal-400/30 transition flex items-center gap-2 cursor-pointer shadow-sm"
+                className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-500/20 to-indigo-500/20 hover:from-teal-500/30 hover:to-indigo-500/30 backdrop-blur-md text-teal-300 font-bold text-xs border border-teal-400/30 transition flex items-center gap-1.5 cursor-pointer shadow-sm"
               >
-                <Send className="w-4 h-4 text-teal-300" /> Patient Follow-Up Portal
+                <Send className="w-3.5 h-3.5 text-teal-300" /> Patient Follow-Up Portal
               </button>
             )}
           </div>
         </div>
 
-        {/* Right Top Branded Asset on Hero Ribbon */}
-        <div className="hidden lg:flex absolute top-6 right-6 xl:top-7 xl:right-8 z-10 items-center select-none">
+        {/* Right Top Branded Asset & Action Controls on Hero Ribbon */}
+        <div className="hidden lg:flex absolute top-5 right-6 xl:top-6 xl:right-8 z-10 flex-col items-end gap-2.5 select-none">
           <img
             src="/vitalfokus-logo-dark.png"
             alt="VitalFokus Clinical Intelligence Suite"
-            className="h-11 sm:h-12 xl:h-14 w-auto object-contain select-none drop-shadow-md transition-transform hover:scale-[1.02]"
+            className="h-10 xl:h-11 w-auto object-contain select-none drop-shadow-md transition-transform hover:scale-[1.02]"
           />
+
+          {/* Language & Backup Action Pills below Logo */}
+          <div className="flex items-center gap-2 pt-0.5">
+            {/* Multi-Language Selector Pill */}
+            <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-white/15 bg-slate-900/80 hover:bg-slate-900 backdrop-blur-md text-xs font-semibold text-slate-200 shadow-sm transition">
+              <Globe className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+              <select
+                value={currentLanguage}
+                onChange={(e) => setLanguage(e.target.value as LanguageCode)}
+                className="bg-transparent text-xs font-bold text-slate-100 outline-none cursor-pointer pr-1"
+                title="Toggle Language"
+              >
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <option key={l.code} value={l.code} className="bg-slate-900 text-slate-100">
+                    {l.flag} {l.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Cloud Backup & HIPAA Button */}
+            <button
+              onClick={() => setIsBackupModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-400/40 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 hover:text-teal-200 text-xs font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
+              title="Open Automated Cloud Backup & HIPAA Compliance Suite"
+            >
+              <Database className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+              <span>Backup &amp; HIPAA</span>
+            </button>
+          </div>
         </div>
 
         {/* Subtle Decorative Background Element */}
         <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-indigo-500/15 via-teal-500/10 to-transparent pointer-events-none" />
       </div>
+
+      {/* Cloud Backup & HIPAA Modal */}
+      <CloudBackupModal
+        isOpen={isBackupModalOpen}
+        onClose={() => setIsBackupModalOpen(false)}
+      />
 
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
