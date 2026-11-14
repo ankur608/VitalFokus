@@ -80,12 +80,12 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
         <div className="flex items-center gap-4">
           <img
-            src="/vitalfokus-logo.png"
+            src="/vitalfokus-logo.svg"
             alt="VitalFokus Clinical Intelligence Suite"
             className="h-12 sm:h-14 w-auto object-contain block dark:hidden select-none transition-transform hover:scale-[1.01]"
           />
           <img
-            src="/vitalfokus-logo-dark.png"
+            src="/vitalfokus-logo-dark.svg"
             alt="VitalFokus Clinical Intelligence Suite"
             className="h-12 sm:h-14 w-auto object-contain hidden dark:block select-none transition-transform hover:scale-[1.01]"
           />

@@ -139,7 +139,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 Vital<span className="text-teal-600 dark:text-teal-400">Fokus</span>
               </span>
               <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">
-                Clinical Intelligence
+                Clinical Intelligence Suite
               </span>
             </div>
           )}
