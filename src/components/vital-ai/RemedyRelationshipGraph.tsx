@@ -103,7 +103,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
   };
 
   return (
-    <div className="bg-slate-900/90 border border-teal-500/30 rounded-2xl p-6 backdrop-blur-md shadow-2xl space-y-6">
+    <div className="bg-white dark:bg-slate-900/95 border border-slate-200 dark:border-teal-500/30 rounded-2xl p-6 backdrop-blur-md shadow-xl space-y-6 text-slate-900 dark:text-slate-100">
       {/* Header Banner */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
@@ -112,7 +112,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-slate-100">Remedy Relationship & Family Graph</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Remedy Relationship & Family Graph</h2>
               <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                 Acute-Chronic Trios • Antidotes • Complementaries
               </span>

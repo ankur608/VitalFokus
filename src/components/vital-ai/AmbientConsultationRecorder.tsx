@@ -142,7 +142,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
   };
 
   return (
-    <div className="bg-slate-900/90 border border-teal-500/30 rounded-2xl p-6 backdrop-blur-md shadow-2xl space-y-6">
+    <div className="bg-white dark:bg-slate-900/95 border border-slate-200 dark:border-teal-500/30 rounded-2xl p-6 backdrop-blur-md shadow-xl space-y-6 text-slate-900 dark:text-slate-100">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
@@ -151,8 +151,8 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-slate-100">VitalAI Ambient Consultation Recorder</h2>
-              <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">VitalAI Ambient Consultation Recorder</h2>
+              <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30">
                 Voice-to-EHR & LSMC Parser
               </span>
             </div>
@@ -166,7 +166,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
         <div className="flex items-center gap-3">
           <button
             onClick={toggleRecording}
-            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-all ${
+            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-all cursor-pointer ${
               isRecording
                 ? "bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/30 animate-pulse"
                 : "bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-600 hover:to-indigo-700 text-white shadow-teal-500/20"
@@ -189,8 +189,8 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
 
       {/* Audio Waveform Banner (Active when recording) */}
       {isRecording && (
-        <div className="p-3 bg-rose-950/40 border border-rose-500/40 rounded-xl flex items-center justify-between animate-fade-in">
-          <div className="flex items-center gap-2 text-rose-300 text-xs font-semibold">
+        <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-500/40 rounded-xl flex items-center justify-between animate-fade-in">
+          <div className="flex items-center gap-2 text-rose-600 dark:text-rose-300 text-xs font-semibold">
             <Volume2 className="w-4 h-4 animate-bounce" />
             <span>Consultation room audio stream active — ambient entity parsing enabled...</span>
           </div>
@@ -216,7 +216,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             <div className="flex items-center gap-2">
               <button
                 onClick={copyTranscript}
-                className="hover:text-slate-800 dark:text-slate-200 transition text-[11px] flex items-center gap-1"
+                className="hover:text-slate-900 dark:hover:text-slate-100 text-slate-500 dark:text-slate-400 transition text-[11px] flex items-center gap-1 cursor-pointer"
                 title="Copy text"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -224,7 +224,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
               </button>
               <button
                 onClick={() => setTranscript("")}
-                className="hover:text-rose-400 transition text-[11px] flex items-center gap-1"
+                className="hover:text-rose-500 text-slate-500 dark:text-slate-400 transition text-[11px] flex items-center gap-1 cursor-pointer"
                 title="Clear transcript"
               >
                 <Trash2 className="w-3.5 h-3.5" /> Clear
@@ -237,13 +237,13 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             onChange={(e) => setTranscript(e.target.value)}
             placeholder="Ambient speech transcription will stream here automatically, or you can paste clinical notes..."
             rows={10}
-            className="w-full flex-1 bg-slate-950/80 border border-slate-700/80 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500 leading-relaxed custom-scrollbar resize-none"
+            className="w-full flex-1 min-h-[220px] bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-700/80 rounded-xl p-4 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-teal-500 leading-relaxed custom-scrollbar resize-none"
           />
 
           {onAppendToCaseSheet && (
             <button
               onClick={() => onAppendToCaseSheet(transcript)}
-              className="w-full py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-800 dark:text-slate-200 font-semibold rounded-xl transition flex items-center justify-center gap-2"
+              className="w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               <FileText className="w-3.5 h-3.5 text-teal-400" />
               <span>Append Transcript to Patient Case Sheet</span>
@@ -266,7 +266,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
           {/* 4 LSMC Entity Boxes */}
           <div className="grid grid-cols-2 gap-2.5">
             {/* Location */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block">
                 Location (L)
               </span>
@@ -284,7 +284,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             </div>
 
             {/* Sensation */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-rose-400 block">
                 Sensation (S)
               </span>
@@ -302,7 +302,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             </div>
 
             {/* Modalities Aggravation (<) */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
                 Modality Aggravation (&lt;)
               </span>
@@ -320,7 +320,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             </div>
 
             {/* Modalities Amelioration (>) */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
                 Modality Amelioration (&gt;)
               </span>
@@ -357,23 +357,23 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
               )}
             </div>
 
-            <div className="space-y-2 max-h-56 overflow-y-auto pr-1 custom-scrollbar">
+            <div className="space-y-2 max-h-64 overflow-y-auto pr-1.5 custom-scrollbar">
               {lsmc.suggestedRubrics.length === 0 ? (
-                <div className="p-4 bg-slate-950/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
+                <div className="p-4 bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
                   Speak or type consultation dialogue to trigger auto-rubric matching.
                 </div>
               ) : (
                 lsmc.suggestedRubrics.map((r, idx) => (
                   <div
                     key={idx}
-                    className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 hover:border-teal-500/40 rounded-xl flex items-center justify-between gap-3 transition"
+                    className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 hover:border-teal-500/40 rounded-xl flex items-center justify-between gap-3 transition shadow-2xs"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-700 dark:text-slate-300">
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                           {r.chapter}
                         </span>
-                        <span className="text-xs font-medium text-slate-800 dark:text-slate-200">{r.label}</span>
+                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">{r.label}</span>
                       </div>
                       <p className="text-[11px] text-slate-600 dark:text-slate-400 font-mono">{r.fullPath}</p>
                     </div>

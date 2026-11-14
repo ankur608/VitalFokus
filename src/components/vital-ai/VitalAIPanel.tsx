@@ -830,22 +830,26 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
       {/* SUBTAB 3: VOICE-TO-EHR AMBIENT CASE-TAKING                              */}
       {/* ========================================================================= */}
       {activeSubTab === "ambient" && (
-        <AmbientConsultationRecorder
-          patientId={activePatientId || undefined}
-          patientName={patientData ? `${patientData.firstName} ${patientData.lastName}` : undefined}
-          onAppendToCaseSheet={(text) => {
-            console.log("Appended to case sheet:", text);
-          }}
-        />
+        <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-1 pb-6">
+          <AmbientConsultationRecorder
+            patientId={activePatientId || undefined}
+            patientName={patientData ? `${patientData.firstName} ${patientData.lastName}` : undefined}
+            onAppendToCaseSheet={(text) => {
+              console.log("Appended to case sheet:", text);
+            }}
+          />
+        </div>
       )}
 
       {/* ========================================================================= */}
       {/* SUBTAB 4: REMEDY RELATIONSHIP & FAMILY GRAPH                             */}
       {/* ========================================================================= */}
       {activeSubTab === "graph" && (
-        <RemedyRelationshipGraph
-          onSelectRemedy={(remedyId: string) => onOpenRemedyMM(remedyId)}
-        />
+        <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-1 pb-6">
+          <RemedyRelationshipGraph
+            onSelectRemedy={(remedyId: string) => onOpenRemedyMM(remedyId)}
+          />
+        </div>
       )}
 
       {/* ========================================================================= */}
