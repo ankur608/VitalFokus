@@ -429,6 +429,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
           </div>
         </div>
       )}
+
+      {/* Cloud Backup & HIPAA Sovereignty Modal */}
+      <CloudBackupModal
+        isOpen={isBackupModalOpen}
+        onClose={() => setIsBackupModalOpen(false)}
+      />
+
     </>
   );
 };
