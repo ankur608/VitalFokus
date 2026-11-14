@@ -90,15 +90,15 @@ CRITICAL INSTRUCTIONS:
               <Droplet className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-100">Hahnemannian Posology & Plussing Engine</h2>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Hahnemannian Posology & Plussing Engine</h2>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 Organon 5th & 6th Edition (§§ 246–248, 270) LM / Q Potency & Split-Dose Schedule Calculator
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -108,20 +108,20 @@ CRITICAL INSTRUCTIONS:
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
           {/* Remedy Name */}
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Remedy Prescribed
             </label>
             <input
               type="text"
               value={input.remedyName}
               onChange={(e) => setInput({ ...input, remedyName: e.target.value })}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
             />
           </div>
 
           {/* Potency Scale */}
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Potency Scale
             </label>
             <select
@@ -131,7 +131,7 @@ CRITICAL INSTRUCTIONS:
                 potencyScale: e.target.value as PotencyScale,
                 potencyGrade: e.target.value === "LM_50_Millesimal" ? "LM1" : "200C"
               })}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
             >
               <option value="LM_50_Millesimal">LM / 50-Millesimal (Q1–Q30)</option>
               <option value="Centessimal_C">Centessimal Scale (C)</option>
@@ -140,14 +140,14 @@ CRITICAL INSTRUCTIONS:
 
           {/* Potency Grade */}
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Potency Grade
             </label>
             {input.potencyScale === "LM_50_Millesimal" ? (
               <select
                 value={input.potencyGrade}
                 onChange={(e) => setInput({ ...input, potencyGrade: e.target.value })}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
               >
                 {Array.from({ length: 30 }, (_, i) => `LM${i + 1}`).map((g) => (
                   <option key={g} value={g}>{g}</option>
@@ -157,7 +157,7 @@ CRITICAL INSTRUCTIONS:
               <select
                 value={input.potencyGrade}
                 onChange={(e) => setInput({ ...input, potencyGrade: e.target.value })}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
               >
                 <option value="30C">30C</option>
                 <option value="200C">200C</option>
@@ -170,13 +170,13 @@ CRITICAL INSTRUCTIONS:
 
           {/* Patient Vitality */}
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Patient Vitality
             </label>
             <select
               value={input.vitality}
               onChange={(e) => setInput({ ...input, vitality: e.target.value as PatientVitality })}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
             >
               <option value="High">High Vitality (Robust, strong reactions)</option>
               <option value="Moderate">Moderate Vitality (Occasional fatigue)</option>
@@ -187,13 +187,13 @@ CRITICAL INSTRUCTIONS:
 
           {/* Disease Cadence */}
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Disease Cadence
             </label>
             <select
               value={input.diseaseCadence}
               onChange={(e) => setInput({ ...input, diseaseCadence: e.target.value as DiseaseCadence })}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
             >
               <option value="HyperAcute">Hyper-Acute (Rapid, intense fever/pain)</option>
               <option value="Acute">Acute Infection / Recent flare-up</option>
@@ -204,13 +204,13 @@ CRITICAL INSTRUCTIONS:
 
           {/* Pathology Depth */}
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Pathology Depth
             </label>
             <select
               value={input.pathologyDepth}
               onChange={(e) => setInput({ ...input, pathologyDepth: e.target.value as any })}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-teal-500"
             >
               <option value="Functional">Functional (No structural changes)</option>
               <option value="Mild_Tissue_Changes">Mild Tissue Changes (Gastritis, eczema)</option>
@@ -236,40 +236,40 @@ CRITICAL INSTRUCTIONS:
 
           <div className="space-y-3 text-xs">
             <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+              <span className="font-bold text-teal-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
                 <Droplet className="w-3.5 h-3.5 text-teal-400" />
                 1. Medicinal Bottle Preparation (§ 270)
               </span>
-              <p className="text-slate-800 dark:text-slate-200 leading-relaxed">{protocol.bottlePreparation}</p>
+              <p className="text-slate-200 leading-relaxed text-xs">{protocol.bottlePreparation}</p>
             </div>
 
             <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+              <span className="font-bold text-indigo-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
                 2. Succussion & Dilution Glass Method (§ 248)
               </span>
-              <p className="text-slate-800 dark:text-slate-200 leading-relaxed">{protocol.dilutionCupInstructions}</p>
+              <p className="text-slate-200 leading-relaxed text-xs">{protocol.dilutionCupInstructions}</p>
             </div>
 
             <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+              <span className="font-bold text-amber-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-amber-400" />
                 3. Repetition Cadence & Review Threshold
               </span>
-              <p className="text-slate-800 dark:text-slate-200 leading-relaxed">{protocol.repetitionInterval}</p>
+              <p className="text-slate-200 leading-relaxed text-xs">{protocol.repetitionInterval}</p>
               <p className="text-[11px] text-teal-400 font-semibold mt-1">
                 Maximum continuous doses before clinical evaluation: {protocol.maxDosesBeforeReview} doses
               </p>
             </div>
 
             {/* Organon Safeguard */}
-            <div className="p-3 bg-rose-950/20 border border-rose-500/30 rounded-xl space-y-1 text-slate-700 dark:text-slate-300">
+            <div className="p-3 bg-rose-950/40 border border-rose-500/40 rounded-xl space-y-1.5 text-rose-100">
               <span className="font-bold text-rose-300 uppercase tracking-wider text-[10px] flex items-center gap-1">
                 <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
                 Mandatory Organon Clinical Rules
               </span>
               {protocol.clinicalRules.map((rule, idx) => (
-                <p key={idx} className="text-[11px] leading-relaxed text-slate-700 dark:text-slate-300">• {rule}</p>
+                <p key={idx} className="text-[11px] leading-relaxed text-slate-200">• {rule}</p>
               ))}
             </div>
           </div>
@@ -279,7 +279,7 @@ CRITICAL INSTRUCTIONS:
         <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={copyPatientInstructions}
-            className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition cursor-pointer shadow-2xs"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? "Copied Patient Instructions!" : "Copy Instructions for Patient"}
@@ -288,7 +288,7 @@ CRITICAL INSTRUCTIONS:
           <div className="flex items-center gap-2.5">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 font-medium transition"
+              className="px-4 py-2 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-medium transition cursor-pointer"
             >
               Close
             </button>
@@ -297,7 +297,7 @@ CRITICAL INSTRUCTIONS:
                 onAttachToCase?.(protocol);
                 onClose();
               }}
-              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-600 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg transition"
+              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-600 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-teal-500/25 transition cursor-pointer"
             >
               <FileCheck className="w-3.5 h-3.5" />
               Attach Protocol to Active Case
