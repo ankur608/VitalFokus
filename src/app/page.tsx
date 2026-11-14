@@ -16,6 +16,7 @@ import { BulkImporter } from "@/components/importer/BulkImporter";
 import { PolarityAnalysisPanel } from "@/components/engines/PolarityAnalysisPanel";
 import { TaxonomyExplorer } from "@/components/engines/TaxonomyExplorer";
 import { VithoulkasAssessmentModal } from "@/components/engines/VithoulkasAssessmentModal";
+import { RemotePortalModal } from "@/components/patients/RemotePortalModal";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
 
 export default function Home() {
@@ -23,6 +24,8 @@ export default function Home() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
   const [isVESModalOpen, setIsVESModalOpen] = useState(false);
+  const [isRemotePortalOpen, setIsRemotePortalOpen] = useState(false);
+  const [activePatient, setActivePatient] = useState<any>(null);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [patientCount, setPatientCount] = useState(5);
   const [selectedRemedyIdForMM, setSelectedRemedyIdForMM] = useState<string | null>(null);
@@ -86,11 +89,13 @@ export default function Home() {
         .then((d) => {
           if (d.patient) {
             setActivePatientName(`${d.patient.firstName} ${d.patient.lastName}`);
+            setActivePatient(d.patient);
           }
         })
         .catch((err) => console.error(err));
     } else {
       setActivePatientName(null);
+      setActivePatient(null);
     }
   }, [activePatientId]);
 
@@ -139,6 +144,7 @@ export default function Home() {
         setIsCollapsed={setIsSidebarCollapsed}
         patientCount={patientCount}
         onOpenVESModal={() => setIsVESModalOpen(true)}
+        onOpenRemotePortal={() => setIsRemotePortalOpen(true)}
       />
 
       {/* Main Workspace View */}
@@ -150,6 +156,7 @@ export default function Home() {
           onClearPatient={() => setActivePatientId(null)}
           theme={theme}
           toggleTheme={toggleTheme}
+          onOpenRemotePortal={() => setIsRemotePortalOpen(true)}
         />
 
         {/* Dynamic Pane Body */}
@@ -158,6 +165,7 @@ export default function Home() {
             <ClinicalDashboard
               setActiveTab={setActiveTab}
               onSelectPatient={handleSelectPatient}
+              onOpenRemotePortal={() => setIsRemotePortalOpen(true)}
             />
           )}
 
@@ -219,6 +227,19 @@ export default function Home() {
         onSelectRubric={handleSelectRubric}
       />
 
+      {/* Remote Follow-Up Portal Modal */}
+      <RemotePortalModal
+        isOpen={isRemotePortalOpen}
+        onClose={() => setIsRemotePortalOpen(false)}
+        patient={activePatient || {
+          id: "pt-eleanor-followup",
+          firstName: "Eleanor",
+          lastName: "Vance",
+          email: "eleanor.vance@example.com",
+          phone: "+1 (555) 234-5678",
+          portalToken: "pt-eleanor-followup"
+        }}
+      />
       {/* Vithoulkas Levels of Health (VES) Diagnostic Modal */}
       <VithoulkasAssessmentModal
         isOpen={isVESModalOpen}

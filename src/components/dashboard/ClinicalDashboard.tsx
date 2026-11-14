@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   Calendar,
   Flame,
-  Thermometer
+  Thermometer,
+  Send
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
 import { ActiveTab } from "../layout/Sidebar";
@@ -22,11 +23,13 @@ import { ActiveTab } from "../layout/Sidebar";
 interface ClinicalDashboardProps {
   setActiveTab: (tab: ActiveTab) => void;
   onSelectPatient: (patientId: string) => void;
+  onOpenRemotePortal?: () => void;
 }
 
 export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
   setActiveTab,
-  onSelectPatient
+  onSelectPatient,
+  onOpenRemotePortal
 }) => {
   const [stats, setStats] = useState({
     patientsCount: 2,
@@ -133,6 +136,14 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
             >
               <Bot className="w-4 h-4 text-indigo-400" /> VitalAI Assistant
             </button>
+            {onOpenRemotePortal && (
+              <button
+                onClick={onOpenRemotePortal}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500/20 to-indigo-500/20 hover:from-teal-500/30 hover:to-indigo-500/30 backdrop-blur-md text-teal-300 font-bold text-xs border border-teal-400/30 transition flex items-center gap-2 cursor-pointer shadow-sm"
+              >
+                <Send className="w-4 h-4 text-teal-300" /> Patient Follow-Up Portal
+              </button>
+            )}
           </div>
         </div>
 

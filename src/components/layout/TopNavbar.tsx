@@ -17,7 +17,8 @@ import {
   Building,
   Mail,
   Phone,
-  Award
+  Award,
+  Send
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
 import { useLanguageStore } from "@/lib/store/useLanguageStore";
@@ -31,6 +32,7 @@ interface TopNavbarProps {
   onClearPatient?: () => void;
   theme: "dark" | "light";
   toggleTheme: () => void;
+  onOpenRemotePortal?: () => void;
 }
 
 export interface PractitionerProfile {
@@ -60,7 +62,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   activePatientName,
   onClearPatient,
   theme,
-  toggleTheme
+  toggleTheme,
+  onOpenRemotePortal
 }) => {
   const { clipboards, isDockOpen, toggleDock } = useClipboardStore();
 
@@ -157,6 +160,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
           ) : null}
 
+                    {/* Follow-Up Portal Quick Button */}
+          {onOpenRemotePortal && (
+            <button
+              onClick={onOpenRemotePortal}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-indigo-200 dark:border-indigo-800/80 bg-indigo-50/70 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-xs font-semibold text-indigo-700 dark:text-indigo-300 transition cursor-pointer shadow-2xs"
+              title="Open Remote Patient Follow-Up Portal"
+            >
+              <Send className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <span className="hidden lg:inline">Follow-Up Portal</span>
+            </button>
+          )}
           {/* Clipboards Toggle Button */}
           <button
             onClick={toggleDock}

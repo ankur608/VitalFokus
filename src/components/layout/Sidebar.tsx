@@ -16,7 +16,8 @@ import {
   Layers,
   Scale,
   Dna,
-  HeartPulse
+  HeartPulse,
+  Send
 } from "lucide-react";
 
 export type ActiveTab =
@@ -38,6 +39,7 @@ interface SidebarProps {
   setIsCollapsed: (collapsed: boolean) => void;
   patientCount: number;
   onOpenVESModal?: () => void;
+  onOpenRemotePortal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -46,7 +48,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   setIsCollapsed,
   patientCount,
-  onOpenVESModal
+  onOpenVESModal,
+  onOpenRemotePortal
 }) => {
   const navItems = [
     {
@@ -193,6 +196,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
           );
         })}
       </nav>
+
+            {/* Remote Follow-Up Portal Action Button */}
+      {onOpenRemotePortal && (
+        <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80">
+          <button
+            onClick={onOpenRemotePortal}
+            className="w-full flex items-center justify-center gap-2 p-2.5 bg-gradient-to-r from-indigo-500/10 to-teal-500/10 hover:from-indigo-500/20 hover:to-teal-500/20 border border-indigo-500/30 rounded-xl text-xs font-bold text-indigo-600 dark:text-indigo-300 transition shadow-sm cursor-pointer"
+            title="Open Remote Patient Follow-Up Portal"
+          >
+            <Send className="w-4 h-4 text-indigo-500" />
+            {!isCollapsed && <span>Follow-Up Portal</span>}
+          </button>
+        </div>
+      )}
 
       {/* Vithoulkas VES Levels of Health Action Button */}
       {onOpenVESModal && (
