@@ -163,7 +163,7 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
           <img
             src="/vitalfokus-logo-dark.png"
             alt="VitalFokus Clinical Intelligence Suite"
-            className="h-10 xl:h-11 w-auto object-contain select-none drop-shadow-md transition-transform hover:scale-[1.02]"
+            className="w-[218px] sm:w-[224px] xl:w-[230px] h-auto object-contain select-none drop-shadow-md transition-transform hover:scale-[1.02]"
           />
         </div>
 
