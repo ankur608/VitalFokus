@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id              String         @id @default(uuid())
+  firstName       String
+  lastName        String
+  dateOfBirth     String?
+  gender          String?
+  phone           String?
+  email           String?
+  occupation      String?
+  thermalState    String?        // "Chilly", "Hot", "Ambithermal"
+  dominantMiasm   String?        // "Psora", "Sycosis", "Syphilis", "Tubercular"
+  constitution    String?
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  consultations   Consultation[]
+  savedAnalyses   SavedAnalysis[]
+}
+
+model Consultation {
+  id                    String    @id @default(uuid())
+  patientId             String
+  patient               Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  date                  DateTime  @default(now())
+  chiefComplaints       String?   // Location, sensation, onset
+  modalitiesAggr        String?   // < Aggravation
+  modalitiesAmel        String?   // > Amelioration
+  concomitants          String?
+  mindDisposition       String?
+  physicalGenerals      String?   // Thirst, cravings, aversions, sleep
+  thermalState          String?
+  miasmaticTags         String?   // JSON or comma separated: Psora, Sycosis, etc.
+  kentsObservation      String?   // Kent's 12 observations
+  potencyPrescribed     String?   // 30C, 200C, 1M, LM1, etc.
+  remedyPrescribed      String?   // Remedy name
+  repetitionSchedule    String?   // Single dose, TDS for 3 days, etc.
+  symptomEvolutionScore Int?      // -5 to +5 or percentage improvement
+  clinicalNotes         String?
+  freeTextCaseNotes     String?   // Case sheet text for rubric highlighter
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Chapter {
+  id           String   @id @default(uuid())
+  name         String   @unique
+  orderIndex   Int      @default(0)
+  macroSection String   @default("Anatomical") // "Anatomical", "Felt Pain Qualities", "Modern Syndromes", "Obstetrics & Gynecology", "Life Stages / Age", "Generalities"
+  rubrics      Rubric[]
+}
+
+model Rubric {
+  id                  String              @id @default(uuid())
+  chapterId           String
+  chapter             Chapter             @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  fullPath            String              @unique // "Mind; anxiety; health, about"
+  label               String              // "anxiety; health, about"
+  parentRubricId      String?
+  crossReferences     String?             // e.g. "See also: Mind - Fear - disease of"
+  macroSection        String              @default("Anatomical")
+  isClinicalAddition  Boolean             @default(false)
+  authorPractitioner  String?             // e.g. "Dr. H. C. Allen [User Verified]"
+  caseVerifiedNotes   String?             // Clinical confirmation notes
+  sourceCitation      String?             // e.g. "[Clinical Addition - User Verified]"
+  remedyCount         Int                 @default(0)
+  remedies            RubricRemedyGrade[]
+}
+
+model Remedy {
+  id                  String               @id @default(uuid())
+  remedyNumber        Int?                 @unique // 1 to 180+ numbered remedies
+  name                String               @unique // "Arsenicum album"
+  abbreviation        String               @unique // "ars."
+  commonName          String?              // "White Arsenic"
+  kingdom             String               // "Mineral", "Plant", "Animal", "Nosode", "Sarcode"
+  family              String?              // e.g. "Solanaceae", "Compositae", "Ranunculaceae", "Arsenic group"
+  miasm               String?              // "Psora", "Sycosis", "Syphilis", "Tubercular"
+  thermalState        String?              // "Chilly", "Hot", "Ambithermal"
+  isPolycrest         Boolean              @default(false)
+  shortDescription    String?
+  mindKeynotes        String?
+  generalsKeynotes    String?
+  modalitiesKeynotes  String?
+  complementary       String?              // e.g. "All-c., Carb-v., Phos., Pyrog., Rhus-t., Thuj."
+  antidotes           String?              // e.g. "Camph., Chin., Ferr., Hep., Ipec., Nux-v., Tab."
+  followsWell         String?              // e.g. "Bell., Calc., Lyc., Nux-v., Phos., Puls., Rhus-t., Sep., Sulph."
+  inimical            String?              // e.g. "Sec."
+  grades              RubricRemedyGrade[]
+  materiaMedica       MateriaMedicaEntry[]
+}
+
+model RubricRemedyGrade {
+  id                  String   @id @default(uuid())
+  rubricId            String
+  rubric              Rubric   @relation(fields: [rubricId], references: [id], onDelete: Cascade)
+  remedyId            String
+  remedy              Remedy   @relation(fields: [remedyId], references: [id], onDelete: Cascade)
+  grade               Int      // 1 = plain, 2 = italic, 3 = bold, 4 = bold caps
+  notes               String?
+  isClinicalAddition  Boolean  @default(false)
+  caseVerifiedNotes   String?  // Case verified clinical notes
+
+  @@unique([rubricId, remedyId])
+}
+
+model MateriaMedicaEntry {
+  id        String  @id @default(uuid())
+  remedyId  String
+  remedy    Remedy  @relation(fields: [remedyId], references: [id], onDelete: Cascade)
+  section   String  // "Mind", "Head", "Stomach", "Generals", "Modalities", "Relationships"
+  content   String
+}
+
+model SynonymMap {
+  id                  String   @id @default(uuid())
+  modernTerm          String   @unique // e.g. "hypertension", "insomnia", "panic attack"
+  classicalRubricPath String   // Classical Kentian path e.g. "Head; pain; throbbing, pulsating carotid"
+  category            String   // "Cardiovascular", "Psychiatry", "Neurology", etc.
+  clinicalExplanation String?
+  suggestedRemedies   String?  // Comma separated e.g. "bell., glon., nat-m."
+  createdAt           DateTime @default(now())
+}
+
+model SavedAnalysis {
+  id          String   @id @default(uuid())
+  patientId   String?
+  patient     Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  title       String
+  clipboards  String   // JSON stringified clipboards with rubrics, weights, eliminatives
+  strategy    String   @default("totality") // "totality", "keynote", "polarity"
+  topRemedies String?  // JSON stringified analysis results
+  aiSynthesis String?  // Generated AI analysis report
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

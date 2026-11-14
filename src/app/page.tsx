@@ -1,0 +1,146 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Sidebar, ActiveTab } from "@/components/layout/Sidebar";
+import { TopNavbar } from "@/components/layout/TopNavbar";
+import { CommandSpotlight } from "@/components/layout/CommandSpotlight";
+import { ClipboardDock } from "@/components/clipboards/ClipboardDock";
+import { ClinicalDashboard } from "@/components/dashboard/ClinicalDashboard";
+import { PatientEHR } from "@/components/patients/PatientEHR";
+import { RepertoryExplorer } from "@/components/repertory/RepertoryExplorer";
+import { RepertorisationGrid } from "@/components/repertorisation/RepertorisationGrid";
+import { MateriaMedicaReader } from "@/components/materia-medica/MateriaMedicaReader";
+import { ComparativeMateriaMedica } from "@/components/materia-medica/ComparativeMateriaMedica";
+import { VitalAIPanel } from "@/components/vital-ai/VitalAIPanel";
+import { BulkImporter } from "@/components/importer/BulkImporter";
+import { useClipboardStore } from "@/lib/store/useClipboardStore";
+
+export default function Home() {
+  const [activeTab, setActiveTab] = useState<ActiveTab>("dashboard");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [patientCount, setPatientCount] = useState(2);
+  const [selectedRemedyIdForMM, setSelectedRemedyIdForMM] = useState<string | null>(null);
+
+  const { activePatientId, setActivePatientId } = useClipboardStore();
+  const [activePatientName, setActivePatientName] = useState<string | null>(null);
+
+  // Apply dark mode class to html element
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [theme]);
+
+  // Load active patient name when activePatientId changes
+  useEffect(() => {
+    if (activePatientId) {
+      fetch(`/api/patients/${activePatientId}`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.patient) {
+            setActivePatientName(`${d.patient.firstName} ${d.patient.lastName}`);
+          }
+        })
+        .catch((err) => console.error(err));
+    } else {
+      setActivePatientName(null);
+    }
+  }, [activePatientId]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
+  const handleSelectPatient = (id: string) => {
+    setActivePatientId(id);
+    setActiveTab("patients");
+  };
+
+  const handleSelectRemedy = (id: string) => {
+    setSelectedRemedyIdForMM(id);
+    setActiveTab("materia-medica");
+  };
+
+  const handleSelectRubric = (rubric: any) => {
+    setActiveTab("repertory");
+  };
+
+  return (
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased">
+      {/* Left Collapsible Rail */}
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        isCollapsed={isSidebarCollapsed}
+        setIsCollapsed={setIsSidebarCollapsed}
+        patientCount={patientCount}
+      />
+
+      {/* Main Workspace View */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+        {/* Top Navbar with Spotlight and Theme Controls */}
+        <TopNavbar
+          onOpenSpotlight={() => setIsSpotlightOpen(true)}
+          activePatientName={activePatientName}
+          onClearPatient={() => setActivePatientId(null)}
+          theme={theme}
+          toggleTheme={toggleTheme}
+        />
+
+        {/* Dynamic Pane Body */}
+        <main className="flex-1 p-5 overflow-hidden">
+          {activeTab === "dashboard" && (
+            <ClinicalDashboard
+              setActiveTab={setActiveTab}
+              onSelectPatient={handleSelectPatient}
+            />
+          )}
+
+          {activeTab === "patients" && (
+            <PatientEHR onOpenRepertorisation={() => setActiveTab("repertorisation")} />
+          )}
+
+          {activeTab === "repertory" && <RepertoryExplorer />}
+
+          {activeTab === "repertorisation" && (
+            <RepertorisationGrid
+              onOpenVitalAI={() => setActiveTab("vital-ai")}
+              onOpenRemedyMM={handleSelectRemedy}
+            />
+          )}
+
+          {activeTab === "materia-medica" && (
+            <MateriaMedicaReader initialRemedyId={selectedRemedyIdForMM} />
+          )}
+
+          {activeTab === "comparative-mm" && <ComparativeMateriaMedica />}
+
+          {activeTab === "vital-ai" && (
+            <VitalAIPanel onOpenRemedyMM={handleSelectRemedy} />
+          )}
+
+          {activeTab === "importer" && <BulkImporter />}
+        </main>
+
+        {/* Global Floating Multi-Clipboard Dock (Bottom) */}
+        <ClipboardDock
+          onOpenRepertorisation={() => setActiveTab("repertorisation")}
+        />
+      </div>
+
+      {/* Command Spotlight Modal (Cmd/Ctrl + K) */}
+      <CommandSpotlight
+        isOpen={isSpotlightOpen}
+        onClose={() => setIsSpotlightOpen(false)}
+        onSelectPatient={handleSelectPatient}
+        onSelectRemedy={handleSelectRemedy}
+        onSelectRubric={handleSelectRubric}
+      />
+    </div>
+  );
+}
