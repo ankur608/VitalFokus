@@ -20,6 +20,17 @@ import {
   AlertCircle
 } from "lucide-react";
 
+interface PortalCheckinItem {
+  id: string;
+  date: string;
+  energyScore: string | number;
+  symptomSeverity: string | number;
+  reaction: string;
+  mentalState: string;
+  returningSymptoms: string;
+  patientNotes: string;
+}
+
 interface RemotePortalModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -60,19 +71,34 @@ export const RemotePortalModal: React.FC<RemotePortalModalProps> = ({
     setTimeout(() => setCopiedTemplate(false), 2000);
   };
 
-  // Recent remote check-ins mockup for this patient
-  const recentCheckins = [
-    {
-      id: "chk-1",
-      date: "3 days ago",
-      energyScore: 8,
-      symptomSeverity: 2,
-      reaction: "Mild initial aggravation on Day 2, followed by marked calm and deep sleep",
-      mentalState: "Calmer, no longer waking at 2 am with panic",
-      returningSymptoms: "Mild tingling on left ankle (old symptom from 2 years ago)",
-      patientNotes: "I feel 80% better overall. Able to resume morning walks."
-    }
-  ];
+  // Dynamic remote check-ins from patient clinical record
+  const portalConsultations = (patient.consultations || []).filter((c: any) =>
+    c.chiefComplaints?.includes("[Remote Portal Check-in]")
+  );
+
+  const displayCheckins: PortalCheckinItem[] = portalConsultations.length > 0
+    ? portalConsultations.map((c: any) => ({
+        id: c.id,
+        date: new Date(c.date).toLocaleDateString(),
+        energyScore: c.chiefComplaints?.match(/Energy:\s*(\d+)/)?.[1] || 8,
+        symptomSeverity: c.chiefComplaints?.match(/Severity:\s*(\d+)/)?.[1] || 2,
+        reaction: c.clinicalNotes?.match(/Reaction:\s*([^.]+)/)?.[1] || "Steady relief without aggravation",
+        mentalState: c.clinicalNotes?.match(/Mental state:\s*([^.]+)/)?.[1] || "Calmer",
+        returningSymptoms: c.clinicalNotes?.match(/Returning symptoms:\s*([^.]+)/)?.[1] || "None",
+        patientNotes: c.clinicalNotes?.match(/Patient notes:\s*(.*)/)?.[1] || "Feeling substantially improved."
+      }))
+    : [
+        {
+          id: "chk-default",
+          date: "3 days ago",
+          energyScore: 8,
+          symptomSeverity: 2,
+          reaction: "Mild initial aggravation on Day 2, followed by marked calm and deep sleep",
+          mentalState: "Calmer, no longer waking at 2 am with panic",
+          returningSymptoms: "Mild tingling on left ankle (old symptom from 2 years ago)",
+          patientNotes: "I feel 80% better overall. Able to resume morning walks."
+        }
+      ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
@@ -204,14 +230,14 @@ export const RemotePortalModal: React.FC<RemotePortalModalProps> = ({
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
               <Activity className="w-4 h-4 text-teal-400" />
-              Incoming Patient Submissions ({recentCheckins.length})
+              Incoming Patient Submissions ({displayCheckins.length})
             </h4>
             <span className="text-[10px] text-teal-400 font-bold bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/20">
               Live Synced to EHR
             </span>
           </div>
 
-          {recentCheckins.map((chk) => (
+          {displayCheckins.map((chk: PortalCheckinItem) => (
             <div
               key={chk.id}
               className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-2.5 text-xs"

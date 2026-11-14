@@ -30,13 +30,26 @@ export default function Home() {
   const { activePatientId, setActivePatientId } = useClipboardStore();
   const [activePatientName, setActivePatientName] = useState<string | null>(null);
 
-  // Apply dark mode class to html element
+  // Initialize theme from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("vitalfokus_theme") as "dark" | "light" | null;
+    if (saved) {
+      setTheme(saved);
+    }
+  }, []);
+
+  // Apply dark mode class to html element and persist
   useEffect(() => {
     const root = document.documentElement;
     if (theme === "dark") {
       root.classList.add("dark");
     } else {
       root.classList.remove("dark");
+    }
+    try {
+      localStorage.setItem("vitalfokus_theme", theme);
+    } catch (e) {
+      // ignore in storage-restricted environments
     }
   }, [theme]);
 

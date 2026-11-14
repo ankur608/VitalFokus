@@ -348,9 +348,22 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                   <h4 className="font-bold text-slate-900 dark:text-slate-100 truncate">
                     {p.firstName} {p.lastName}
                   </h4>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                    {p.gender || "Patient"} • {calculateAge(p.dateOfBirth) || `${p.consultationCount} visits`}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                      {p.gender || "Patient"} • {calculateAge(p.dateOfBirth) || `${p.consultationCount} visits`}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedPatientId(p.id);
+                        setIsRemotePortalModalOpen(true);
+                      }}
+                      className="p-1 rounded-md text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 transition cursor-pointer"
+                      title={`Send Remote Follow-Up Portal to ${p.firstName}`}
+                    >
+                      <Send className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
                 <p className="text-[11px] text-slate-500 truncate">
                   {p.occupation || "Patient"} • {p.thermalState || "Ambithermal"}
