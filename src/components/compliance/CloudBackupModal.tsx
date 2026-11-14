@@ -150,10 +150,10 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-slate-900 border border-teal-500/40 rounded-2xl max-w-3xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-500/40 rounded-2xl text-slate-900 dark:text-slate-100 max-w-3xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-teal-500/20">
               <Database className="w-5 h-5" />
@@ -165,27 +165,27 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                   AES-256 Encrypted
                 </span>
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 End-to-end encrypted backup and instant sovereign restore for clinic database and case sheets.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition cursor-pointer"
+            className="p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Selection */}
-        <div className="flex items-center gap-2 border-b border-slate-800 pb-2 text-xs font-bold">
+        <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 text-xs font-bold">
           <button
             onClick={() => setActiveTab("backup")}
             className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition ${
               activeTab === "backup"
                 ? "bg-teal-600 text-white shadow-xs"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200"
             }`}
           >
             <Download className="w-3.5 h-3.5" /> 1-Click Encrypted Backup
@@ -195,7 +195,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
             className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition ${
               activeTab === "restore"
                 ? "bg-indigo-600 text-white shadow-xs"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200"
             }`}
           >
             <Upload className="w-3.5 h-3.5" /> Decrypt & Restore
@@ -205,7 +205,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
             className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition ${
               activeTab === "compliance"
                 ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200"
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" /> HIPAA / GDPR Audit
@@ -214,7 +214,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
 
         {/* Status Message */}
         {statusMessage && (
-          <div className="p-3 rounded-xl bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 flex items-center gap-2">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-medium text-slate-800 dark:text-slate-200 flex items-center gap-2">
             <span>{statusMessage}</span>
           </div>
         )}
@@ -222,18 +222,18 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
         {/* TAB 1: BACKUP */}
         {activeTab === "backup" && (
           <div className="space-y-4">
-            <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-3">
-              <span className="text-xs font-bold text-slate-200 block uppercase tracking-wider">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-700/80 space-y-3">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block uppercase tracking-wider">
                 1. Passphrase Protection (PBKDF2 100,000 Iterations)
               </span>
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
-                  <Key className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Key className="w-4 h-4 text-slate-600 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="password"
                     value={passphrase}
                     onChange={(e) => setPassphrase(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-500"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-500"
                   />
                 </div>
                 <button
@@ -254,8 +254,8 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                   <Cloud className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-200">Google Drive & Cloud Sovereignty</h4>
-                  <p className="text-[11px] text-slate-400">
+                  <h4 className="font-bold text-slate-800 dark:text-slate-200">Google Drive & Cloud Sovereignty</h4>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">
                     Automated encrypted sync to connected Google Workspace / Proton Drive
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                 className={`px-3 py-1 rounded-full text-xs font-bold transition ${
                   isDriveSyncActive
                     ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                    : "bg-slate-700 text-slate-400"
+                    : "bg-slate-700 text-slate-600 dark:text-slate-400"
                 }`}
               >
                 {isDriveSyncActive ? "Synced (Active)" : "Paused"}
@@ -280,22 +280,22 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                     <FileCheck2 className="w-4 h-4 text-teal-400" />
                     Encrypted Payload Ready ({backupPackage.algorithm})
                   </span>
-                  <span className="text-[10px] font-mono text-slate-400">
+                  <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400">
                     SHA256: {backupPackage.metadata.checksumSha256.slice(0, 16)}...
                   </span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                    <span className="text-[10px] text-slate-400 block">Patients</span>
+                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-600 dark:text-slate-400 block">Patients</span>
                     <strong className="text-slate-100">{backupPackage.metadata.recordCount.patients}</strong>
                   </div>
-                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                    <span className="text-[10px] text-slate-400 block">Consultations</span>
+                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-600 dark:text-slate-400 block">Consultations</span>
                     <strong className="text-slate-100">{backupPackage.metadata.recordCount.consultations}</strong>
                   </div>
-                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                    <span className="text-[10px] text-slate-400 block">Encryption</span>
+                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-600 dark:text-slate-400 block">Encryption</span>
                     <strong className="text-teal-400">AES-256-GCM</strong>
                   </div>
                 </div>
@@ -334,7 +334,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
           <div className="space-y-4 text-xs">
             <div className="space-y-2">
               <div className="flex items-center justify-between pb-1">
-              <label className="font-bold text-slate-300 block">
+              <label className="font-bold text-slate-700 dark:text-slate-300 block">
                 Paste Encrypted .vfbackup JSON Payload:
               </label>
               <button
@@ -350,12 +350,12 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                 value={restoreJson}
                 onChange={(e) => setRestoreJson(e.target.value)}
                 placeholder='Paste the content of your .vfbackup file here (starts with {"format": "VITALFOKUS_ENCRYPTED_BACKUP_V1", ...})'
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500 resize-none"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl p-3 text-xs text-slate-800 dark:text-slate-200 font-mono focus:outline-none focus:border-indigo-500 resize-none"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-bold text-slate-300 block">
+              <label className="font-bold text-slate-700 dark:text-slate-300 block">
                 Enter Decryption Passphrase:
               </label>
               <input
@@ -363,7 +363,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                 value={restorePassphrase}
                 onChange={(e) => setRestorePassphrase(e.target.value)}
                 placeholder="Enter the passphrase used when encrypting the backup"
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-slate-200 font-mono focus:outline-none focus:border-indigo-500"
               />
             </div>
 
@@ -389,7 +389,7 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
                 <h4 className="text-sm font-bold text-emerald-200">
                   {compliance.overallStatus}
                 </h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">
                   Type: {compliance.sovereigntyType}
                 </p>
               </div>
@@ -398,11 +398,11 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* HIPAA Card */}
-              <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-700 space-y-2">
                 <span className="text-xs font-bold text-teal-400 block">
                   HIPAA Security Rule § 164.312
                 </span>
-                <div className="space-y-1 text-[11px] text-slate-300">
+                <div className="space-y-1 text-[11px] text-slate-700 dark:text-slate-300">
                   <p><strong>Technical Safeguards:</strong> {compliance.standards.hipaaTitleII.technicalSafeguards}</p>
                   <p><strong>Audit Controls:</strong> {compliance.standards.hipaaTitleII.auditControls}</p>
                   <p><strong>Integrity:</strong> {compliance.standards.hipaaTitleII.dataIntegrity}</p>
@@ -410,11 +410,11 @@ export const CloudBackupModal: React.FC<CloudBackupModalProps> = ({
               </div>
 
               {/* GDPR Card */}
-              <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-700 space-y-2">
                 <span className="text-xs font-bold text-indigo-400 block">
                   GDPR Article 32 (Data Privacy)
                 </span>
-                <div className="space-y-1 text-[11px] text-slate-300">
+                <div className="space-y-1 text-[11px] text-slate-700 dark:text-slate-300">
                   <p><strong>Data Minimization:</strong> {compliance.standards.gdprArticle32.dataMinimization}</p>
                   <p><strong>Portability:</strong> {compliance.standards.gdprArticle32.rightToPortability}</p>
                   <p><strong>Right to Erasure:</strong> {compliance.standards.gdprArticle32.rightToErasure}</p>

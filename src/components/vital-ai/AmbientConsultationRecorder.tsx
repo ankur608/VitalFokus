@@ -144,7 +144,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
   return (
     <div className="bg-slate-900/90 border border-teal-500/30 rounded-2xl p-6 backdrop-blur-md shadow-2xl space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
             <Mic className="w-6 h-6" />
@@ -156,7 +156,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
                 Voice-to-EHR & LSMC Parser
               </span>
             </div>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               Listens to doctor-patient dialogue, automatically transcribes, extracts LSMC entities, and suggests matching rubrics in real-time.
             </p>
           </div>
@@ -208,7 +208,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Consultation Free-Speech Transcript (6 cols) */}
         <div className="lg:col-span-6 space-y-3 flex flex-col">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
             <span className="flex items-center gap-1.5">
               <FileText className="w-4 h-4 text-teal-400" />
               Live Consultation Dialogue
@@ -216,7 +216,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             <div className="flex items-center gap-2">
               <button
                 onClick={copyTranscript}
-                className="hover:text-slate-200 transition text-[11px] flex items-center gap-1"
+                className="hover:text-slate-800 dark:text-slate-200 transition text-[11px] flex items-center gap-1"
                 title="Copy text"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -243,7 +243,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
           {onAppendToCaseSheet && (
             <button
               onClick={() => onAppendToCaseSheet(transcript)}
-              className="w-full py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 font-semibold rounded-xl transition flex items-center justify-center gap-2"
+              className="w-full py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-800 dark:text-slate-200 font-semibold rounded-xl transition flex items-center justify-center gap-2"
             >
               <FileText className="w-3.5 h-3.5 text-teal-400" />
               <span>Append Transcript to Patient Case Sheet</span>
@@ -253,7 +253,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
 
         {/* Right: Real-time Extracted LSMC Entities & Rubrics (6 cols) */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
             <span className="flex items-center gap-1.5">
               <Brain className="w-4 h-4 text-indigo-400" />
               Real-Time LSMC Entity Extraction
@@ -266,7 +266,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
           {/* 4 LSMC Entity Boxes */}
           <div className="grid grid-cols-2 gap-2.5">
             {/* Location */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block">
                 Location (L)
               </span>
@@ -284,7 +284,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             </div>
 
             {/* Sensation */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-rose-400 block">
                 Sensation (S)
               </span>
@@ -302,7 +302,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             </div>
 
             {/* Modalities Aggravation (<) */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
                 Modality Aggravation (&lt;)
               </span>
@@ -320,7 +320,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
             </div>
 
             {/* Modalities Amelioration (>) */}
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
+            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
                 Modality Amelioration (&gt;)
               </span>
@@ -339,9 +339,9 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
           </div>
 
           {/* Auto-Suggested Repertorial Rubrics */}
-          <div className="space-y-2 pt-2 border-t border-slate-800">
+          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-teal-400" />
                 Auto-Matched Rubrics ({lsmc.suggestedRubrics.length})
               </span>
@@ -359,23 +359,23 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
 
             <div className="space-y-2 max-h-56 overflow-y-auto pr-1 custom-scrollbar">
               {lsmc.suggestedRubrics.length === 0 ? (
-                <div className="p-4 bg-slate-950/40 rounded-xl border border-dashed border-slate-800 text-center text-xs text-slate-500">
+                <div className="p-4 bg-slate-950/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
                   Speak or type consultation dialogue to trigger auto-rubric matching.
                 </div>
               ) : (
                 lsmc.suggestedRubrics.map((r, idx) => (
                   <div
                     key={idx}
-                    className="p-3 bg-slate-950/60 border border-slate-800/80 hover:border-teal-500/40 rounded-xl flex items-center justify-between gap-3 transition"
+                    className="p-3 bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 hover:border-teal-500/40 rounded-xl flex items-center justify-between gap-3 transition"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-700 dark:text-slate-300">
                           {r.chapter}
                         </span>
-                        <span className="text-xs font-medium text-slate-200">{r.label}</span>
+                        <span className="text-xs font-medium text-slate-800 dark:text-slate-200">{r.label}</span>
                       </div>
-                      <p className="text-[11px] text-slate-400 font-mono">{r.fullPath}</p>
+                      <p className="text-[11px] text-slate-600 dark:text-slate-400 font-mono">{r.fullPath}</p>
                     </div>
 
                     <div className="text-right shrink-0">

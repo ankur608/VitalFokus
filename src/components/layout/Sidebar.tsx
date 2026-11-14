@@ -126,7 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className="flex items-center gap-3 overflow-hidden text-left group cursor-pointer transition-transform active:scale-95 focus:outline-none"
           title="Go to Home / Clinical Dashboard"
         >
-          <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-md shadow-teal-500/20 group-hover:scale-105 group-hover:ring-2 group-hover:ring-teal-500/50 transition-all flex items-center justify-center bg-teal-950/10 dark:bg-teal-950/40">
+          <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center bg-white dark:bg-slate-900 group-hover:scale-105">
             <img
               src="/vitalfokus-icon.png"
               alt="VitalFokus Icon"
@@ -135,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           {!isCollapsed && (
             <div className="flex flex-col">
-              <span className="font-bold text-base tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-1.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+              <span className="font-bold text-base tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-1.5 transition-colors">
                 Vital<span className="text-teal-600 dark:text-teal-400">Fokus</span>
               </span>
               <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">

@@ -30,21 +30,37 @@ export default function Home() {
   const { activePatientId, setActivePatientId } = useClipboardStore();
   const [activePatientName, setActivePatientName] = useState<string | null>(null);
 
-  // Initialize theme from localStorage
+  // Initialize theme from localStorage or document attribute
   useEffect(() => {
     const saved = localStorage.getItem("vitalfokus_theme") as "dark" | "light" | null;
-    if (saved) {
-      setTheme(saved);
+    const currentAttr = document.documentElement.getAttribute("data-theme") as "dark" | "light" | null;
+    const initialTheme = saved || currentAttr || "dark";
+    setTheme(initialTheme);
+    const root = document.documentElement;
+    const body = document.body;
+    if (initialTheme === "dark") {
+      root.classList.add("dark");
+      body.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      body.classList.remove("dark");
+      root.setAttribute("data-theme", "light");
     }
   }, []);
 
   // Apply dark mode class to html element and persist
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
     if (theme === "dark") {
       root.classList.add("dark");
+      body.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
     } else {
       root.classList.remove("dark");
+      body.classList.remove("dark");
+      root.setAttribute("data-theme", "light");
     }
     try {
       localStorage.setItem("vitalfokus_theme", theme);
@@ -70,7 +86,24 @@ export default function Home() {
   }, [activePatientId]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    setTheme((prev) => {
+      const next = prev === "dark" ? "light" : "dark";
+      const root = document.documentElement;
+      const body = document.body;
+      if (next === "dark") {
+        root.classList.add("dark");
+        body.classList.add("dark");
+        root.setAttribute("data-theme", "dark");
+      } else {
+        root.classList.remove("dark");
+        body.classList.remove("dark");
+        root.setAttribute("data-theme", "light");
+      }
+      try {
+        localStorage.setItem("vitalfokus_theme", next);
+      } catch (e) {}
+      return next;
+    });
   };
 
   const handleSelectPatient = (id: string) => {
@@ -88,7 +121,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased">
+    <div className={`flex h-screen w-screen overflow-hidden ${theme === "dark" ? "dark bg-slate-950 text-slate-100" : "light bg-slate-100 text-slate-900"} font-sans antialiased`} data-theme={theme}>
       {/* Left Collapsible Rail */}
       <Sidebar
         activeTab={activeTab}

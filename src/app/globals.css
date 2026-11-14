@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  :root {
+  :root, [data-theme="light"], .light {
     --background: #f8fafc;
     --foreground: #0f172a;
     --primary: #0d9488;
@@ -15,10 +15,11 @@
     --muted-foreground: #64748b;
     --accent: #4f46e5;
     --accent-foreground: #ffffff;
+    color-scheme: light;
   }
 
-  .dark {
-    --background: #0b1120;
+  .dark, [data-theme="dark"] {
+    --background: #020617;
     --foreground: #f8fafc;
     --primary: #14b8a6;
     --primary-foreground: #042f2e;
@@ -29,6 +30,7 @@
     --muted-foreground: #94a3b8;
     --accent: #6366f1;
     --accent-foreground: #ffffff;
+    color-scheme: dark;
   }
 }
 
