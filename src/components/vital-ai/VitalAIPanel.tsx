@@ -58,6 +58,17 @@ export const VitalAIPanel: React.FC<VitalAIPanelProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [isCopilotModalOpen, setIsCopilotModalOpen] = useState(false);
 
+  // Sync activeSubTab from URL query params (e.g. ?subtab=graph)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const sub = params.get("subtab");
+      if (sub && ["chat", "report", "ambient", "graph", "posology"].includes(sub)) {
+        setActiveSubTab(sub as any);
+      }
+    } catch (e) {}
+  }, []);
+
   // Interactive clarification answers state
   const [clarificationAnswers, setClarificationAnswers] = useState<Record<string, string>>({});
 
