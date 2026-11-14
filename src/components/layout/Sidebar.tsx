@@ -213,18 +213,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
       )}
-
-      {/* Footer Info */}
-      <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80 text-[11px] text-slate-400 text-center">
-        {!isCollapsed ? (
-          <div>
-            <p className="font-semibold text-slate-600 dark:text-slate-300">VitalFokus Classical Suite</p>
-            <p className="text-[10px] text-slate-400">BPA • VES • 188 Remedies</p>
-          </div>
-        ) : (
-          <span className="font-mono text-[10px]">v2.4</span>
-        )}
-      </div>
     </aside>
   );
 };
