@@ -15,6 +15,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "VitalFokus - Clinical Intelligence & Homeopathic Repertorisation Platform",
   description: "Enterprise-grade homeopathic repertorisation, patient case management, and AI clinical inference engine inspired by RadarOpus.",
+  icons: {
+    icon: "/vitalfokus-icon.png",
+    apple: "/vitalfokus-icon.png",
+  },
 };
 
 export default function RootLayout({
