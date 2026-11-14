@@ -79,33 +79,28 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
 
   return (
     <div className="flex flex-col h-full space-y-6 overflow-y-auto pr-1 custom-scrollbar">
-      {/* UHD Main Home Page Logo Banner */}
-      <div className="shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
-        <div className="flex items-center gap-4">
+      {/* UHD Main Home Page Logo Banner / Ribbon */}
+      <div className="shrink-0 flex items-center justify-between gap-4 px-6 py-3.5 sm:py-4 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+        <div className="flex items-center">
           <img
-            src="/vitalfokus-logo.svg"
+            src="/vitalfokus-logo.png"
             alt="VitalFokus Clinical Intelligence Suite"
-            className="h-12 sm:h-14 w-auto object-contain block dark:hidden select-none transition-transform hover:scale-[1.01]"
+            className="h-11 sm:h-12 md:h-13 w-auto max-w-full object-contain block dark:hidden select-none transition-transform hover:scale-[1.01]"
           />
           <img
-            src="/vitalfokus-logo-dark.svg"
+            src="/vitalfokus-logo-dark.png"
             alt="VitalFokus Clinical Intelligence Suite"
-            className="h-12 sm:h-14 w-auto object-contain hidden dark:block select-none transition-transform hover:scale-[1.01]"
+            className="h-11 sm:h-12 md:h-13 w-auto max-w-full object-contain hidden dark:block select-none transition-transform hover:scale-[1.01]"
           />
         </div>
         <div className="flex items-center gap-3">
-          <div className="text-right hidden md:block">
+          <div className="text-right hidden sm:block">
             <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
               Classical Homeopathic Intelligence
             </div>
             <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-              v2.4 • Kentian Totality & RadarOpus Grade
+              v2.4 • Kentian Totality &amp; RadarOpus Grade
             </div>
-          </div>
-          <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 hidden md:block" />
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Live Practice Suite
           </div>
         </div>
       </div>

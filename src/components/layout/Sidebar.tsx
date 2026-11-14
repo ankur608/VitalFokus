@@ -123,34 +123,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }`}
     >
       {/* Brand Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-slate-200/80 dark:border-slate-800/80">
+      <div className="flex items-center justify-between h-16 px-3.5 border-b border-slate-200/80 dark:border-slate-800/80">
         <button
           onClick={() => setActiveTab("dashboard")}
-          className="flex items-center gap-3 overflow-hidden text-left group cursor-pointer transition-transform active:scale-95 focus:outline-none"
+          className="flex items-center overflow-hidden text-left group cursor-pointer transition-transform active:scale-95 focus:outline-none flex-1 min-w-0 mr-1"
           title="Go to Home / Clinical Dashboard"
         >
-          <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center bg-white dark:bg-slate-900 group-hover:scale-105">
-            <img
-              src="/vitalfokus-icon.png"
-              alt="VitalFokus Icon"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          {!isCollapsed && (
-            <div className="flex flex-col">
-              <span className="font-bold text-base tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-1.5 transition-colors">
-                Vital<span className="text-teal-600 dark:text-teal-400">Fokus</span>
-              </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">
-                Clinical Intelligence Suite
-              </span>
+          {!isCollapsed ? (
+            <div className="flex items-center h-10 w-full overflow-hidden">
+              <img
+                src="/vitalfokus-logo.png"
+                alt="VitalFokus Clinical Intelligence Suite"
+                className="h-9 w-auto max-w-[172px] object-contain object-left block dark:hidden select-none transition-transform group-hover:scale-[1.02]"
+              />
+              <img
+                src="/vitalfokus-logo-dark.png"
+                alt="VitalFokus Clinical Intelligence Suite"
+                className="h-9 w-auto max-w-[172px] object-contain object-left hidden dark:block select-none transition-transform group-hover:scale-[1.02]"
+              />
+            </div>
+          ) : (
+            <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center bg-white dark:bg-slate-900 group-hover:scale-105 mx-auto">
+              <img
+                src="/vitalfokus-icon.png"
+                alt="VitalFokus Icon"
+                className="w-full h-full object-cover"
+              />
             </div>
           )}
         </button>
 
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition shrink-0"
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
