@@ -95,14 +95,19 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
             </span>
           </button>
 
-          {/* Clipboards Pill Button */}
+          {/* Floating Round Clipboards Trigger with Icon and Number Counter */}
           <button
             onClick={toggleDock}
-            className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-600/30 transition-all font-semibold text-xs cursor-pointer group"
+            className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-purple-600 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white shadow-xl shadow-indigo-600/30 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
+            title={`Clinical Clipboards (${totalRubricsAcrossAll} rubrics)`}
           >
-            <Layers className="w-4 h-4 text-indigo-200 group-hover:scale-110 transition" />
-            <span>Clipboards ({totalRubricsAcrossAll})</span>
-            <ChevronUp className="w-3.5 h-3.5 text-indigo-200" />
+            <Layers className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+            <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 rounded-full bg-teal-400 dark:bg-teal-500 text-slate-950 font-black text-[10px] flex items-center justify-center shadow-lg border-2 border-slate-900 leading-none">
+              {totalRubricsAcrossAll}
+            </span>
+            <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
+              Clipboards ({totalRubricsAcrossAll})
+            </span>
           </button>
         </aside>
 
@@ -409,6 +414,21 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
         <BookOpen className="w-4 h-4 group-hover:rotate-6 transition-transform" />
         <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
           Usage Guide
+        </span>
+      </button>
+
+      {/* Floating Round Clipboards Trigger above Dock */}
+      <button
+        onClick={toggleDock}
+        className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-purple-600 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white shadow-xl shadow-indigo-600/30 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
+        title={`Minimize Clipboards (${totalRubricsAcrossAll} rubrics)`}
+      >
+        <Layers className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+        <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 rounded-full bg-teal-400 dark:bg-teal-500 text-slate-950 font-black text-[10px] flex items-center justify-center shadow-lg border-2 border-slate-900 leading-none">
+          {totalRubricsAcrossAll}
+        </span>
+        <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
+          Minimize Clipboards
         </span>
       </button>
     </aside>
