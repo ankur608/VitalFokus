@@ -108,11 +108,11 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Bönninghausen Polarity Analysis (BPA)</h2>
-              <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
+              <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-teal-50 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-500/30">
                 Heiner Frei Algorithm
               </span>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               Calculates Polarity Difference (PD = Polar Score − Contra-indications) to rule out contradictory modalities.
             </p>
           </div>
@@ -122,14 +122,14 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
           <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700">
             <Layers className="w-4 h-4 text-teal-400" />
             <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-              Polar Symptoms: <strong className="text-teal-300">{activePolarRubrics.length}</strong> / {activeRubrics.length}
+              Polar Symptoms: <strong className="text-teal-600 dark:text-teal-300">{activePolarRubrics.length}</strong> / {activeRubrics.length}
             </span>
           </div>
 
           {onOpenRepertorisation && (
             <button
               onClick={onOpenRepertorisation}
-              className="flex items-center gap-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs text-slate-700 dark:text-slate-200 font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition cursor-pointer shadow-2xs"
             >
               <span>View Matrix Grid</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -142,7 +142,7 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-0 overflow-hidden">
         {/* Left: Remedy Polarity Ranking (7 cols) */}
         <div className="lg:col-span-7 flex flex-col min-h-0 space-y-3">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400 px-3">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 px-3">
             <span>Remedy & Kingdom</span>
             <div className="flex items-center gap-6">
               <span className="w-14 text-center">Polar (P)</span>
@@ -158,10 +158,10 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
                 <p className="text-sm font-medium">Calculating Polarity Difference & Contra-indications...</p>
               </div>
             ) : scores.length === 0 ? (
-              <div className="text-center py-16 bg-slate-800/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 p-6 space-y-2">
-                <Scale className="w-10 h-10 text-slate-600 mx-auto mb-2" />
-                <p className="text-slate-700 dark:text-slate-300 text-sm font-semibold">No active polar symptoms in clipboards</p>
-                <p className="text-slate-500 text-xs max-w-md mx-auto">
+              <div className="text-center py-16 bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-6 space-y-2">
+                <Scale className="w-10 h-10 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+                <p className="text-slate-800 dark:text-slate-200 text-sm font-bold">No active polar symptoms in clipboards</p>
+                <p className="text-slate-600 dark:text-slate-400 text-xs font-medium max-w-md mx-auto">
                   Add modalities to your clipboards (e.g. <em>motion</em>, <em>warmth</em>, <em>cold</em>, <em>open air</em>, <em>pressure</em>) to run Bönninghausen Polarity Analysis.
                 </p>
               </div>
@@ -180,28 +180,28 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
                     className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-center justify-between ${
                       isSelected
                         ? "bg-teal-950/40 border-teal-500/60 shadow-lg shadow-teal-950/50"
-                        : "bg-slate-100/60 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700/60 hover:bg-slate-100 dark:bg-slate-800/80 hover:border-slate-600"
+                        : "bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-700/60 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-slate-300 dark:hover:border-slate-600 shadow-2xs"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
                         index === 0
                           ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                          : "bg-slate-800 text-slate-400"
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
                       }`}>
                         #{index + 1}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-slate-100">{score.remedyName}</span>
-                          <span className="text-xs text-slate-400 font-mono">({score.remedyAbbr})</span>
+                          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">{score.remedyName}</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-medium">({score.remedyAbbr})</span>
                           {hasSevereCI && (
                             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
                               <AlertTriangle className="w-2.5 h-2.5" /> CI!
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] text-slate-600 dark:text-slate-400">{score.kingdom}</span>
+                        <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">{score.kingdom}</span>
                       </div>
                     </div>
 
@@ -222,31 +222,31 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
         </div>
 
         {/* Right: Selected Remedy Polarity Diagnostics (5 cols) */}
-        <div className="lg:col-span-5 bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-5 space-y-4 overflow-y-auto custom-scrollbar">
+        <div className="lg:col-span-5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-5 space-y-4 overflow-y-auto custom-scrollbar">
           {selectedRemedy ? (
             <>
               <div>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-slate-100">{selectedRemedy.remedyName}</h3>
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-700 text-slate-700 dark:text-slate-300">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{selectedRemedy.remedyName}</h3>
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200">
                     Remedy #{selectedRemedy.remedyNumber || "—"}
                   </span>
                 </div>
-                <p className="text-xs text-teal-400 mt-0.5">{selectedRemedy.kingdom} Kingdom</p>
+                <p className="text-xs text-teal-600 dark:text-teal-400 font-semibold mt-0.5">{selectedRemedy.kingdom} Kingdom</p>
               </div>
 
               {/* Score Breakdown Cards */}
               <div className="grid grid-cols-3 gap-2">
-                <div className="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-lg border border-slate-200 dark:border-slate-200 dark:border-slate-700/80 text-center">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Polar Score (P)</span>
+                <div className="bg-white dark:bg-slate-900/80 p-3 rounded-lg border border-slate-200 dark:border-slate-700/80 text-center shadow-2xs">
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block">Polar Score (P)</span>
                   <span className="text-lg font-bold text-emerald-400">+{selectedRemedy.patientPolarScore}</span>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-lg border border-slate-200 dark:border-slate-200 dark:border-slate-700/80 text-center">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Contra (CI)</span>
+                <div className="bg-white dark:bg-slate-900/80 p-3 rounded-lg border border-slate-200 dark:border-slate-700/80 text-center shadow-2xs">
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block">Contra (CI)</span>
                   <span className="text-lg font-bold text-rose-400">-{selectedRemedy.oppositeContraScore}</span>
                 </div>
-                <div className="bg-teal-950/40 p-3 rounded-lg border border-teal-500/40 text-center">
-                  <span className="text-[10px] text-teal-300 uppercase tracking-wider block">Difference (PD)</span>
+                <div className="bg-teal-50 dark:bg-teal-950/40 p-3 rounded-lg border border-teal-200 dark:border-teal-500/40 text-center shadow-2xs">
+                  <span className="text-[10px] text-teal-700 dark:text-teal-300 font-bold uppercase tracking-wider block">Difference (PD)</span>
                   <span className="text-lg font-bold text-teal-300">
                     {selectedRemedy.polarityDifference > 0 ? `+${selectedRemedy.polarityDifference}` : selectedRemedy.polarityDifference}
                   </span>
@@ -261,7 +261,7 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
                 </h4>
 
                 {selectedRemedy.contraIndications.length === 0 ? (
-                  <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-lg flex items-center gap-2 text-emerald-300 text-xs">
+                  <div className="p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 rounded-lg flex items-center gap-2 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
                     <span>No polar contra-indications found. Modalities are harmonious with remedy pathogenesis.</span>
                   </div>
@@ -270,19 +270,19 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
                     {selectedRemedy.contraIndications.map((ci, idx) => (
                       <div
                         key={idx}
-                        className="p-3 bg-rose-950/30 border border-rose-500/40 rounded-lg text-xs space-y-1"
+                        className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-500/40 rounded-lg text-xs space-y-1"
                       >
-                        <div className="flex items-center justify-between text-rose-300 font-semibold">
+                        <div className="flex items-center justify-between text-rose-700 dark:text-rose-300 font-bold">
                           <span className="flex items-center gap-1">
                             <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
                             {ci.severity} Contra-Indication (Grade {ci.contraGrade})
                           </span>
                         </div>
                         <p className="text-slate-700 dark:text-slate-300">
-                          Patient presents: <strong className="text-slate-100">{ci.patientModality}</strong>
+                          Patient presents: <strong className="text-slate-900 dark:text-slate-100">{ci.patientModality}</strong>
                         </p>
-                        <p className="text-rose-400/90 font-medium">
-                          Remedy opposite pole: <strong className="text-rose-300">{ci.contraModality}</strong>
+                        <p className="text-rose-700 dark:text-rose-300 font-medium">
+                          Remedy opposite pole: <strong className="text-rose-800 dark:text-rose-200">{ci.contraModality}</strong>
                         </p>
                       </div>
                     ))}
@@ -291,8 +291,8 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
               </div>
 
               {/* Frei Clinical Guidance Note */}
-              <div className="p-3 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-200 dark:border-slate-700/60 rounded-lg text-[11px] text-slate-400 space-y-1">
-                <div className="flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300">
+              <div className="p-3 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/60 rounded-lg text-[11px] text-slate-700 dark:text-slate-300 space-y-1 shadow-2xs">
+                <div className="flex items-center gap-1 font-bold text-slate-800 dark:text-slate-200">
                   <Info className="w-3.5 h-3.5 text-indigo-400" />
                   Heiner Frei Clinical Rule:
                 </div>
@@ -302,7 +302,7 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
               </div>
             </>
           ) : (
-            <div className="text-center py-12 text-slate-500 text-xs">
+            <div className="text-center py-12 text-slate-600 dark:text-slate-400 text-xs font-medium">
               Select a remedy from the ranking table to inspect polar modalities.
             </div>
           )}
