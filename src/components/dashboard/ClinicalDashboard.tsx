@@ -79,32 +79,6 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
 
   return (
     <div className="flex flex-col h-full space-y-6 overflow-y-auto pr-1 custom-scrollbar">
-      {/* UHD Main Home Page Logo Banner / Ribbon */}
-      <div className="shrink-0 flex items-center justify-between gap-4 px-6 py-4 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
-        <div className="flex items-center">
-          <img
-            src="/vitalfokus-logo.png"
-            alt="VitalFokus Clinical Intelligence Suite"
-            className="h-12 sm:h-14 md:h-16 w-auto max-w-full object-contain block dark:hidden select-none transition-transform hover:scale-[1.01]"
-          />
-          <img
-            src="/vitalfokus-logo-dark.png"
-            alt="VitalFokus Clinical Intelligence Suite"
-            className="h-12 sm:h-14 md:h-16 w-auto max-w-full object-contain hidden dark:block select-none transition-transform hover:scale-[1.01]"
-          />
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right hidden sm:block">
-            <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
-              Classical Homeopathic Intelligence
-            </div>
-            <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-              v2.4 • Kentian Totality &amp; RadarOpus Grade
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Hero Welcome Banner */}
       <div className="shrink-0 p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/30 min-h-[200px] flex flex-col justify-center">
         <div className="relative z-10 max-w-3xl space-y-2.5">
