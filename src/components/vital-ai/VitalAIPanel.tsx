@@ -407,7 +407,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
       {/* Inputs Context Strip */}
       <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between text-xs gap-3 shadow-2xs">
         <div className="flex items-center gap-3">
-          <span className="text-slate-400 font-medium">Active Case Context:</span>
+          <span className="text-slate-700 dark:text-slate-300 font-semibold">Active Case Context:</span>
           <span className="px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">
             {patientData ? `${patientData.firstName} ${patientData.lastName}` : "Staged Case Intake"}
           </span>
@@ -419,7 +419,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
           </span>
         </div>
 
-        <div className="flex items-center gap-2 text-slate-500">
+        <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium">
           <Layers className="w-3.5 h-3.5 text-indigo-500" />
           <span>Active Rubrics: <strong>{totalRubrics}</strong> staged across clipboards</span>
         </div>
@@ -432,7 +432,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
         <div className="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
           {/* Quick Walkthrough Suggestion Pills */}
           <div className="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1 shrink-0">
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1 shrink-0">
               <Lightbulb className="w-3.5 h-3.5 text-amber-500" /> Walkthroughs:
             </span>
             {quickPrompts.map((qp, idx) => (
@@ -540,7 +540,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
               <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">
                 Ready to Generate Comprehensive Prediction Report
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium max-w-md">
                 Click <strong>"Run Prediction"</strong> above to compute the similimum probabilities, Hering's law prognosis, Kent/Boericke citations, and interactive clarification questions.
               </p>
             </div>
@@ -599,7 +599,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                   <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 space-y-1">
-                    <span className="font-bold text-slate-500 dark:text-slate-400 block text-[10px] uppercase">
+                    <span className="font-bold text-slate-700 dark:text-slate-300 block text-[10px] uppercase">
                       Central State & Pathology
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -608,7 +608,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 space-y-1">
-                    <span className="font-bold text-slate-500 dark:text-slate-400 block text-[10px] uppercase">
+                    <span className="font-bold text-slate-700 dark:text-slate-300 block text-[10px] uppercase">
                       Constitutional Susceptibility
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -617,7 +617,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 space-y-1">
-                    <span className="font-bold text-slate-500 dark:text-slate-400 block text-[10px] uppercase">
+                    <span className="font-bold text-slate-700 dark:text-slate-300 block text-[10px] uppercase">
                       Dominant Miasmatic Dynamic
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -626,7 +626,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 space-y-1">
-                    <span className="font-bold text-slate-500 dark:text-slate-400 block text-[10px] uppercase">
+                    <span className="font-bold text-slate-700 dark:text-slate-300 block text-[10px] uppercase">
                       Thermal Polarity Analysis
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -713,7 +713,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                     <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                       Interactive Clinical Interrogation & Clarification
                     </h3>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                       Select options to adjust probability weights dynamically.
                     </p>
                   </div>
@@ -753,7 +753,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                       </div>
 
                       {q.clinicalImpact && (
-                        <p className="text-[10px] text-slate-400 italic">
+                        <p className="text-[10px] text-slate-600 dark:text-slate-400 font-medium italic">
                           Clinical Impact: {q.clinicalImpact}
                         </p>
                       )}

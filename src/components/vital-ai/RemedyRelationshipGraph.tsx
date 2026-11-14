@@ -117,7 +117,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
                 Acute-Chronic Trios • Antidotes • Complementaries
               </span>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               Interactive clinical relationship network mapping complementary pairings, acute-to-chronic evolution chains, and antidotes.
             </p>
           </div>
@@ -126,13 +126,13 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
         {/* Search & Filter */}
         <div className="flex items-center gap-2.5">
           <div className="relative w-56">
-            <Search className="w-4 h-4 text-slate-600 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search remedy link..."
-              className="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-700 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
+              className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-none focus:border-teal-500"
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
           className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
             selectedRelationType === "All"
               ? "bg-slate-700 text-white shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:bg-slate-800"
+              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           }`}
         >
           All Relationships ({links.length})
@@ -156,7 +156,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
           className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
             selectedRelationType === "AcuteChronic"
               ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:bg-slate-800"
+              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-cyan-400" />
@@ -168,7 +168,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
           className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
             selectedRelationType === "Complementary"
               ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:bg-slate-800"
+              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -180,7 +180,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
           className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
             selectedRelationType === "Antidote"
               ? "bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:bg-slate-800"
+              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-amber-400" />
@@ -192,7 +192,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
           className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
             selectedRelationType === "Inimical"
               ? "bg-rose-500/20 text-rose-300 border border-rose-500/50 shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:bg-slate-800"
+              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-rose-400" />
