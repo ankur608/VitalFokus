@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { BookOpen } from "lucide-react";
+import { CookbookGuideModal } from "@/components/guide/CookbookGuideModal";
+import { ActiveTab } from "@/components/layout/Sidebar";
 import {
   Layers,
   ChevronDown,
@@ -19,11 +22,14 @@ import { useClipboardStore } from "@/lib/store/useClipboardStore";
 
 interface ClipboardDockProps {
   onOpenRepertorisation: () => void;
+  onNavigateTab?: (tab: ActiveTab) => void;
 }
 
 export const ClipboardDock: React.FC<ClipboardDockProps> = ({
-  onOpenRepertorisation
+  onOpenRepertorisation,
+  onNavigateTab
 }) => {
+  const [isCookbookOpen, setIsCookbookOpen] = useState(false);
   const {
     clipboards,
     activeClipboardId,
@@ -62,20 +68,42 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
 
   if (!isDockOpen) {
     return (
-      <aside className="fixed bottom-4 right-6 z-40">
-        <button
-          onClick={toggleDock}
-          className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-600/30 transition-all font-semibold text-xs cursor-pointer group"
-        >
-          <Layers className="w-4 h-4 text-indigo-200 group-hover:scale-110 transition" />
-          <span>Clipboards ({totalRubricsAcrossAll})</span>
-          <ChevronUp className="w-3.5 h-3.5 text-indigo-200" />
-        </button>
-      </aside>
+      <>
+        <aside className="fixed bottom-4 right-6 z-40 flex flex-col items-end gap-2.5">
+          {/* Floating Round Cookbook & App Guide Pop-up Trigger */}
+          <button
+            onClick={() => setIsCookbookOpen(true)}
+            className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white shadow-xl shadow-teal-500/25 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
+            title="VitalFokus Clinical Cookbook & Usage Guide"
+          >
+            <BookOpen className="w-4 h-4 group-hover:rotate-6 transition-transform" />
+            <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
+              Cookbook &amp; User Guide
+            </span>
+          </button>
+
+          {/* Clipboards Pill Button */}
+          <button
+            onClick={toggleDock}
+            className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-600/30 transition-all font-semibold text-xs cursor-pointer group"
+          >
+            <Layers className="w-4 h-4 text-indigo-200 group-hover:scale-110 transition" />
+            <span>Clipboards ({totalRubricsAcrossAll})</span>
+            <ChevronUp className="w-3.5 h-3.5 text-indigo-200" />
+          </button>
+        </aside>
+
+        <CookbookGuideModal
+          isOpen={isCookbookOpen}
+          onClose={() => setIsCookbookOpen(false)}
+          onNavigateTab={onNavigateTab}
+        />
+      </>
     );
   }
 
   return (
+    <>
     <aside className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-2xl transition-all">
       {/* Top Header Bar of Dock */}
       <div className="flex items-center justify-between px-6 py-2 border-b border-slate-200/70 dark:border-slate-800/70 text-xs">
@@ -344,5 +372,26 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
         </div>
       </div>
     </aside>
+
+    {/* Floating Round Cookbook Trigger above Dock */}
+    <aside className="fixed bottom-36 right-6 z-40">
+      <button
+        onClick={() => setIsCookbookOpen(true)}
+        className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white shadow-xl shadow-teal-500/25 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
+        title="VitalFokus Clinical Cookbook & Usage Guide"
+      >
+        <BookOpen className="w-4 h-4 group-hover:rotate-6 transition-transform" />
+        <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
+          Cookbook &amp; User Guide
+        </span>
+      </button>
+    </aside>
+
+    <CookbookGuideModal
+      isOpen={isCookbookOpen}
+      onClose={() => setIsCookbookOpen(false)}
+      onNavigateTab={onNavigateTab}
+    />
+  </>
   );
 };

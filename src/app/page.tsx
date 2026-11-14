@@ -197,6 +197,7 @@ export default function Home() {
         {/* Global Floating Multi-Clipboard Dock (Bottom) */}
         <ClipboardDock
           onOpenRepertorisation={() => setActiveTab("repertorisation")}
+          onNavigateTab={setActiveTab}
         />
       </div>
 
