@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Bot,
+  Mic,
+  Network,
+  Droplet,
   Sparkles,
   Layers,
   Thermometer,
@@ -30,6 +33,9 @@ import {
   Stethoscope
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
+import { AmbientConsultationRecorder } from "./AmbientConsultationRecorder";
+import { RemedyRelationshipGraph } from "./RemedyRelationshipGraph";
+import { PosologyCalculatorModal } from "./PosologyCalculatorModal";
 
 interface VitalAIPanelProps {
   onOpenRemedyMM: (remedyId: string) => void;
@@ -47,7 +53,7 @@ export const VitalAIPanel: React.FC<VitalAIPanelProps> = ({
 }) => {
   const { clipboards, activePatientId } = useClipboardStore();
 
-  const [activeSubTab, setActiveSubTab] = useState<"chat" | "report">("chat");
+  const [activeSubTab, setActiveSubTab] = useState<"chat" | "report" | "ambient" | "graph" | "posology">("chat");
   const [patientData, setPatientData] = useState<any | null>(null);
   const [topRemedies, setTopRemedies] = useState<any[]>([]);
   const [report, setReport] = useState<any | null>(null);
@@ -351,6 +357,39 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
             >
               <FileCheck2 className="w-3.5 h-3.5" />
               <span>Inference Report</span>
+            </button>
+            <button
+              onClick={() => setActiveSubTab("ambient")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                activeSubTab === "ambient"
+                  ? "bg-rose-600 text-white shadow-xs"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              <Mic className="w-3.5 h-3.5" />
+              <span>Ambient Speech</span>
+            </button>
+            <button
+              onClick={() => setActiveSubTab("graph")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                activeSubTab === "graph"
+                  ? "bg-cyan-600 text-white shadow-xs"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              <Network className="w-3.5 h-3.5" />
+              <span>Family Graph</span>
+            </button>
+            <button
+              onClick={() => setActiveSubTab("posology")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                activeSubTab === "posology"
+                  ? "bg-amber-600 text-white shadow-xs"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              <Droplet className="w-3.5 h-3.5" />
+              <span>Posology & Plussing</span>
             </button>
           </div>
 
@@ -786,6 +825,44 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
           )}
         </div>
       )}
+
+      {/* ========================================================================= */}
+      {/* SUBTAB 3: VOICE-TO-EHR AMBIENT CASE-TAKING                              */}
+      {/* ========================================================================= */}
+      {activeSubTab === "ambient" && (
+        <AmbientConsultationRecorder
+          patientId={activePatientId || undefined}
+          patientName={patientData ? `${patientData.firstName} ${patientData.lastName}` : undefined}
+          onAppendToCaseSheet={(text) => {
+            console.log("Appended to case sheet:", text);
+          }}
+        />
+      )}
+
+      {/* ========================================================================= */}
+      {/* SUBTAB 4: REMEDY RELATIONSHIP & FAMILY GRAPH                             */}
+      {/* ========================================================================= */}
+      {activeSubTab === "graph" && (
+        <RemedyRelationshipGraph
+          onSelectRemedy={(remedyId: string) => onOpenRemedyMM(remedyId)}
+        />
+      )}
+
+      {/* ========================================================================= */}
+      {/* SUBTAB 5: ORGANON POSOLOGY & PLUSSING CALCULATOR                         */}
+      {/* ========================================================================= */}
+      {activeSubTab === "posology" && (
+        <PosologyCalculatorModal
+          isOpen={true}
+          onClose={() => setActiveSubTab("chat")}
+          defaultRemedy={topRemedies[0]?.name || "Arsenicum album"}
+          defaultPotency="LM1"
+          onAttachToCase={(protocol) => {
+            console.log("Attached protocol to case:", protocol);
+          }}
+        />
+      )}
+
     </div>
   );
 };

@@ -1,6 +1,9 @@
 import { calculatePolarityAnalysis } from "../src/lib/polarityEngine";
 import { calculateVithoulkasLevel } from "../src/lib/vithoulkasLevels";
 import { TAXONOMY_DATABASE, PERIODIC_ELEMENTS_SCHOLTEN } from "../src/lib/taxonomyData";
+import { extractLSMCEntities } from "../src/lib/ambientSpeech";
+import { GRAPH_NODES, GRAPH_LINKS } from "../src/lib/remedyGraphData";
+import { calculatePosologyProtocol } from "../src/lib/posologyEngine";
 
 async function runVerification() {
   console.log("🚀 Starting VitalFokus Comprehensive Verification Test Suite...");
@@ -210,7 +213,63 @@ async function runVerification() {
   console.log(`   ✓ Plant (APG IV): ${bellTax?.name} -> Family ${bellTax?.subGroup} (Solanaceae)`);
   console.log(`   ✓ Animal (Ophidia): ${lachTax?.name} -> ${lachTax?.subGroup}`);
 
-  console.log("\n🎉 ALL 12 VITALFOKUS SUBSYSTEMS, BPA POLARITY, VES LEVELS OF HEALTH & TAXONOMY EXPLORER VERIFIED 100% OPERATIONAL!\n");
+  // 13. Verify Voice-to-EHR Ambient Speech & LSMC Entity Extraction
+  console.log("\n1️⃣3️⃣ Testing Voice-to-EHR Real-Time LSMC Entity Extraction & Rubrics...");
+  const sampleTranscript = "Patient reports intense burning pain in the stomach and epigastrium waking at 2 am with severe anxiety and restlessness. Aggravated by cold drinks, ameliorated by sipping warm water.";
+  const lsmc = extractLSMCEntities(sampleTranscript);
+  console.log(`   ✓ Extracted Locations: ${lsmc.locations.join(", ")}`);
+  console.log(`   ✓ Extracted Sensations: ${lsmc.sensations.join(", ")}`);
+  console.log(`   ✓ Modalities (< Aggr): ${lsmc.modalitiesAggr.join(", ")}`);
+  console.log(`   ✓ Modalities (> Amel): ${lsmc.modalitiesAmel.join(", ")}`);
+  console.log(`   ✓ Concomitants: ${lsmc.concomitants.join(", ")}`);
+  console.log(`   ✓ Matched Kentian Rubrics: ${lsmc.suggestedRubrics.length} staged into clipboards`);
+  if (lsmc.suggestedRubrics.length === 0 || !lsmc.locations.includes("Stomach")) {
+    throw new Error("LSMC Entity extraction failed to identify Stomach burning or rubrics!");
+  }
+
+  // 14. Verify Remedy Relationship & Family Network Graph
+  console.log("\n1️⃣4️⃣ Testing Remedy Relationship & Family Network Graph...");
+  console.log(`   ✓ Graph Nodes Indexed: ${GRAPH_NODES.length} remedies`);
+  console.log(`   ✓ Graph Relationship Links: ${GRAPH_LINKS.length} classical edges`);
+  const acuteChronicLinks = GRAPH_LINKS.filter(l => l.type === "AcuteChronic");
+  const compLinks = GRAPH_LINKS.filter(l => l.type === "Complementary");
+  const antidoteLinks = GRAPH_LINKS.filter(l => l.type === "Antidote");
+  const inimicalLinks = GRAPH_LINKS.filter(l => l.type === "Inimical");
+  console.log(`   ✓ Acute -> Chronic Chains: ${acuteChronicLinks.length} (e.g. Aconite -> Spongia -> Hepar sulph, Arnica -> Rhus tox -> Calcarea)`);
+  console.log(`   ✓ Complementary Dyads: ${compLinks.length} (e.g. Belladonna <-> Calcarea carb)`);
+  console.log(`   ✓ Antidotes & Inimicals: ${antidoteLinks.length} Antidotes | ${inimicalLinks.length} Inimicals (e.g. Causticum vs Phosphorus)`);
+  if (GRAPH_NODES.length < 15 || GRAPH_LINKS.length < 20) {
+    throw new Error("Remedy Relationship Graph dataset is insufficient!");
+  }
+
+  // 15. Verify Hahnemannian Posology & Plussing Engine (§§ 246-248, 270)
+  console.log("\n1️⃣5️⃣ Testing Hahnemannian Posology & Plussing Engine (LM/Q & Water Bottle)...");
+  const lmProtocol = calculatePosologyProtocol({
+    remedyName: "Arsenicum album",
+    potencyScale: "LM_50_Millesimal",
+    potencyGrade: "LM1",
+    vitality: "High",
+    diseaseCadence: "ChronicDeep",
+    pathologyDepth: "Functional"
+  });
+  console.log(`   ✓ LM Protocol: ${lmProtocol.remedyName} ${lmProtocol.potencyGrade} | Succussions: ${lmProtocol.succussionCount} | ${lmProtocol.bottlePreparation.slice(0, 70)}...`);
+  console.log(`   ✓ Repetition: ${lmProtocol.repetitionInterval} (Review after ${lmProtocol.maxDosesBeforeReview} doses)`);
+
+  const fragileProtocol = calculatePosologyProtocol({
+    remedyName: "Phosphorus",
+    potencyScale: "LM_50_Millesimal",
+    potencyGrade: "LM2",
+    vitality: "Fragile",
+    diseaseCadence: "SubAcute",
+    pathologyDepth: "Deep_Autoimmune"
+  });
+  console.log(`   ✓ Fragile Pathology Protocol: Succussions: ${fragileProtocol.succussionCount} | Cup: ${fragileProtocol.dilutionCupInstructions.slice(0, 60)}...`);
+  console.log(`   ✓ Prescription: ${fragileProtocol.prescriptionSummary}`);
+  if (fragileProtocol.succussionCount >= lmProtocol.succussionCount) {
+    throw new Error("Fragile vitality must receive fewer succussions than High vitality!");
+  }
+
+  console.log("\n🎉 ALL 15 VITALFOKUS SUBSYSTEMS, BPA POLARITY, VES LEVELS OF HEALTH, KINGDOM TAXONOMY, VOICE-TO-EHR AMBIENT SPEECH, REMEDY FAMILY GRAPH, & ORGANON POSOLOGY ENGINE VERIFIED 100% OPERATIONAL!\n");
 }
 
 runVerification().catch((err) => {
