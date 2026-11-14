@@ -395,7 +395,7 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
         ) : (
           <div className="flex-1 flex flex-col overflow-hidden">
             {/* Patient Header Banner */}
-            <div className="p-5 bg-gradient-to-r from-slate-900 via-slate-850 to-teal-950 text-white flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 shadow-md">
+            <div className="p-5 bg-gradient-to-r from-slate-900 via-slate-900 to-teal-950 text-white flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 shadow-md">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300 text-xl font-black shadow-inner">
                   {patientDetail.firstName[0]}
@@ -637,7 +637,7 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
               {/* TAB 3: MIASMATIC CALCULATOR */}
               {activeSubTab === "miasm" && (
                 <div className="space-y-4">
-                  <div className="p-4 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 space-y-4">
+                  <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
                     <div className="flex items-center justify-between">
                       <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
                         Interactive Miasmatic Distribution Calculator
@@ -836,7 +836,7 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                   {patientDetail.consultations.map((c: any, idx: number) => (
                     <div
                       key={c.id}
-                      className="p-5 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 space-y-3 text-xs"
+                      className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 text-xs"
                     >
                       <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
                         <div className="flex items-center gap-2.5">
@@ -902,7 +902,7 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
 
                   <div
                     onMouseUp={handleTextSelection}
-                    className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 text-xs leading-relaxed text-slate-800 dark:text-slate-200 cursor-text selection:bg-teal-300 selection:text-teal-950 min-h-[140px]"
+                    className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs leading-relaxed text-slate-800 dark:text-slate-200 cursor-text selection:bg-teal-300 selection:text-teal-950 min-h-[140px]"
                   >
                     {latestVisit?.freeTextCaseNotes ||
                       "Patient intake free text notes available for rubric highlighting."}
@@ -957,7 +957,7 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
               matchingRubrics.map((rubric) => (
                 <div
                   key={rubric.id}
-                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 hover:border-teal-500 transition text-xs space-y-2"
+                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-teal-500 transition text-xs space-y-2"
                 >
                   <div>
                     <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400">

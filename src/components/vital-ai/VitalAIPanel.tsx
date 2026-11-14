@@ -439,7 +439,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
               <button
                 key={idx}
                 onClick={() => handleSendChatMessage(qp.query)}
-                className="shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-slate-850 hover:bg-teal-50 dark:hover:bg-teal-950/40 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-teal-400 dark:hover:border-teal-600 transition cursor-pointer"
+                className="shrink-0 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:border-slate-400 dark:hover:border-slate-500 transition cursor-pointer shadow-xs"
               >
                 {qp.label}
               </button>
@@ -651,7 +651,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                   {(report.topRemedies || []).map((rem: any) => (
                     <div
                       key={rem.remedyName}
-                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-850/50 space-y-2.5 text-xs"
+                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/80 space-y-2.5 text-xs"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
@@ -726,7 +726,7 @@ I am your clinical walkthrough and homeopathic prediction guide, powered by **18
                   return (
                     <div
                       key={q.id}
-                      className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-850/40 space-y-2.5"
+                      className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/60 space-y-2.5"
                     >
                       <div className="font-semibold text-slate-800 dark:text-slate-200">
                         {q.question}

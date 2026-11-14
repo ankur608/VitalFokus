@@ -223,7 +223,7 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
                   onSelectPatient(p.id);
                   setActiveTab("patients");
                 }}
-                className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/40 hover:border-teal-500/50 cursor-pointer transition flex items-center justify-between text-xs group"
+                className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/60 hover:border-teal-500/50 cursor-pointer transition flex items-center justify-between text-xs group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300 font-bold flex items-center justify-center">
