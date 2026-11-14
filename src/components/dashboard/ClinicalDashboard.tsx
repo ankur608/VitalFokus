@@ -80,17 +80,17 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
   return (
     <div className="flex flex-col h-full space-y-6 overflow-y-auto pr-1 custom-scrollbar">
       {/* UHD Main Home Page Logo Banner / Ribbon */}
-      <div className="shrink-0 flex items-center justify-between gap-4 px-6 py-3.5 sm:py-4 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+      <div className="shrink-0 flex items-center justify-between gap-4 px-6 py-4 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
         <div className="flex items-center">
           <img
             src="/vitalfokus-logo.png"
             alt="VitalFokus Clinical Intelligence Suite"
-            className="h-11 sm:h-12 md:h-13 w-auto max-w-full object-contain block dark:hidden select-none transition-transform hover:scale-[1.01]"
+            className="h-12 sm:h-14 md:h-16 w-auto max-w-full object-contain block dark:hidden select-none transition-transform hover:scale-[1.01]"
           />
           <img
             src="/vitalfokus-logo-dark.png"
             alt="VitalFokus Clinical Intelligence Suite"
-            className="h-11 sm:h-12 md:h-13 w-auto max-w-full object-contain hidden dark:block select-none transition-transform hover:scale-[1.01]"
+            className="h-12 sm:h-14 md:h-16 w-auto max-w-full object-contain hidden dark:block select-none transition-transform hover:scale-[1.01]"
           />
         </div>
         <div className="flex items-center gap-3">
@@ -144,11 +144,11 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
 
         {/* Right Top Branded Asset on Hero Ribbon */}
         <div className="hidden lg:flex absolute top-5 right-6 xl:top-6 xl:right-8 z-10 items-center">
-          <div className="flex items-center px-4 py-2.5 rounded-2xl bg-slate-950/60 backdrop-blur-md border border-teal-500/30 shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-teal-400/50">
+          <div className="flex items-center px-5 py-3 rounded-2xl bg-slate-950/70 backdrop-blur-md border border-teal-500/35 shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-teal-400/50">
             <img
               src="/vitalfokus-logo-dark.png"
               alt="VitalFokus Clinical Intelligence Suite"
-              className="h-10 xl:h-11 w-auto object-contain select-none"
+              className="h-13 sm:h-14 xl:h-16 w-auto object-contain select-none"
             />
           </div>
         </div>
