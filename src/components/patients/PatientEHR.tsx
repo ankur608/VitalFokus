@@ -724,17 +724,17 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
               {/* TAB 3.5: VITHOULKAS LEVELS OF HEALTH (VES) */}
               {activeSubTab === "ves" && (
                 <div className="space-y-5 animate-fade-in">
-                  <div className="p-4 bg-gradient-to-r from-teal-950/40 to-slate-900/60 border border-teal-500/30 rounded-2xl flex items-center justify-between">
+                  <div className="p-4 bg-teal-50/80 dark:bg-gradient-to-r dark:from-teal-950/50 dark:to-slate-900/70 border border-teal-200 dark:border-teal-500/30 rounded-2xl flex items-center justify-between shadow-2xs">
                     <div>
-                      <h4 className="font-bold text-slate-100 flex items-center gap-2">
-                        <HeartPulse className="w-4 h-4 text-teal-400" />
+                      <h4 className="font-bold text-teal-950 dark:text-slate-100 flex items-center gap-2 text-sm md:text-base">
+                        <HeartPulse className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                         Vithoulkas Defense Mechanism & Levels of Health
                       </h4>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-teal-900 dark:text-slate-300 font-medium">
                         Prognostic model predicting expected homeopathic aggravation, acute fever capacity, and Kent observation vector.
                       </p>
                     </div>
-                    <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-teal-500/15 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-500/30">
                       Group {vesResult.group} • Level {vesResult.level}
                     </span>
                   </div>
@@ -806,24 +806,24 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                   </div>
 
                   {/* Calculated Prognosis Box */}
-                  <div className="p-5 rounded-xl bg-slate-900 border border-teal-500/40 text-xs space-y-3">
+                  <div className="p-5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-teal-500/40 text-xs space-y-3 shadow-2xs">
                     <div className="flex items-center justify-between">
-                      <div className="text-slate-100 font-bold text-base">
+                      <div className="text-slate-900 dark:text-slate-100 font-bold text-base">
                         Classification: Group {vesResult.group} — Level {vesResult.level} ({vesResult.definition.title})
                       </div>
-                      <span className="text-[10px] text-teal-400 font-mono">
+                      <span className="text-[10px] text-teal-700 dark:text-teal-400 font-mono font-bold">
                         Potencies: {vesResult.definition.recommendedPotencies.join(" or ")}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-700 dark:text-slate-300">
                       <div>
-                        <strong className="text-slate-100">Expected Healing Reaction:</strong>
-                        <p className="mt-0.5 text-slate-300">{vesResult.definition.expectedReaction}</p>
+                        <strong className="text-slate-900 dark:text-slate-100">Expected Healing Reaction:</strong>
+                        <p className="mt-0.5 text-slate-700 dark:text-slate-300">{vesResult.definition.expectedReaction}</p>
                       </div>
                       <div>
-                        <strong className="text-slate-100">Kent Observation Forecast:</strong>
-                        <p className="mt-0.5 text-teal-300">{vesResult.definition.kentsObservationMatch}</p>
+                        <strong className="text-slate-900 dark:text-slate-100">Kent Observation Forecast:</strong>
+                        <p className="mt-0.5 text-teal-700 dark:text-teal-300 font-semibold">{vesResult.definition.kentsObservationMatch}</p>
                       </div>
                     </div>
                   </div>

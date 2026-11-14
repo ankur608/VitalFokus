@@ -54,9 +54,9 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-100">Vithoulkas Levels of Health (VES)</h2>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
-                Prognostic defense mechanism classification for <span className="text-teal-300 font-semibold">{patientName}</span>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Vithoulkas Levels of Health (VES)</h2>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
+                Prognostic defense mechanism classification for <span className="text-teal-700 dark:text-teal-300 font-bold">{patientName}</span>
               </p>
             </div>
           </div>
@@ -71,7 +71,7 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
         {/* 4 Interactive Assessment Questionnaires */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Question 1: Fever Capability */}
-          <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/80 space-y-2">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <Flame className="w-4 h-4 text-amber-400" />
               1. Acute Fever History (&gt;38.5°C)
@@ -79,18 +79,18 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
             <select
               value={input.feverHistory}
               onChange={(e) => setInput({ ...input, feverHistory: e.target.value as any })}
-              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal-500"
             >
               <option value="high_fever_recent">Frequent high fever (&gt;39°C), clears within 24-48 hrs (Group A)</option>
               <option value="moderate_fever_occasional">Occasional fever up to 38.5°C once every 1-3 years (Group B)</option>
               <option value="no_fever_5_years">No high fever in the past 5 to 8 years (Group C)</option>
               <option value="no_fever_10_plus_years">Complete absence of fever for over 10 years / hypothermic (Group D)</option>
             </select>
-            <p className="text-[11px] text-slate-600 dark:text-slate-400">High fever capability reflects a reactive, intact immune defense.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">High fever capability reflects a reactive, intact immune defense.</p>
           </div>
 
           {/* Question 2: Allopathic Suppression History */}
-          <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/80 space-y-2">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <ShieldAlert className="w-4 h-4 text-indigo-400" />
               2. Chemical & Suppression History
@@ -98,18 +98,18 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
             <select
               value={input.suppressionHistory}
               onChange={(e) => setInput({ ...input, suppressionHistory: e.target.value as any })}
-              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal-500"
             >
               <option value="none_minimal">None or minimal; natural recovery from childhood acutes</option>
               <option value="moderate_antibiotics_nsaids">Occasional antibiotics, NSAIDs, or antipyretics</option>
               <option value="heavy_steroids_immunosuppressants">Repeated corticosteroids, immunosuppressants, or skin creams</option>
               <option value="lifelong_polypharmacy">Prolonged multi-drug polypharmacy, chemo/radiation</option>
             </select>
-            <p className="text-[11px] text-slate-600 dark:text-slate-400">Chemical suppressions drive pathology from superficial to deeper organs.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">Chemical suppressions drive pathology from superficial to deeper organs.</p>
           </div>
 
           {/* Question 3: Pathology Depth */}
-          <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/80 space-y-2">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <TrendingUp className="w-4 h-4 text-emerald-400" />
               3. Pathology Depth
@@ -117,18 +117,18 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
             <select
               value={input.pathologyDepth}
               onChange={(e) => setInput({ ...input, pathologyDepth: e.target.value as any })}
-              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal-500"
             >
               <option value="functional_only">Functional disturbance only (no structural tissue damage)</option>
               <option value="mild_tissue_changes">Reversible tissue changes (mild eczema, chronic gastritis, asthma)</option>
               <option value="deep_chronic_autoimmune">Deep chronic or autoimmune pathology (rheumatoid arthritis, ulcerative colitis)</option>
               <option value="irreversible_organic_degeneration">Irreversible organic degeneration or end-stage structural damage</option>
             </select>
-            <p className="text-[11px] text-slate-600 dark:text-slate-400">Determines susceptibility and maximum safe initial potency.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">Determines susceptibility and maximum safe initial potency.</p>
           </div>
 
           {/* Question 4: Symptom Picture Clarity */}
-          <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/80 space-y-2">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-teal-400" />
               4. Symptom Picture Clarity
@@ -136,27 +136,27 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
             <select
               value={input.symptomClarity}
               onChange={(e) => setInput({ ...input, symptomClarity: e.target.value as any })}
-              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-teal-500"
+              className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal-500"
             >
               <option value="crisp_distinct_keynotes">Crisp, well-defined keynotes with clear modalities</option>
               <option value="clear_generals">Clear physical generals with recognizable thermal state</option>
               <option value="confused_symptom_picture">Confused / multi-layered symptom picture</option>
               <option value="scanty_few_symptoms">Scanty / one-sided case with few symptoms</option>
             </select>
-            <p className="text-[11px] text-slate-600 dark:text-slate-400">Clear keynotes correspond to higher levels of vital force coherence.</p>
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">Clear keynotes correspond to higher levels of vital force coherence.</p>
           </div>
         </div>
 
         {/* Calculated Result Card */}
-        <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 border border-teal-500/40 shadow-xl space-y-4">
+        <div className="p-5 rounded-2xl bg-teal-50/70 dark:bg-gradient-to-r dark:from-slate-950 dark:to-slate-900 border border-teal-200 dark:border-teal-500/40 shadow-xl space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-teal-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
                 Calculated Level of Health (Vithoulkas)
               </span>
-              <h3 className="text-2xl font-extrabold text-slate-100 flex items-center gap-3">
+              <h3 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-3">
                 Group {result.group} — Level {result.level}
-                <span className="text-sm font-normal text-slate-700 dark:text-slate-300">({result.definition.title})</span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">({result.definition.title})</span>
               </h3>
             </div>
 
@@ -174,20 +174,20 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2 border-t border-slate-200 dark:border-slate-800">
             <div className="space-y-1">
-              <span className="font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px]">Expected Reaction</span>
+              <span className="font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider text-[10px]">Expected Reaction</span>
               <p className="text-slate-800 dark:text-slate-200">{result.definition.expectedReaction}</p>
             </div>
             <div className="space-y-1">
-              <span className="font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px]">Kent Observation Forecast</span>
-              <p className="text-teal-300 font-medium">{result.definition.kentsObservationMatch}</p>
+              <span className="font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider text-[10px]">Kent Observation Forecast</span>
+              <p className="text-teal-700 dark:text-teal-300 font-semibold">{result.definition.kentsObservationMatch}</p>
             </div>
             <div className="space-y-1">
-              <span className="font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px]">Posology & Potency Range</span>
-              <p className="text-indigo-300 font-medium">{result.definition.recommendedPotencies.join(" or ")}</p>
+              <span className="font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider text-[10px]">Posology & Potency Range</span>
+              <p className="text-indigo-700 dark:text-indigo-300 font-semibold">{result.definition.recommendedPotencies.join(" or ")}</p>
             </div>
             <div className="space-y-1">
-              <span className="font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-[10px]">Repetition Warning</span>
-              <p className="text-amber-300/90">{result.definition.repetitionWarning}</p>
+              <span className="font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider text-[10px]">Repetition Warning</span>
+              <p className="text-amber-800 dark:text-amber-300/90 font-medium">{result.definition.repetitionWarning}</p>
             </div>
           </div>
         </div>
