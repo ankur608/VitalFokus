@@ -77,7 +77,7 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
   return (
     <div className="flex flex-col h-full space-y-6 overflow-y-auto pr-1 custom-scrollbar">
       {/* UHD Main Home Page Logo Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+      <div className="shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
         <div className="flex items-center gap-4">
           <img
             src="/vitalfokus-logo.svg"
@@ -108,28 +108,28 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
       </div>
 
       {/* Hero Welcome Banner */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/20">
-        <div className="relative z-10 max-w-2xl space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30 text-xs font-semibold">
-            <Activity className="w-3.5 h-3.5" /> VitalFokus Clinical Intelligence Platform
+      <div className="shrink-0 p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/30 min-h-[200px] flex flex-col justify-center">
+        <div className="relative z-10 max-w-3xl space-y-2.5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30 text-xs font-semibold shadow-2xs w-fit">
+            <Activity className="w-3.5 h-3.5 text-teal-400" /> VitalFokus Clinical Intelligence Platform
           </div>
-          <h1 className="text-2xl font-black tracking-tight text-white">
-            Precision Homeopathic Repertorisation & Inference
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
+            Precision Homeopathic Repertorisation &amp; Inference
           </h1>
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl font-normal">
             RadarOpus-level repertorisation precision combined with Kentian totality analysis, multi-clipboard symptom grading, and grounded VitalAI clinical inference.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-3">
+          <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
               onClick={() => setActiveTab("repertorisation")}
-              className="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs shadow-md transition flex items-center gap-2"
+              className="px-4 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs shadow-md shadow-teal-500/25 transition flex items-center gap-2 cursor-pointer"
             >
               <Grid3X3 className="w-4 h-4" /> Open Repertorisation Grid
             </button>
             <button
               onClick={() => setActiveTab("vital-ai")}
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold text-xs border border-white/20 transition flex items-center gap-2"
+              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold text-xs border border-white/20 transition flex items-center gap-2 cursor-pointer"
             >
               <Bot className="w-4 h-4 text-indigo-400" /> VitalAI Assistant
             </button>
@@ -137,7 +137,7 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
         </div>
 
         {/* Subtle Decorative Background Element */}
-        <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-indigo-500/10 to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-indigo-500/15 via-teal-500/10 to-transparent pointer-events-none" />
       </div>
 
       {/* KPI Stats Grid */}
