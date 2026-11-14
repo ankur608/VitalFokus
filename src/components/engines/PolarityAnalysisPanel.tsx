@@ -179,37 +179,37 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
                     }}
                     className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-center justify-between ${
                       isSelected
-                        ? "bg-teal-950/40 border-teal-500/60 shadow-lg shadow-teal-950/50"
+                        ? "bg-teal-50/90 dark:bg-teal-950/50 border-teal-500/80 shadow-md shadow-teal-500/10 ring-1 ring-teal-500/30"
                         : "bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-700/60 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-slate-300 dark:hover:border-slate-600 shadow-2xs"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
                         index === 0
-                          ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                          : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
+                          ? "bg-amber-100 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30"
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
                       }`}>
                         #{index + 1}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">{score.remedyName}</span>
-                          <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-medium">({score.remedyAbbr})</span>
+                          <span className="text-xs text-slate-600 dark:text-slate-400 font-mono font-semibold">({score.remedyAbbr})</span>
                           {hasSevereCI && (
                             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
                               <AlertTriangle className="w-2.5 h-2.5" /> CI!
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">{score.kingdom}</span>
+                        <span className="text-[11px] text-teal-800 dark:text-teal-300 font-semibold">{score.kingdom}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-6 text-sm font-mono">
-                      <span className="w-14 text-center font-medium text-emerald-700 dark:text-emerald-400">+{score.patientPolarScore}</span>
-                      <span className="w-14 text-center font-medium text-rose-700 dark:text-rose-400">-{score.oppositeContraScore}</span>
+                      <span className="w-14 text-center font-bold text-emerald-700 dark:text-emerald-400">+{score.patientPolarScore}</span>
+                      <span className="w-14 text-center font-bold text-rose-700 dark:text-rose-400">-{score.oppositeContraScore}</span>
                       <span className={`w-16 text-right font-bold text-base ${
-                        score.polarityDifference > 0 ? "text-teal-700 dark:text-teal-300 font-extrabold" : "text-slate-600 dark:text-slate-400"
+                        score.polarityDifference > 0 ? "text-teal-800 dark:text-teal-300 font-extrabold" : "text-slate-800 dark:text-slate-300 font-bold"
                       }`}>
                         {score.polarityDifference > 0 ? `+${score.polarityDifference}` : score.polarityDifference}
                       </span>
