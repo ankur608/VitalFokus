@@ -267,7 +267,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
           <div className="grid grid-cols-2 gap-2.5">
             {/* Location */}
             <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block">
                 Location (L)
               </span>
               <div className="flex flex-wrap gap-1">
@@ -275,7 +275,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
                   <span className="text-[11px] text-slate-500 italic">None detected</span>
                 ) : (
                   lsmc.locations.map((loc) => (
-                    <span key={loc} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                    <span key={loc} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-indigo-100 dark:bg-indigo-500/20 text-indigo-900 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/30">
                       {loc}
                     </span>
                   ))
@@ -285,7 +285,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
 
             {/* Sensation */}
             <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-rose-400 block">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 block">
                 Sensation (S)
               </span>
               <div className="flex flex-wrap gap-1">
@@ -293,7 +293,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
                   <span className="text-[11px] text-slate-500 italic">None detected</span>
                 ) : (
                   lsmc.sensations.map((sens) => (
-                    <span key={sens} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                    <span key={sens} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-rose-100 dark:bg-rose-500/20 text-rose-900 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30">
                       {sens}
                     </span>
                   ))
@@ -303,7 +303,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
 
             {/* Modalities Aggravation (<) */}
             <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 block">
                 Modality Aggravation (&lt;)
               </span>
               <div className="flex flex-wrap gap-1">
@@ -311,7 +311,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
                   <span className="text-[11px] text-slate-500 italic">None detected</span>
                 ) : (
                   lsmc.modalitiesAggr.map((mod) => (
-                    <span key={mod} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    <span key={mod} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-amber-100 dark:bg-amber-500/20 text-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
                       {mod}
                     </span>
                   ))
@@ -321,7 +321,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
 
             {/* Modalities Amelioration (>) */}
             <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">
                 Modality Amelioration (&gt;)
               </span>
               <div className="flex flex-wrap gap-1">
@@ -329,7 +329,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
                   <span className="text-[11px] text-slate-500 italic">None detected</span>
                 ) : (
                   lsmc.modalitiesAmel.map((mod) => (
-                    <span key={mod} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span key={mod} className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
                       {mod}
                     </span>
                   ))
@@ -349,7 +349,7 @@ export const AmbientConsultationRecorder: React.FC<AmbientConsultationRecorderPr
               {lsmc.suggestedRubrics.length > 0 && (
                 <button
                   onClick={handleStageAllRubrics}
-                  className="flex items-center gap-1.5 px-3 py-1 bg-teal-500/20 hover:bg-teal-500/30 border border-teal-500/40 rounded-lg text-xs font-bold text-teal-300 transition"
+                  className="flex items-center gap-1.5 px-3 py-1 bg-teal-100 dark:bg-teal-500/20 hover:bg-teal-200 dark:hover:bg-teal-500/30 border border-teal-300 dark:border-teal-500/40 rounded-lg text-xs font-bold text-teal-900 dark:text-teal-300 transition cursor-pointer shadow-2xs"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   {stagedCount > 0 ? `Staged ${stagedCount} Rubrics!` : "Stage All into Clipboards"}
