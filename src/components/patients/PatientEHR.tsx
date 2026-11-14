@@ -30,6 +30,10 @@ import {
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
 import { calculateVithoulkasLevel, VethAssessmentInput } from "@/lib/vithoulkasLevels";
+import { BrandedPrescriptionModal } from "./BrandedPrescriptionModal";
+import { CureTrajectoryChart } from "./CureTrajectoryChart";
+import { RemotePortalModal } from "./RemotePortalModal";
+import { Printer, Send, TrendingDown } from "lucide-react";
 
 interface PatientEHRProps {
   onOpenRepertorisation: () => void;
@@ -41,7 +45,9 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [patientDetail, setPatientDetail] = useState<any | null>(null);
-  const [activeSubTab, setActiveSubTab] = useState<"lsmc" | "mind-generals" | "miasm" | "ves" | "followups" | "highlighter">("lsmc");
+  const [activeSubTab, setActiveSubTab] = useState<"lsmc" | "mind-generals" | "miasm" | "ves" | "followups" | "highlighter" | "trajectory">("lsmc");
+  const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
+  const [isRemotePortalModalOpen, setIsRemotePortalModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreatingPatient, setIsCreatingPatient] = useState(false);
   const [isAddingConsultation, setIsAddingConsultation] = useState(false);
@@ -430,6 +436,20 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                   <Layers className="w-3.5 h-3.5" /> Stage Case in Clipboards
                 </button>
                 <button
+                  onClick={() => setIsPrescriptionModalOpen(true)}
+                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-teal-300 text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  title="Generate Branded PDF/Printable Prescription"
+                >
+                  <Printer className="w-3.5 h-3.5 text-teal-400" /> Prescription
+                </button>
+                <button
+                  onClick={() => setIsRemotePortalModalOpen(true)}
+                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-indigo-300 text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  title="Generate Tokenized Remote Follow-Up Link"
+                >
+                  <Send className="w-3.5 h-3.5 text-indigo-400" /> Remote Portal
+                </button>
+                <button
                   onClick={() => setIsAddingConsultation(true)}
                   className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
                 >
@@ -493,6 +513,17 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                 }`}
               >
                 <Calendar className="w-3.5 h-3.5" /> Kent's Observations ({patientDetail.consultations.length})
+              </button>
+
+              <button
+                onClick={() => setActiveSubTab("trajectory")}
+                className={`py-3 px-3.5 border-b-2 transition flex items-center gap-1.5 ${
+                  activeSubTab === "trajectory"
+                    ? "border-teal-600 text-teal-700 dark:text-teal-400 font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                }`}
+              >
+                <TrendingDown className="w-3.5 h-3.5 text-teal-500" /> Cure Trajectory (Hering)
               </button>
 
               <button
@@ -864,6 +895,15 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                       "Patient intake free text notes available for rubric highlighting."}
                   </div>
                 </div>
+              )}
+
+              {/* TAB 7: CURE TRAJECTORY & HERING'S LAW */}
+              {activeSubTab === "trajectory" && (
+                <CureTrajectoryChart
+                  consultations={patientDetail?.consultations || []}
+                  patientName={`${patientDetail?.firstName} ${patientDetail?.lastName}`}
+                  dominantMiasm={patientDetail?.dominantMiasm || "Psora"}
+                />
               )}
             </div>
           </div>
@@ -1428,6 +1468,25 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
             </form>
           </div>
         </div>
+      )}
+
+      {/* Branded Prescription Modal */}
+      {isPrescriptionModalOpen && (
+        <BrandedPrescriptionModal
+          isOpen={isPrescriptionModalOpen}
+          onClose={() => setIsPrescriptionModalOpen(false)}
+          patient={patientDetail}
+          latestConsultation={patientDetail?.consultations?.[0]}
+        />
+      )}
+
+      {/* Remote Follow-up Portal Modal */}
+      {isRemotePortalModalOpen && (
+        <RemotePortalModal
+          isOpen={isRemotePortalModalOpen}
+          onClose={() => setIsRemotePortalModalOpen(false)}
+          patient={patientDetail}
+        />
       )}
     </div>
   );
