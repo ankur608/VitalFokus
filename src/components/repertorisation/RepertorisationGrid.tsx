@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import {
   Grid3X3,
+  Scale,
+  AlertTriangle,
   SlidersHorizontal,
   Flame,
   Filter,
@@ -26,15 +28,17 @@ import { useClipboardStore } from "@/lib/store/useClipboardStore";
 interface RepertorisationGridProps {
   onOpenVitalAI: () => void;
   onOpenRemedyMM: (remedyId: string) => void;
+  onOpenPolarityPanel?: () => void;
 }
 
 export const RepertorisationGrid: React.FC<RepertorisationGridProps> = ({
   onOpenVitalAI,
-  onOpenRemedyMM
+  onOpenRemedyMM,
+  onOpenPolarityPanel
 }) => {
   const { clipboards } = useClipboardStore();
 
-  const [strategy, setStrategy] = useState<"totality" | "sum_of_grades" | "keynote">("totality");
+  const [strategy, setStrategy] = useState<"totality" | "sum_of_grades" | "keynote" | "polarity">("totality");
   const [viewMode, setViewMode] = useState<"matrix" | "barchart">("matrix");
   const [gridDensity, setGridDensity] = useState<"compact" | "normal" | "detailed">("normal");
 
@@ -147,7 +151,19 @@ export const RepertorisationGrid: React.FC<RepertorisationGridProps> = ({
               }`}
               title="Keynote / High-Grade Polarity Analysis"
             >
-              Keynote Polarity
+              Keynote
+            </button>
+            <button
+              onClick={() => setStrategy("polarity")}
+              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                strategy === "polarity"
+                  ? "bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-400 font-bold shadow-xs"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+              }`}
+              title="Bönninghausen Polarity Analysis (Frei PD Algorithm)"
+            >
+              <Scale className="w-3.5 h-3.5 text-teal-500" />
+              Polarity (BPA)
             </button>
           </div>
 
@@ -452,6 +468,28 @@ export const RepertorisationGrid: React.FC<RepertorisationGridProps> = ({
                               {item.weightedScore}
                             </span>
                           </div>
+
+                          {item.polarityDifference !== undefined && (
+                            <span
+                              className={`mt-1 text-[9px] font-bold px-1.5 py-0.5 rounded font-mono ${
+                                item.polarityDifference > 0
+                                  ? "bg-teal-500/20 text-teal-400 border border-teal-500/30"
+                                  : "bg-slate-800 text-slate-400"
+                              }`}
+                              title={`Frei Polarity Difference (PD = Polar - Contra): ${item.polarityDifference}`}
+                            >
+                              PD {item.polarityDifference > 0 ? `+${item.polarityDifference}` : item.polarityDifference}
+                            </span>
+                          )}
+
+                          {item.contraIndications?.length > 0 && (
+                            <span
+                              className="mt-0.5 text-[8px] font-black px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center gap-0.5"
+                              title={`Contra-indicated opposite modality: ${item.contraIndications.map((c: any) => c.contraModality).join(', ')}`}
+                            >
+                              <AlertTriangle className="w-2 h-2 text-rose-400" /> CI!
+                            </span>
+                          )}
 
                           {item.isEliminated && (
                             <span className="mt-1 text-[8px] font-black text-rose-500 uppercase">

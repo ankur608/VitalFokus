@@ -13,14 +13,18 @@ import { MateriaMedicaReader } from "@/components/materia-medica/MateriaMedicaRe
 import { ComparativeMateriaMedica } from "@/components/materia-medica/ComparativeMateriaMedica";
 import { VitalAIPanel } from "@/components/vital-ai/VitalAIPanel";
 import { BulkImporter } from "@/components/importer/BulkImporter";
+import { PolarityAnalysisPanel } from "@/components/engines/PolarityAnalysisPanel";
+import { TaxonomyExplorer } from "@/components/engines/TaxonomyExplorer";
+import { VithoulkasAssessmentModal } from "@/components/engines/VithoulkasAssessmentModal";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("dashboard");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
+  const [isVESModalOpen, setIsVESModalOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const [patientCount, setPatientCount] = useState(2);
+  const [patientCount, setPatientCount] = useState(5);
   const [selectedRemedyIdForMM, setSelectedRemedyIdForMM] = useState<string | null>(null);
 
   const { activePatientId, setActivePatientId } = useClipboardStore();
@@ -79,6 +83,7 @@ export default function Home() {
         isCollapsed={isSidebarCollapsed}
         setIsCollapsed={setIsSidebarCollapsed}
         patientCount={patientCount}
+        onOpenVESModal={() => setIsVESModalOpen(true)}
       />
 
       {/* Main Workspace View */}
@@ -111,6 +116,22 @@ export default function Home() {
             <RepertorisationGrid
               onOpenVitalAI={() => setActiveTab("vital-ai")}
               onOpenRemedyMM={handleSelectRemedy}
+              onOpenPolarityPanel={() => setActiveTab("polarity")}
+            />
+          )}
+
+          {activeTab === "polarity" && (
+            <PolarityAnalysisPanel
+              onSelectRemedy={handleSelectRemedy}
+              onOpenRepertorisation={() => setActiveTab("repertorisation")}
+            />
+          )}
+
+          {activeTab === "taxonomy" && (
+            <TaxonomyExplorer
+              onFilterGridByKingdom={(family) => {
+                setActiveTab("repertorisation");
+              }}
             />
           )}
 
@@ -140,6 +161,16 @@ export default function Home() {
         onSelectPatient={handleSelectPatient}
         onSelectRemedy={handleSelectRemedy}
         onSelectRubric={handleSelectRubric}
+      />
+
+      {/* Vithoulkas Levels of Health (VES) Diagnostic Modal */}
+      <VithoulkasAssessmentModal
+        isOpen={isVESModalOpen}
+        onClose={() => setIsVESModalOpen(false)}
+        patientName={activePatientName || "Active Clinical Case"}
+        onSaveAssessment={(result) => {
+          console.log("Attached Vithoulkas Assessment:", result);
+        }}
       />
     </div>
   );

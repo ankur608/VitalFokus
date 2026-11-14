@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { identifyPolarPair } from "@/lib/polarityEngine";
 
 export async function POST(request: NextRequest) {
   try {
@@ -162,6 +163,44 @@ export async function POST(request: NextRequest) {
       }
     }
 
+        // Compute polarity difference and contra-indications for each candidate (Heiner Frei BPA)
+    for (const scoreObj of remedyScoresMap.values()) {
+      let polarScore = 0;
+      let contraScore = 0;
+      const cis: any[] = [];
+      const rName = scoreObj.remedy.name.toLowerCase();
+
+      for (const r of rubricsWithGrades) {
+        const pMatch = identifyPolarPair(r.label || r.fullPath);
+        if (!pMatch) continue;
+        const g = scoreObj.gradesByRubric[r.id] || 0;
+        if (g > 0) {
+          polarScore += g;
+          let cg = 0;
+          if (pMatch.pair.id === 'motion_rest') {
+            if (pMatch.isPositive && (rName.includes('rhus') || rName.includes('ferr'))) cg = 3;
+            else if (!pMatch.isPositive && (rName.includes('bry') || rName.includes('kali-c'))) cg = 3;
+          } else if (pMatch.pair.id === 'warmth_cold' || pMatch.pair.id === 'cold_warm') {
+            if (pMatch.isPositive && (rName.includes('ars') || rName.includes('hepar'))) cg = 3;
+            else if (!pMatch.isPositive && (rName.includes('apis') || rName.includes('puls'))) cg = 4;
+          }
+          if (cg > 0) {
+            contraScore += cg;
+            cis.push({
+              pairId: pMatch.pair.id,
+              contraGrade: cg,
+              patientModality: pMatch.isPositive ? pMatch.pair.labelPositive : pMatch.pair.labelNegative,
+              contraModality: pMatch.isPositive ? pMatch.pair.labelNegative : pMatch.pair.labelPositive
+            });
+          }
+        }
+      }
+      (scoreObj as any).polarScore = polarScore;
+      (scoreObj as any).contraScore = contraScore;
+      (scoreObj as any).polarityDifference = polarScore - contraScore;
+      (scoreObj as any).contraIndications = cis;
+    }
+
     // 6. Convert to array and filter by kingdom / miasm / polycrest
     let candidateList = Array.from(remedyScoresMap.values());
 
@@ -192,7 +231,12 @@ export async function POST(request: NextRequest) {
         return a.isEliminated ? 1 : -1;
       }
 
-      if (strategy === "sum_of_grades") {
+      if (strategy === "polarity") {
+        const aPD = (a as any).polarityDifference ?? a.weightedScore;
+        const bPD = (b as any).polarityDifference ?? b.weightedScore;
+        if (bPD !== aPD) return bPD - aPD;
+        return b.coveredCount - a.coveredCount;
+      } else if (strategy === "sum_of_grades") {
         if (b.weightedScore !== a.weightedScore) {
           return b.weightedScore - a.weightedScore;
         }

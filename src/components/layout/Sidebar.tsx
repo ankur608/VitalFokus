@@ -13,7 +13,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Activity,
-  Layers
+  Layers,
+  Scale,
+  Dna,
+  HeartPulse
 } from "lucide-react";
 
 export type ActiveTab =
@@ -21,6 +24,8 @@ export type ActiveTab =
   | "patients"
   | "repertory"
   | "repertorisation"
+  | "polarity"
+  | "taxonomy"
   | "materia-medica"
   | "comparative-mm"
   | "vital-ai"
@@ -32,6 +37,7 @@ interface SidebarProps {
   isCollapsed: boolean;
   setIsCollapsed: (collapsed: boolean) => void;
   patientCount: number;
+  onOpenVESModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -39,7 +45,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setActiveTab,
   isCollapsed,
   setIsCollapsed,
-  patientCount
+  patientCount,
+  onOpenVESModal
 }) => {
   const navItems = [
     {
@@ -65,6 +72,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: "Repertorisation Grid",
       icon: Grid3X3,
       badge: "Matrix"
+    },
+    {
+      id: "polarity" as ActiveTab,
+      label: "Polarity Analysis (BPA)",
+      icon: Scale,
+      badge: "Frei",
+      highlight: true
+    },
+    {
+      id: "taxonomy" as ActiveTab,
+      label: "Kingdoms & Taxonomy",
+      icon: Dna,
+      badge: "Scholten"
     },
     {
       id: "materia-medica" as ActiveTab,
@@ -119,50 +139,40 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Navigation List */}
-      <nav className="flex-1 py-4 px-2 space-y-1.5 overflow-y-auto">
+      {/* Nav List */}
+      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto custom-scrollbar">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
+
           return (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 isActive
-                  ? item.highlight
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/25"
-                    : "bg-teal-600 text-white shadow-md shadow-teal-500/25"
-                  : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-slate-200"
-              } ${isCollapsed ? "justify-center" : ""}`}
-              title={isCollapsed ? item.label : undefined}
+                  ? "bg-teal-600 text-white shadow-md shadow-teal-600/20 dark:bg-teal-500 dark:text-slate-950 font-semibold"
+                  : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100"
+              }`}
             >
-              <Icon
-                className={`w-5 h-5 shrink-0 ${
-                  isActive
-                    ? "text-white"
-                    : item.highlight
-                    ? "text-indigo-500 dark:text-indigo-400"
-                    : "text-slate-500 dark:text-slate-400"
-                }`}
-              />
+              <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-white dark:text-slate-950" : ""}`} />
               {!isCollapsed && (
-                <div className="flex-1 flex items-center justify-between truncate">
-                  <span className="truncate">{item.label}</span>
+                <div className="flex-1 flex items-center justify-between text-left">
+                  <span>{item.label}</span>
                   {item.badge && (
                     <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                      className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider ${
                         isActive
-                          ? "bg-white/20 text-white"
+                          ? "bg-white/20 text-white dark:bg-slate-950/20 dark:text-slate-950"
                           : item.highlight
-                          ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300"
+                          ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
                           : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                       }`}
                     >
@@ -176,20 +186,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      {/* Bottom Status Indicator */}
-      <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80">
+      {/* Vithoulkas VES Levels of Health Action Button */}
+      {onOpenVESModal && (
+        <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80">
+          <button
+            onClick={onOpenVESModal}
+            className="w-full flex items-center justify-center gap-2 p-2.5 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 hover:from-teal-500/20 hover:to-indigo-500/20 border border-teal-500/30 rounded-xl text-xs font-bold text-teal-600 dark:text-teal-300 transition shadow-sm"
+          >
+            <HeartPulse className="w-4 h-4 text-teal-500" />
+            {!isCollapsed && <span>Levels of Health (VES)</span>}
+          </button>
+        </div>
+      )}
+
+      {/* Footer Info */}
+      <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80 text-[11px] text-slate-400 text-center">
         {!isCollapsed ? (
-          <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 text-xs">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <div className="truncate">
-              <p className="font-semibold text-slate-800 dark:text-slate-200 truncate">Core DB Online</p>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">Hahnemannian Model v2.4</p>
-            </div>
+          <div>
+            <p className="font-semibold text-slate-600 dark:text-slate-300">VitalFokus Classical Suite</p>
+            <p className="text-[10px] text-slate-400">BPA • VES • 188 Remedies</p>
           </div>
         ) : (
-          <div className="flex justify-center py-1">
-            <div className="w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20" title="Core DB Online" />
-          </div>
+          <span className="font-mono text-[10px]">v2.4</span>
         )}
       </div>
     </aside>

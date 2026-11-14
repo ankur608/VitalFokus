@@ -29,6 +29,7 @@ import {
   Edit3
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
+import { calculateVithoulkasLevel, VethAssessmentInput } from "@/lib/vithoulkasLevels";
 
 interface PatientEHRProps {
   onOpenRepertorisation: () => void;
@@ -40,7 +41,7 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [patientDetail, setPatientDetail] = useState<any | null>(null);
-  const [activeSubTab, setActiveSubTab] = useState<"lsmc" | "mind-generals" | "miasm" | "followups" | "highlighter">("lsmc");
+  const [activeSubTab, setActiveSubTab] = useState<"lsmc" | "mind-generals" | "miasm" | "ves" | "followups" | "highlighter">("lsmc");
   const [isLoading, setIsLoading] = useState(false);
   const [isCreatingPatient, setIsCreatingPatient] = useState(false);
   const [isAddingConsultation, setIsAddingConsultation] = useState(false);
@@ -58,6 +59,15 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
     }
     return `${age} yrs`;
   };
+
+  // Vithoulkas VES Assessment State
+  const [vesInput, setVesInput] = useState<VethAssessmentInput>({
+    feverHistory: "moderate_fever_occasional",
+    suppressionHistory: "none_minimal",
+    pathologyDepth: "functional_only",
+    symptomClarity: "crisp_distinct_keynotes"
+  });
+  const vesResult = calculateVithoulkasLevel(vesInput);
 
   // Miasmatic calculator state
   const [psoraScore, setPsoraScore] = useState(60);
@@ -464,6 +474,17 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
               </button>
 
               <button
+                onClick={() => setActiveSubTab("ves")}
+                className={`py-3 px-3.5 border-b-2 transition flex items-center gap-1.5 ${
+                  activeSubTab === "ves"
+                    ? "border-teal-600 text-teal-700 dark:text-teal-400 font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                }`}
+              >
+                <HeartPulse className="w-3.5 h-3.5 text-teal-500" /> Levels of Health (VES)
+              </button>
+
+              <button
                 onClick={() => setActiveSubTab("followups")}
                 className={`py-3 px-3.5 border-b-2 transition flex items-center gap-1.5 ${
                   activeSubTab === "followups"
@@ -650,6 +671,115 @@ export const PatientEHR: React.FC<PatientEHRProps> = ({
                           onChange={(e) => setTubercularScore(Number(e.target.value))}
                           className="w-full accent-purple-600 cursor-pointer"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3.5: VITHOULKAS LEVELS OF HEALTH (VES) */}
+              {activeSubTab === "ves" && (
+                <div className="space-y-5 animate-fade-in">
+                  <div className="p-4 bg-gradient-to-r from-teal-950/40 to-slate-900/60 border border-teal-500/30 rounded-2xl flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold text-slate-100 flex items-center gap-2">
+                        <HeartPulse className="w-4 h-4 text-teal-400" />
+                        Vithoulkas Defense Mechanism & Levels of Health
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        Prognostic model predicting expected homeopathic aggravation, acute fever capacity, and Kent observation vector.
+                      </p>
+                    </div>
+                    <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                      Group {vesResult.group} • Level {vesResult.level}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+                        1. Acute High Fever Capacity (&gt;38.5°C)
+                      </label>
+                      <select
+                        value={vesInput.feverHistory}
+                        onChange={(e) => setVesInput({ ...vesInput, feverHistory: e.target.value as any })}
+                        className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 text-xs text-slate-800 dark:text-slate-100"
+                      >
+                        <option value="high_fever_recent">High fever (&gt;39°C), clears within 24-48 hrs (Group A)</option>
+                        <option value="moderate_fever_occasional">Occasional fever up to 38.5°C every 1-3 years (Group B)</option>
+                        <option value="no_fever_5_years">No high fever in past 5 to 8 years (Group C)</option>
+                        <option value="no_fever_10_plus_years">Complete absence of fever for over 10 years / hypothermic (Group D)</option>
+                      </select>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+                        2. Chemical & Suppression History
+                      </label>
+                      <select
+                        value={vesInput.suppressionHistory}
+                        onChange={(e) => setVesInput({ ...vesInput, suppressionHistory: e.target.value as any })}
+                        className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 text-xs text-slate-800 dark:text-slate-100"
+                      >
+                        <option value="none_minimal">None or minimal; natural recovery from childhood infections</option>
+                        <option value="moderate_antibiotics_nsaids">Occasional antibiotics, NSAIDs, or antipyretics</option>
+                        <option value="heavy_steroids_immunosuppressants">Repeated corticosteroids or immunosuppressants</option>
+                        <option value="lifelong_polypharmacy">Prolonged multi-drug polypharmacy, chemo/radiation</option>
+                      </select>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+                        3. Pathology Depth
+                      </label>
+                      <select
+                        value={vesInput.pathologyDepth}
+                        onChange={(e) => setVesInput({ ...vesInput, pathologyDepth: e.target.value as any })}
+                        className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 text-xs text-slate-800 dark:text-slate-100"
+                      >
+                        <option value="functional_only">Functional disturbance only (no structural tissue damage)</option>
+                        <option value="mild_tissue_changes">Mild or reversible tissue modification (eczema, gastritis, asthma)</option>
+                        <option value="deep_chronic_autoimmune">Deep chronic or autoimmune pathology (rheumatoid, colitis)</option>
+                        <option value="irreversible_organic_degeneration">Irreversible organic degeneration or malignancy</option>
+                      </select>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+                        4. Keynote & General Symptom Clarity
+                      </label>
+                      <select
+                        value={vesInput.symptomClarity}
+                        onChange={(e) => setVesInput({ ...vesInput, symptomClarity: e.target.value as any })}
+                        className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 text-xs text-slate-800 dark:text-slate-100"
+                      >
+                        <option value="crisp_distinct_keynotes">Crisp, well-defined keynotes with distinct modalities</option>
+                        <option value="clear_generals">Clear physical generals with recognizable thermal state</option>
+                        <option value="confused_symptom_picture">Confused / multi-layered symptom picture</option>
+                        <option value="scanty_few_symptoms">Scanty / one-sided case with few symptoms</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Calculated Prognosis Box */}
+                  <div className="p-5 rounded-xl bg-slate-900 border border-teal-500/40 text-xs space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="text-slate-100 font-bold text-base">
+                        Classification: Group {vesResult.group} — Level {vesResult.level} ({vesResult.definition.title})
+                      </div>
+                      <span className="text-[10px] text-teal-400 font-mono">
+                        Potencies: {vesResult.definition.recommendedPotencies.join(" or ")}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+                      <div>
+                        <strong className="text-slate-100">Expected Healing Reaction:</strong>
+                        <p className="mt-0.5 text-slate-300">{vesResult.definition.expectedReaction}</p>
+                      </div>
+                      <div>
+                        <strong className="text-slate-100">Kent Observation Forecast:</strong>
+                        <p className="mt-0.5 text-teal-300">{vesResult.definition.kentsObservationMatch}</p>
                       </div>
                     </div>
                   </div>
