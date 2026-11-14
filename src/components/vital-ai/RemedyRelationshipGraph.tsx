@@ -19,8 +19,13 @@ import {
   CheckCircle2, 
   Info,
   Maximize2,
+  Minimize2,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  X
 } from "lucide-react";
 
 interface RemedyRelationshipGraphProps {
@@ -39,6 +44,37 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
 
   const [nodes, setNodes] = useState<RemedyGraphNode[]>([]);
   const [links, setLinks] = useState<RemedyGraphLink[]>([]);
+
+  // Zoom, pan & popout window states
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleZoomIn = () => setZoom(prev => Math.min(Number((prev + 0.2).toFixed(1)), 2.5));
+  const handleZoomOut = () => setZoom(prev => Math.max(Number((prev - 0.2).toFixed(1)), 0.5));
+  const handleResetZoom = () => { setZoom(1); setPan({ x: 0, y: 0 }); };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (zoom > 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      setPan({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+    }
+  };
+
+  const handleMouseUp = () => setIsDragging(false);
+
+  const handleOpenNewWindow = () => {
+    const url = `${window.location.origin}/?tab=vital-ai&subtab=graph`;
+    window.open(url, "VitalFokusFamilyGraph", "width=1280,height=820,menubar=no,toolbar=no,location=no,status=no,resizable=yes");
+  };
 
   // Simple deterministic circular / force layout positioning
   useEffect(() => {
@@ -203,8 +239,63 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
       {/* Main Grid: Interactive Canvas/SVG Graph (8 cols) + Selected Node Inspector (4 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Graph Canvas Container (8 cols) */}
-        <div className="lg:col-span-8 bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 relative overflow-hidden flex items-center justify-center min-h-[500px]">
-          <svg className="w-full h-[500px] select-none" viewBox="0 0 760 520">
+        <div 
+          className={`lg:col-span-8 bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 relative overflow-hidden flex items-center justify-center min-h-[500px] select-none ${
+            zoom > 1 ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+          } ${isFullscreen ? "fixed inset-4 z-50 lg:col-span-12 shadow-2xl bg-slate-950 border-teal-500/50" : ""}`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
+          {/* Graph Controls Toolbar: Zoom In, Zoom Out, Reset, Fullscreen & Switch to New Window */}
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-1.5 rounded-xl shadow-lg z-20 text-slate-200">
+            <button
+              onClick={handleZoomIn}
+              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition cursor-pointer"
+              title="Zoom In (+)"
+            >
+              <ZoomIn className="w-4 h-4" />
+            </button>
+            <span className="text-[11px] font-mono px-1 font-semibold text-teal-400 select-none">
+              {Math.round(zoom * 100)}%
+            </span>
+            <button
+              onClick={handleZoomOut}
+              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition cursor-pointer"
+              title="Zoom Out (-)"
+            >
+              <ZoomOut className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleResetZoom}
+              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition cursor-pointer"
+              title="Reset Zoom & Pan"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+            <div className="w-[1px] h-4 bg-slate-700 mx-0.5" />
+            <button
+              onClick={() => setIsFullscreen(prev => !prev)}
+              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition cursor-pointer"
+              title={isFullscreen ? "Exit Fullscreen" : "Maximize / Fullscreen View"}
+            >
+              {isFullscreen ? <Minimize2 className="w-4 h-4 text-amber-400" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={handleOpenNewWindow}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-teal-500/20 hover:bg-teal-500/30 text-teal-300 border border-teal-500/40 text-xs font-semibold transition cursor-pointer"
+              title="Switch to New Detached Window"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">New Window</span>
+            </button>
+          </div>
+
+          <svg 
+            className="w-full h-[500px] select-none" 
+            viewBox={`${(760 - 760 / zoom) / 2 - pan.x} ${(520 - 520 / zoom) / 2 - pan.y} ${760 / zoom} ${520 / zoom}`}
+          >
             {/* Draw Links */}
             {filteredLinks.map((link, idx) => {
               const src = nodes.find(n => n.id === link.source);
@@ -312,30 +403,30 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
         </div>
 
         {/* Selected Node Inspector (4 cols) */}
-        <div className="lg:col-span-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-700 rounded-2xl p-5 space-y-4">
+        <div className="lg:col-span-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 space-y-4 shadow-sm">
           {selectedNode ? (
             <>
-              <div className="border-b border-slate-700 pb-3">
+              <div className="border-b border-slate-200 dark:border-slate-700 pb-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-slate-100">{selectedNode.name}</h3>
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-700 text-slate-700 dark:text-slate-300">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{selectedNode.name}</h3>
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold border border-slate-300 dark:border-slate-600">
                     #{selectedNode.remedyNumber}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 mt-1 text-xs">
-                  <span className="px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/30 font-medium">
+                <div className="flex items-center gap-2 mt-1.5 text-xs">
+                  <span className="px-2 py-0.5 rounded bg-teal-50 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-500/30 font-semibold">
                     {selectedNode.kingdom}
                   </span>
-                  <span className="text-slate-600 dark:text-slate-400">{selectedNode.thermalState}</span>
-                  <span className="text-slate-500">•</span>
-                  <span className="text-slate-600 dark:text-slate-400">{selectedNode.miasm} Miasm</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">{selectedNode.thermalState}</span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">{selectedNode.miasm} Miasm</span>
                 </div>
               </div>
 
               {/* Relationship Links */}
               <div className="space-y-3">
-                <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-teal-400" />
+                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                   Clinical Relationships ({nodeLinks.length})
                 </h4>
 
@@ -351,17 +442,17 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
                       return (
                         <div
                           key={idx}
-                          className="p-3 bg-slate-900/80 rounded-xl border border-slate-700/80 space-y-1 text-xs"
+                          className="p-3 bg-white dark:bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1.5 text-xs shadow-2xs hover:border-teal-500/40 transition"
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-bold flex items-center gap-1" style={{ color: getLinkColor(link.type) }}>
+                            <span className="font-bold flex items-center gap-1 text-xs" style={{ color: getLinkColor(link.type) }}>
                               {link.type}
                             </span>
-                            <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400">
+                            <span className="text-[11px] font-mono font-semibold text-slate-700 dark:text-slate-300">
                               {otherNode?.name} ({otherNode?.abbr})
                             </span>
                           </div>
-                          <p className="text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">{link.notes}</p>
+                          <p className="text-slate-700 dark:text-slate-200 text-xs leading-relaxed font-normal">{link.notes}</p>
                         </div>
                       );
                     })
@@ -372,7 +463,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
               {(onOpenRemedyMM || onSelectRemedy) && (
                 <button
                   onClick={() => (onOpenRemedyMM || onSelectRemedy)?.(selectedNode.id)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-600 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg transition"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-600 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-teal-500/20 transition cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   Open Full {selectedNode.name} Materia Medica
@@ -380,7 +471,7 @@ export const RemedyRelationshipGraph: React.FC<RemedyRelationshipGraphProps> = (
               )}
             </>
           ) : (
-            <div className="text-center py-16 text-slate-500 text-xs">
+            <div className="text-center py-16 text-slate-600 dark:text-slate-400 font-medium text-xs">
               Click any remedy node in the graph to inspect clinical relationships.
             </div>
           )}
