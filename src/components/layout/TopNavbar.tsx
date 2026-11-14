@@ -20,6 +20,10 @@ import {
   Award
 } from "lucide-react";
 import { useClipboardStore } from "@/lib/store/useClipboardStore";
+import { useLanguageStore } from "@/lib/store/useLanguageStore";
+import { SUPPORTED_LANGUAGES, LanguageCode } from "@/lib/translationEngine";
+import { CloudBackupModal } from "@/components/compliance/CloudBackupModal";
+import { Globe, Database } from "lucide-react";
 
 interface TopNavbarProps {
   onOpenSpotlight: () => void;
@@ -64,6 +68,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [profileForm, setProfileForm] = useState<PractitionerProfile>(DEFAULT_PRACTITIONER);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
+  const { currentLanguage, setLanguage } = useLanguageStore();
 
   // Load saved practitioner profile from localStorage
   useEffect(() => {
@@ -166,6 +172,35 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             <span className="px-1.5 py-0.5 rounded-md bg-indigo-600 text-white text-[10px] font-bold">
               {totalRubrics}
             </span>
+          </button>
+
+          {/* Multi-Language Selector */}
+          <div className="relative flex items-center">
+            <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-2xs">
+              <Globe className="w-3.5 h-3.5 text-teal-500" />
+              <select
+                value={currentLanguage}
+                onChange={(e) => setLanguage(e.target.value as LanguageCode)}
+                className="bg-transparent text-xs font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer pr-1"
+                title="Toggle Repertory & MM Language"
+              >
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <option key={l.code} value={l.code} className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                    {l.flag} {l.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Cloud Backup & HIPAA Button */}
+          <button
+            onClick={() => setIsBackupModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-500/30 bg-teal-500/10 hover:bg-teal-500/20 text-teal-700 dark:text-teal-300 text-xs font-bold transition cursor-pointer shadow-2xs"
+            title="Open Automated Cloud Backup & HIPAA Compliance Suite"
+          >
+            <Database className="w-3.5 h-3.5 text-teal-500" />
+            <span className="hidden xl:inline">Backup & HIPAA</span>
           </button>
 
           {/* Theme Toggle Button */}

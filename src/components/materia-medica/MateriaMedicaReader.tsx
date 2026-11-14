@@ -11,8 +11,27 @@ import {
   Thermometer,
   Layers,
   ChevronRight,
-  BookOpen
+  BookOpen,
+  Filter,
+  Globe,
+  Quote,
+  Clock,
+  Award
 } from "lucide-react";
+import { 
+  MMAuthor, 
+  CLASSIC_AUTHORS, 
+  getClassicMMEntry, 
+  searchClassicMMLibrary,
+  RemedyMMTextEntry
+} from "@/lib/classicMMLibrary";
+import { useLanguageStore } from "@/lib/store/useLanguageStore";
+import { 
+  translateThermal, 
+  translateMiasm, 
+  translateChapter, 
+  getUITranslations 
+} from "@/lib/translationEngine";
 
 interface MateriaMedicaReaderProps {
   initialRemedyId?: string | null;
@@ -21,11 +40,15 @@ interface MateriaMedicaReaderProps {
 export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
   initialRemedyId
 }) => {
+  const { currentLanguage } = useLanguageStore();
+  const ui = getUITranslations(currentLanguage);
+
   const [remedies, setRemedies] = useState<any[]>([]);
   const [selectedRemedyId, setSelectedRemedyId] = useState<string | null>(
     initialRemedyId || null
   );
   const [remedyDetail, setRemedyDetail] = useState<any | null>(null);
+  const [selectedAuthor, setSelectedAuthor] = useState<MMAuthor>("allen");
   const [searchQuery, setSearchQuery] = useState("");
   const [kingdomFilter, setKingdomFilter] = useState("All");
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +106,14 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
     return matchesSearch && matchesKingdom;
   });
 
+  // Check if classic unabridged text exists for the selected remedy
+  const classicEntry = remedyDetail 
+    ? getClassicMMEntry(remedyDetail.abbreviation || remedyDetail.name)
+    : null;
+
+  const currentAuthorInfo = CLASSIC_AUTHORS[selectedAuthor];
+  const activeAuthorText = classicEntry?.texts[selectedAuthor];
+
   return (
     <div className="flex h-full gap-5 overflow-hidden">
       {/* Remedy Selector Left Rail */}
@@ -90,7 +121,7 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
         <div className="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <BookMarked className="w-4 h-4 text-amber-500" /> Materia Medica ({remedies.length})
+              <BookMarked className="w-4 h-4 text-amber-500" /> {ui.materiaMedica} ({remedies.length})
             </span>
           </div>
 
@@ -100,42 +131,58 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Filter remedies..."
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 outline-hidden"
+              placeholder="Filter remedies (#188, ars, etc.)..."
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-amber-500"
             />
+          </div>
+
+          <div className="flex items-center gap-1 overflow-x-auto text-[10px] font-semibold text-slate-500">
+            {["All", "Plant", "Mineral", "Animal", "Nosode"].map((k) => (
+              <button
+                key={k}
+                onClick={() => setKingdomFilter(k)}
+                className={`px-2 py-0.5 rounded-md transition ${
+                  kingdomFilter === k
+                    ? "bg-amber-600 text-white font-bold"
+                    : "bg-slate-200/60 dark:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200"
+                }`}
+              >
+                {k}
+              </button>
+            ))}
           </div>
         </div>
 
+        {/* Remedy List */}
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
-          {filteredRemedies.map((rem) => {
-            const isSelected = selectedRemedyId === rem.id;
+          {filteredRemedies.map((r) => {
+            const isSelected = selectedRemedyId === r.id;
             return (
               <div
-                key={rem.id}
-                onClick={() => setSelectedRemedyId(rem.id)}
+                key={r.id}
+                onClick={() => setSelectedRemedyId(r.id)}
                 className={`p-2.5 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between ${
                   isSelected
-                    ? "bg-amber-50 dark:bg-amber-950/40 border-amber-500 shadow-xs"
-                    : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
+                    ? "bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-900 dark:text-amber-200 shadow-xs"
+                    : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 hover:border-slate-200 text-slate-700 dark:text-slate-300"
                 }`}
               >
                 <div className="flex items-center gap-2.5 truncate">
-                  <span className="w-9 h-7 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 font-mono font-bold text-[11px] flex items-center justify-center shrink-0">
-                    {rem.abbreviation}
+                  <span
+                    className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                      isSelected
+                        ? "bg-amber-600 text-white"
+                        : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                    }`}
+                  >
+                    #{String(r.remedyNumber || 0).padStart(3, "0")}
                   </span>
-                  <div className="flex flex-col truncate">
-                    <div className="flex items-center gap-1.5 truncate">
-                      <span className="font-bold text-slate-900 dark:text-slate-100 truncate">
-                        {rem.name}
-                      </span>
-                      {rem.remedyNumber && (
-                        <span className="text-[10px] font-mono font-semibold text-amber-600 dark:text-amber-400 shrink-0">
-                          #{String(rem.remedyNumber).padStart(3, "0")}
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-[10px] text-slate-500 truncate">
-                      {rem.kingdom} • {rem.thermalState || "Ambithermal"}
+                  <div className="truncate">
+                    <span className="font-semibold block truncate">
+                      {r.name}
+                    </span>
+                    <span className="text-[10px] text-slate-400 truncate block">
+                      {r.abbreviation} • {r.kingdom}
                     </span>
                   </div>
                 </div>
@@ -150,10 +197,11 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
       <main className="flex-1 flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xs">
         {!remedyDetail ? (
           <div className="flex-1 flex items-center justify-center text-slate-400 text-xs">
-            Select a remedy to view Boericke & Kent Materia Medica profile.
+            Select a remedy to view Allen's Keynotes, Clarke, Phatak, and Hahnemann Materia Medica profiles.
           </div>
         ) : (
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            
             {/* Header Banner */}
             <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-950 via-slate-900 to-slate-950 text-white flex flex-wrap items-center justify-between gap-4 shadow-lg border border-amber-500/20">
               <div className="flex items-center gap-4">
@@ -180,73 +228,206 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
                     Common Name: <strong>{remedyDetail.commonName || "Not listed"}</strong>
                   </p>
                   <p className="text-[11px] text-slate-300 mt-1">
-                    Kingdom: <strong>{remedyDetail.kingdom}</strong> • Miasm: <strong>{remedyDetail.miasm || "Mixed"}</strong> • Thermal: <strong>{remedyDetail.thermalState || "Ambithermal"}</strong>
+                    Kingdom: <strong>{remedyDetail.kingdom}</strong> • Miasm: <strong>{translateMiasm(remedyDetail.miasm || "Psora", currentLanguage)}</strong> • Thermal: <strong>{translateThermal(remedyDetail.thermalState || "Ambithermal", currentLanguage)}</strong>
                   </p>
                 </div>
               </div>
+
+              <div className="flex items-center gap-2 text-xs">
+                <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/20 text-slate-300 font-mono text-[11px]">
+                  Language: <strong>{currentLanguage.toUpperCase()}</strong>
+                </span>
+              </div>
             </div>
 
-            {/* Core Keynotes Card */}
-            <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-2">
-              <span className="text-xs font-bold text-amber-900 dark:text-amber-300 block">
-                Guiding Keynotes & Sphere of Action:
-              </span>
-              <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
-                {remedyDetail.shortDescription}
+            {/* ========================================================================= */}
+            {/* CLASSIC AUTHORS SELECTOR TABS                                             */}
+            {/* ========================================================================= */}
+            <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-amber-500" />
+                  Select Historical Reference Library:
+                </span>
+                <span className="text-[10px] text-slate-400 font-mono">
+                  {currentAuthorInfo.year} Edition
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                {(Object.keys(CLASSIC_AUTHORS) as MMAuthor[]).map((authorKey) => {
+                  const auth = CLASSIC_AUTHORS[authorKey];
+                  const isActive = selectedAuthor === authorKey;
+                  return (
+                    <button
+                      key={authorKey}
+                      onClick={() => setSelectedAuthor(authorKey)}
+                      className={`p-2 rounded-xl text-left border transition cursor-pointer ${
+                        isActive
+                          ? "bg-amber-600 text-white border-amber-600 shadow-md font-bold"
+                          : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400"
+                      }`}
+                    >
+                      <span className="block text-xs font-bold truncate">{auth.name}</span>
+                      <span className={`text-[10px] block truncate ${isActive ? "text-amber-100" : "text-slate-400"}`}>
+                        {auth.bookTitle.split(" ")[0]} ({auth.year})
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 pt-1 italic">
+                {currentAuthorInfo.historicalSignificance}
               </p>
             </div>
 
-            {/* Three Pillars: Mind, Generals, Modalities */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
-                <span className="font-bold text-indigo-600 dark:text-indigo-400 block uppercase text-[10px] tracking-wider">
-                  Mind & Disposition
-                </span>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  {remedyDetail.mindKeynotes || "No specific mental keynotes tagged."}
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
-                <span className="font-bold text-teal-600 dark:text-teal-400 block uppercase text-[10px] tracking-wider">
-                  Physical Generals & Thermals
-                </span>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  {remedyDetail.generalsKeynotes || "Deep acting systemic constitution."}
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
-                <span className="font-bold text-rose-600 dark:text-rose-400 block uppercase text-[10px] tracking-wider">
-                  Modalities (&lt; &amp; &gt;)
-                </span>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  {remedyDetail.modalitiesKeynotes || "Follows general Hahnemannian modalities."}
-                </p>
-              </div>
-            </div>
-
-            {/* Structured Materia Medica Sections */}
-            {remedyDetail.materiaMedica?.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                  Organ Systems & Clinical Symptomatology (Kent / Boericke)
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                  {remedyDetail.materiaMedica.map((sec: any) => (
-                    <div
-                      key={sec.id}
-                      className="p-3.5 rounded-xl bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 space-y-1"
-                    >
-                      <span className="font-bold text-teal-700 dark:text-teal-400 block text-[11px]">
-                        {sec.section}
-                      </span>
-                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                        {sec.content}
-                      </p>
-                    </div>
-                  ))}
+            {/* ========================================================================= */}
+            {/* ACTIVE AUTHOR FULL-TEXT BODY                                             */}
+            {/* ========================================================================= */}
+            {activeAuthorText ? (
+              <div className="space-y-4">
+                {/* Guiding Affinity & Sphere of Action */}
+                <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                      <Quote className="w-3.5 h-3.5" />
+                      Guiding Keynotes & Sphere of Action — {currentAuthorInfo.name}
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
+                      Unabridged
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+                    {activeAuthorText.guidingAffinity}
+                  </p>
                 </div>
+
+                {/* Mind, Head, GI Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                    <span className="font-bold text-indigo-600 dark:text-indigo-400 block uppercase text-[10px] tracking-wider">
+                      {translateChapter("Mind", currentLanguage)}
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {activeAuthorText.mind}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                    <span className="font-bold text-teal-600 dark:text-teal-400 block uppercase text-[10px] tracking-wider">
+                      {translateChapter("Head", currentLanguage)} & Sensorium
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {activeAuthorText.head}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                    <span className="font-bold text-rose-600 dark:text-rose-400 block uppercase text-[10px] tracking-wider">
+                      {translateChapter("Stomach", currentLanguage)} & GI Tract
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {activeAuthorText.gastrointestinal}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Modalities Card */}
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 space-y-1.5 text-xs">
+                  <span className="font-bold text-slate-800 dark:text-slate-200 uppercase text-[10px] tracking-wider block">
+                    Modalities (&lt; Aggravation &amp; &gt; Amelioration) — {currentAuthorInfo.name}
+                  </span>
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-mono text-[11px]">
+                    {activeAuthorText.modalities}
+                  </p>
+                </div>
+
+                {/* Clinical Indications & Relationships */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div className="p-4 rounded-xl bg-teal-50/60 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-800/40 space-y-1.5">
+                    <span className="font-bold text-teal-800 dark:text-teal-300 text-xs block">
+                      Clinical Applications & Diseases
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {activeAuthorText.clinicalIndications}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-800/40 space-y-1.5">
+                    <span className="font-bold text-indigo-800 dark:text-indigo-300 text-xs block">
+                      Remedy Concordances & Relationships
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-mono text-[11px]">
+                      {activeAuthorText.relationships}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Fallback to Default Boericke & Kent Data */
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-2">
+                  <span className="text-xs font-bold text-amber-900 dark:text-amber-300 block">
+                    Guiding Keynotes & Sphere of Action (Boericke & Kent):
+                  </span>
+                  <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+                    {remedyDetail.shortDescription}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                    <span className="font-bold text-indigo-600 dark:text-indigo-400 block uppercase text-[10px] tracking-wider">
+                      {translateChapter("Mind", currentLanguage)}
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {remedyDetail.mindKeynotes || "No specific mental keynotes tagged."}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                    <span className="font-bold text-teal-600 dark:text-teal-400 block uppercase text-[10px] tracking-wider">
+                      Physical Generals & Thermals
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {remedyDetail.generalsKeynotes || "Deep acting systemic constitution."}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                    <span className="font-bold text-rose-600 dark:text-rose-400 block uppercase text-[10px] tracking-wider">
+                      Modalities (&lt; &amp; &gt;)
+                    </span>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {remedyDetail.modalitiesKeynotes || "Follows general Hahnemannian modalities."}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Structured Materia Medica Sections */}
+                {remedyDetail.materiaMedica?.length > 0 && (
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Organ Systems & Clinical Symptomatology (Kent / Boericke)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      {remedyDetail.materiaMedica.map((sec: any) => (
+                        <div
+                          key={sec.id}
+                          className="p-3.5 rounded-xl bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 space-y-1"
+                        >
+                          <span className="font-bold text-teal-700 dark:text-teal-400 block text-[11px]">
+                            {translateChapter(sec.section, currentLanguage)}
+                          </span>
+                          <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                            {sec.content}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -294,6 +475,7 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
                 </div>
               </div>
             </div>
+
           </div>
         )}
       </main>

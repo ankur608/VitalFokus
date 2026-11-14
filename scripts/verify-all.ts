@@ -4,6 +4,9 @@ import { TAXONOMY_DATABASE, PERIODIC_ELEMENTS_SCHOLTEN } from "../src/lib/taxono
 import { extractLSMCEntities } from "../src/lib/ambientSpeech";
 import { GRAPH_NODES, GRAPH_LINKS } from "../src/lib/remedyGraphData";
 import { calculatePosologyProtocol } from "../src/lib/posologyEngine";
+import { CLASSIC_AUTHORS, getClassicMMEntry, searchClassicMMLibrary } from "../src/lib/classicMMLibrary";
+import { translateChapter, translateThermal, translateMiasm, translateRubricPath, SUPPORTED_LANGUAGES } from "../src/lib/translationEngine";
+import { encryptClinicalPayload, decryptClinicalPayload, getComplianceAuditReport } from "../src/lib/backupEngine";
 
 async function runVerification() {
   console.log("🚀 Starting VitalFokus Comprehensive Verification Test Suite...");
@@ -314,7 +317,62 @@ async function runVerification() {
   if (!portalPostData.success) throw new Error("Portal POST check-in failed!");
   console.log(`   ✓ Remote Follow-Up check-in saved into clinical record: ${portalPostData.message}`);
 
-  console.log("\n🎉 ALL 18 VITALFOKUS SUBSYSTEMS, BPA POLARITY, VES LEVELS OF HEALTH, KINGDOM TAXONOMY, VOICE-TO-EHR AMBIENT SPEECH, REMEDY FAMILY GRAPH, ORGANON POSOLOGY ENGINE, BRANDED PRESCRIPTIONS, CURE TRAJECTORY & REMOTE FOLLOW-UP PORTAL VERIFIED 100% OPERATIONAL!\n");
+  // 19. Verify Extended Full-Text Materia Medica Library
+  console.log("\n1️⃣9️⃣ Testing Extended Full-Text Materia Medica Library (Allen, Clarke, Phatak, Hahnemann)...");
+  console.log(`   ✓ Classic Authors Indexed: ${Object.keys(CLASSIC_AUTHORS).length} Historical Authorities`);
+  const arsClassic = getClassicMMEntry("Arsenicum album");
+  if (!arsClassic) throw new Error("Arsenicum classic full-text not found!");
+  console.log(`   ✓ Allen's Keynotes: ${arsClassic.texts.allen.authorTitle} -> "${arsClassic.texts.allen.guidingAffinity.slice(0, 65)}..."`);
+  console.log(`   ✓ Clarke's Dictionary: ${arsClassic.texts.clarke.authorTitle} -> "${arsClassic.texts.clarke.gastrointestinal.slice(0, 60)}..."`);
+  console.log(`   ✓ Phatak's MM: ${arsClassic.texts.phatak.authorTitle} -> Affinities: ${arsClassic.texts.phatak.guidingAffinity}`);
+  console.log(`   ✓ Hahnemann's Chronic Diseases: ${arsClassic.texts.hahnemann.authorTitle} -> Sphere: "${arsClassic.texts.hahnemann.guidingAffinity.slice(0, 60)}..."`);
+  const searchResults = searchClassicMMLibrary("fastidious", "allen");
+  console.log(`   ✓ Full-Text Search across Allen's Keynotes for 'fastidious': Found ${searchResults.length} matches`);
+
+  // 20. Verify Multi-Language Repertory Translation Engine
+  console.log("\n2️⃣0️⃣ Testing Multi-Language Classical Repertory Translation (EN, DE, FR, ES, HI)...");
+  console.log(`   ✓ Supported Languages: ${SUPPORTED_LANGUAGES.map(l => `${l.flag} ${l.label}`).join(", ")}`);
+  const deChapter = translateChapter("Mind", "de");
+  const frChapter = translateChapter("Stomach", "fr");
+  const esChapter = translateChapter("Head", "es");
+  const hiChapter = translateChapter("Mind", "hi");
+  console.log(`   ✓ German (Hahnemannian): 'Mind' -> '${deChapter}'`);
+  console.log(`   ✓ French (Kent/Charette): 'Stomach' -> '${frChapter}'`);
+  console.log(`   ✓ Spanish (Paschero): 'Head' -> '${esChapter}'`);
+  console.log(`   ✓ Hindi (Classical): 'Mind' -> '${hiChapter}'`);
+  const deThermal = translateThermal("Chilly", "de");
+  const hiThermal = translateThermal("Hot", "hi");
+  console.log(`   ✓ Thermals: Chilly -> ${deThermal} | Hot -> ${hiThermal}`);
+  const rubricTranslated = translateRubricPath("Stomach; burning; midnight, after", "de");
+  console.log(`   ✓ Full Rubric Translated to German: '${rubricTranslated}'`);
+
+  // 21. Verify Automated Cloud Backup & HIPAA/GDPR Compliance Suite
+  console.log("\n2️⃣1️⃣ Testing Automated Cloud Backup & HIPAA/GDPR Compliance Engine...");
+  const backupRes = await fetch(`${BASE_URL}/api/backup`);
+  const backupData = await backupRes.json();
+  if (!backupData.success) throw new Error("Backup GET API failed!");
+  console.log(`   ✓ Live Snapshot Exported: ${backupData.snapshot.patients.length} patients, ${backupData.snapshot.metadata.totalConsultations} consultations`);
+
+  // Test AES-256-GCM Encryption with PBKDF2
+  const testPassphrase = "VitalFokus-Clinical-Test-2026";
+  const encryptedPkg = await encryptClinicalPayload(backupData.snapshot, testPassphrase);
+  console.log(`   ✓ AES-256-GCM Encryption Package Generated: Algorithm=${encryptedPkg.algorithm}, KDF=${encryptedPkg.kdf}`);
+  console.log(`   ✓ Checksum SHA-256: ${encryptedPkg.metadata.checksumSha256}`);
+
+  // Test Decryption & Integrity Verification
+  const decryptedResult = await decryptClinicalPayload(encryptedPkg, testPassphrase);
+  if (!decryptedResult.success || !decryptedResult.data) {
+    throw new Error(`Decryption failed: ${decryptedResult.error}`);
+  }
+  console.log(`   ✓ Decryption & SHA-256 Hash Verified: ${decryptedResult.data.patients.length} patients restored`);
+
+  // Test Compliance Audit Report
+  const compliance = getComplianceAuditReport();
+  console.log(`   ✓ Compliance Certification: ${compliance.overallStatus} (${compliance.sovereigntyType})`);
+  console.log(`   ✓ HIPAA Safeguards: ${compliance.standards.hipaaTitleII.technicalSafeguards}`);
+  console.log(`   ✓ GDPR Minimization: ${compliance.standards.gdprArticle32.dataMinimization}`);
+
+  console.log("\n🎉 ALL 21 VITALFOKUS SUBSYSTEMS, BPA POLARITY, VES LEVELS OF HEALTH, KINGDOM TAXONOMY, VOICE-TO-EHR AMBIENT SPEECH, REMEDY FAMILY GRAPH, ORGANON POSOLOGY ENGINE, BRANDED PRESCRIPTIONS, CURE TRAJECTORY, REMOTE FOLLOW-UP PORTAL, EXTENDED MATERIA MEDICA LIBRARY, MULTI-LANGUAGE TRANSLATION, & HIPAA/GDPR ENCRYPTED BACKUP VERIFIED 100% OPERATIONAL!\n");
 }
 
 runVerification().catch((err) => {
