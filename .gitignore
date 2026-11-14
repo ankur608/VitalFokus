@@ -35,11 +35,9 @@ yarn-error.log*
 .env*
 !.env.example
 
-# sqlite database
-*.db
+# sqlite database journal and wal files
 *.db-journal
 *.db-wal
-prisma/dev.db*
 
 # vercel
 .vercel
