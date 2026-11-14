@@ -194,14 +194,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
           </div>
 
-          {/* Cloud Backup & HIPAA Button */}
+          {/* Cloud Backup Button */}
           <button
             onClick={() => setIsBackupModalOpen(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-500/30 bg-teal-500/10 hover:bg-teal-500/20 text-teal-700 dark:text-teal-300 text-xs font-bold transition cursor-pointer shadow-2xs"
             title="Open Automated Cloud Backup & HIPAA Compliance Suite"
           >
             <Database className="w-3.5 h-3.5 text-teal-500" />
-            <span className="hidden xl:inline">Backup & HIPAA</span>
+            <span className="hidden xl:inline">Backup</span>
           </button>
 
           {/* Theme Toggle Button */}

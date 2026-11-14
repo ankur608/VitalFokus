@@ -87,7 +87,8 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
   return (
     <div className="flex flex-col h-full space-y-6 overflow-y-auto pr-1 custom-scrollbar">
       {/* Hero Welcome Banner */}
-      <div className="shrink-0 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/30 min-h-[190px] flex flex-col justify-center">
+      <div className="shrink-0 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-xl border border-teal-500/30 min-h-[190px] flex flex-col justify-between gap-4">
+        {/* Top Text Section */}
         <div className="relative z-10 max-w-2xl xl:max-w-3xl space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30 text-[11px] font-semibold shadow-2xs w-fit">
             <Activity className="w-3.5 h-3.5 text-teal-400" /> VitalFokus Clinical Intelligence Platform
@@ -98,8 +99,12 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
           <p className="text-xs text-slate-300 leading-relaxed max-w-xl font-normal">
             RadarOpus-level repertorisation precision combined with Kentian totality analysis, multi-clipboard symptom grading, and grounded VitalAI clinical inference.
           </p>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 pt-1.5">
+        {/* Bottom Actions Row: Left Primary Navigation & Right Utility Controls on the Same Y-Coordinate */}
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 pt-1">
+          {/* Left Navigation Buttons */}
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={() => setActiveTab("repertorisation")}
               className="px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs shadow-md shadow-teal-500/25 transition flex items-center gap-1.5 cursor-pointer"
@@ -121,18 +126,9 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
               </button>
             )}
           </div>
-        </div>
 
-        {/* Right Top Branded Asset & Action Controls on Hero Ribbon */}
-        <div className="hidden lg:flex absolute top-5 right-6 xl:top-6 xl:right-8 z-10 flex-col items-end gap-2.5 select-none">
-          <img
-            src="/vitalfokus-logo-dark.png"
-            alt="VitalFokus Clinical Intelligence Suite"
-            className="h-10 xl:h-11 w-auto object-contain select-none drop-shadow-md transition-transform hover:scale-[1.02]"
-          />
-
-          {/* Language & Backup Action Pills below Logo */}
-          <div className="flex items-center gap-2 pt-0.5">
+          {/* Right Utility Controls: Language & Backup in line with left buttons (same Y-coordinate) */}
+          <div className="flex items-center gap-2">
             {/* Multi-Language Selector Pill */}
             <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-white/15 bg-slate-900/80 hover:bg-slate-900 backdrop-blur-md text-xs font-semibold text-slate-200 shadow-sm transition">
               <Globe className="w-3.5 h-3.5 text-teal-400 shrink-0" />
@@ -150,16 +146,25 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
               </select>
             </div>
 
-            {/* Cloud Backup & HIPAA Button */}
+            {/* Cloud Backup Button */}
             <button
               onClick={() => setIsBackupModalOpen(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-400/40 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 hover:text-teal-200 text-xs font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
               title="Open Automated Cloud Backup & HIPAA Compliance Suite"
             >
               <Database className="w-3.5 h-3.5 text-teal-400 shrink-0" />
-              <span>Backup &amp; HIPAA</span>
+              <span>Backup</span>
             </button>
           </div>
+        </div>
+
+        {/* Right Top Branded Asset on Hero Ribbon */}
+        <div className="hidden lg:flex absolute top-5 right-6 xl:top-6 xl:right-8 z-10 items-center select-none">
+          <img
+            src="/vitalfokus-logo-dark.png"
+            alt="VitalFokus Clinical Intelligence Suite"
+            className="h-10 xl:h-11 w-auto object-contain select-none drop-shadow-md transition-transform hover:scale-[1.02]"
+          />
         </div>
 
         {/* Subtle Decorative Background Element */}
