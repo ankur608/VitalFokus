@@ -142,6 +142,17 @@ export const ClinicalDashboard: React.FC<ClinicalDashboardProps> = ({
           </div>
         </div>
 
+        {/* Right Top Branded Asset on Hero Ribbon */}
+        <div className="hidden lg:flex absolute top-5 right-6 xl:top-6 xl:right-8 z-10 items-center">
+          <div className="flex items-center px-4 py-2.5 rounded-2xl bg-slate-950/60 backdrop-blur-md border border-teal-500/30 shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-teal-400/50">
+            <img
+              src="/vitalfokus-logo-dark.png"
+              alt="VitalFokus Clinical Intelligence Suite"
+              className="h-10 xl:h-11 w-auto object-contain select-none"
+            />
+          </div>
+        </div>
+
         {/* Subtle Decorative Background Element */}
         <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-indigo-500/15 via-teal-500/10 to-transparent pointer-events-none" />
       </div>
