@@ -144,7 +144,6 @@ export default function Home() {
         setIsCollapsed={setIsSidebarCollapsed}
         patientCount={patientCount}
         onOpenVESModal={() => setIsVESModalOpen(true)}
-        onOpenRemotePortal={() => setIsRemotePortalOpen(true)}
       />
 
       {/* Main Workspace View */}
@@ -156,7 +155,6 @@ export default function Home() {
           onClearPatient={() => setActivePatientId(null)}
           theme={theme}
           toggleTheme={toggleTheme}
-          onOpenRemotePortal={() => setIsRemotePortalOpen(true)}
         />
 
         {/* Dynamic Pane Body */}
