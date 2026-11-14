@@ -4,12 +4,13 @@
  * Supports:
  * - US <-> UK Homeopathic Orthography Normalization
  * - Modality Operator Recognition (<, >, agg., amel., time keynotes)
- * - Reverse Remedy Filtering (@remedy, @remedy:grade, remedy:abbr)
+ * - Reverse Remedy Filtering (@remedy, @remedy:grade, remedy:abbr, remedy:abbr:grade)
  * - Clinical Synonym and Modern Medical Lexicon Expansion
+ * - Cross-Reference Keyword Intersections
  */
 
 export interface RemedyFilter {
-  token: string;          // e.g. "ars", "lyc", "sulph"
+  token: string;          // e.g. "ars", "lyc", "sulph", "nat-m", "kali-p"
   cleanName: string;      // Normalized remedy token for prefix or exact match
   minGrade: number;       // Default is 2 (Grade >= 2)
 }
@@ -40,15 +41,23 @@ export const ORTHOGRAPHY_MAP: Record<string, string[]> = {
   diarrhoea: ["diarrhea", "diarrhoea"],
   hemorrhage: ["hemorrhage", "haemorrhage"],
   haemorrhage: ["hemorrhage", "haemorrhage"],
+  hemorrhoids: ["hemorrhoids", "haemorrhoids", "piles"],
+  haemorrhoids: ["hemorrhoids", "haemorrhoids", "piles"],
+  piles: ["piles", "hemorrhoids", "haemorrhoids"],
   edema: ["edema", "oedema", "dropsy"],
   oedema: ["edema", "oedema", "dropsy"],
   dropsy: ["edema", "oedema", "dropsy"],
   fetid: ["fetid", "foetid"],
   foetid: ["fetid", "foetid"],
-  leucorrhea: ["leucorrhea", "leucorrhoea"],
-  leucorrhoea: ["leucorrhea", "leucorrhoea"],
+  leucorrhea: ["leucorrhea", "leucorrhoea", "whites"],
+  leucorrhoea: ["leucorrhea", "leucorrhoea", "whites"],
+  whites: ["whites", "leucorrhea", "leucorrhoea"],
   dysmenorrhea: ["dysmenorrhea", "dysmenorrhoea"],
   dysmenorrhoea: ["dysmenorrhea", "dysmenorrhoea"],
+  amenorrhea: ["amenorrhea", "amenorrhoea"],
+  amenorrhoea: ["amenorrhea", "amenorrhoea"],
+  gonorrhea: ["gonorrhea", "gonorrhoea"],
+  gonorrhoea: ["gonorrhea", "gonorrhoea"],
   anemia: ["anemia", "anaemia"],
   anaemia: ["anemia", "anaemia"],
   color: ["color", "colour"],
@@ -57,22 +66,31 @@ export const ORTHOGRAPHY_MAP: Record<string, string[]> = {
   grey: ["gray", "grey"],
   chilly: ["chilly", "chilliness", "chill"],
   chilliness: ["chilly", "chilliness", "chill"],
-  labor: ["labor", "labour"],
-  labour: ["labor", "labour"],
+  chill: ["chilly", "chilliness", "chill"],
+  labor: ["labor", "labour", "parturition"],
+  labour: ["labor", "labour", "parturition"],
+  parturition: ["labor", "labour", "parturition"],
   flavor: ["flavor", "flavour"],
   flavour: ["flavor", "flavour"],
   tumor: ["tumor", "tumour"],
   tumour: ["tumor", "tumour"],
   esophagus: ["esophagus", "oesophagus"],
   oesophagus: ["esophagus", "oesophagus"],
-  paralysis: ["paralysis", "paralysed", "paralyzed"],
-  paralyzed: ["paralysis", "paralysed", "paralyzed"],
-  paralysed: ["paralysis", "paralysed", "paralyzed"],
+  paralysis: ["paralysis", "paralysed", "paralyzed", "paralytic"],
+  paralyzed: ["paralysis", "paralysed", "paralyzed", "paralytic"],
+  paralysed: ["paralysis", "paralysed", "paralyzed", "paralytic"],
+  paralytic: ["paralysis", "paralysed", "paralyzed", "paralytic"],
   coryza: ["coryza", "catarrh"],
   catarrh: ["coryza", "catarrh"],
-  suppuration: ["suppuration", "festering", "pus"],
+  suppuration: ["suppuration", "festering", "abscess", "pus"],
+  abscess: ["suppuration", "festering", "abscess", "pus"],
   ulcer: ["ulcer", "ulceration"],
-  ulceration: ["ulcer", "ulceration"]
+  ulceration: ["ulcer", "ulceration"],
+  dyspnea: ["dyspnea", "dyspnoea", "breathlessness", "difficult"],
+  dyspnoea: ["dyspnea", "dyspnoea", "breathlessness", "difficult"],
+  vertigo: ["vertigo", "dizziness", "giddiness"],
+  dizziness: ["vertigo", "dizziness", "giddiness"],
+  giddiness: ["vertigo", "dizziness", "giddiness"]
 };
 
 // 2. High-Yield Modern Medical Terminology -> Classical Kentian Rubric Paths
@@ -82,6 +100,7 @@ export const CLINICAL_SYNONYMS: Record<string, { targetRubric: string; category:
   cephalalgia: { targetRubric: "Head; pain", category: "Neurological" },
   breathlessness: { targetRubric: "Respiration; difficult", category: "Respiratory" },
   dyspnea: { targetRubric: "Respiration; difficult", category: "Respiratory" },
+  dyspnoea: { targetRubric: "Respiration; difficult", category: "Respiratory" },
   asthma: { targetRubric: "Respiration; asthmatic", category: "Respiratory" },
   hypertension: { targetRubric: "Heart; hypertension", category: "Cardiovascular" },
   insomnia: { targetRubric: "Sleep; sleeplessness", category: "Sleep & Circadian" },
@@ -90,6 +109,7 @@ export const CLINICAL_SYNONYMS: Record<string, { targetRubric: string; category:
   pyrexia: { targetRubric: "Fever; heat", category: "Generalities" },
   vomiting: { targetRubric: "Stomach; vomiting", category: "Gastrointestinal" },
   nausea: { targetRubric: "Stomach; nausea", category: "Gastrointestinal" },
+  "morning sickness": { targetRubric: "Stomach; nausea; pregnancy, during", category: "Gastrointestinal" },
   itching: { targetRubric: "Skin; itching", category: "Dermatological" },
   pruritus: { targetRubric: "Skin; itching", category: "Dermatological" },
   eczema: { targetRubric: "Skin; eruptions, eczema", category: "Dermatological" },
@@ -113,7 +133,7 @@ export const CLINICAL_TOKEN_EXPANSIONS: Record<string, string[]> = {
   insomnia: ["insomnia", "sleeplessness", "sleepless"],
   fever: ["fever", "heat"],
   vomiting: ["vomiting", "nausea"],
-  dizziness: ["dizziness", "vertigo"],
+  dizziness: ["dizziness", "vertigo", "giddiness"],
   itching: ["itching", "pruritus"],
   anxiety: ["anxiety", "fear"],
   cold: ["cold", "chilly", "chill"]
@@ -144,8 +164,8 @@ export function parseClinicalQuery(rawQuery: string): ParsedSearchQuery {
   const ameliorations: string[] = [];
   const timeKeynotes: string[] = [];
 
-  // A. Extract Reverse Remedy Token: e.g. @ars, @ars:3, remedy:lyc, remedy:phos:4
-  const remedyRegex = /(?:@|remedy:)([a-zA-Z]+)(?::([1-4]))?/i;
+  // A. Extract Reverse Remedy Token: e.g. @ars, @ars:3, remedy:lyc, remedy:kali-p:3, @nat-m
+  const remedyRegex = /(?:@|remedy:)([a-zA-Z0-9_-]+)(?::([1-4]))?/i;
   const remedyMatch = working.match(remedyRegex);
   if (remedyMatch) {
     const rawToken = remedyMatch[1].toLowerCase().replace(/\.$/, "");

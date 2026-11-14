@@ -56,6 +56,7 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
   const [mmResults, setMmResults] = useState<any[]>([]);
   const [isSearchingMM, setIsSearchingMM] = useState<boolean>(false);
   const [mmAuthorFilter, setMmAuthorFilter] = useState<string>("all");
+  const [matchedSectionHighlight, setMatchedSectionHighlight] = useState<string | null>(null);
 
   const fetchRemedies = async () => {
     try {
@@ -300,6 +301,7 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
                 onClick={() => {
                   setSelectedRemedyId(item.remedyId);
                   setSelectedAuthor(item.author);
+                  setMatchedSectionHighlight(item.matchedSection);
                 }}
                 className="p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-amber-400 dark:hover:border-amber-500 bg-white dark:bg-slate-900/80 cursor-pointer transition space-y-1.5 shadow-2xs group"
               >
@@ -427,7 +429,7 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
             {activeAuthorText ? (
               <div className="space-y-4">
                 {/* Guiding Affinity & Sphere of Action */}
-                <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-1.5">
+                <div className={`p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-1.5 transition-all ${matchedSectionHighlight === "Guiding Keynotes" ? "ring-2 ring-amber-500 shadow-md scale-[1.01]" : ""}`}>
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
                       <Quote className="w-3.5 h-3.5" />
@@ -444,27 +446,27 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
 
                 {/* Mind, Head, GI Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                  <div className={`p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5 transition-all ${matchedSectionHighlight === "Mind & Disposition" ? "ring-2 ring-indigo-500 shadow-md scale-[1.01]" : ""}`}>
                     <span className="font-bold text-indigo-600 dark:text-indigo-400 block uppercase text-[10px] tracking-wider">
-                      {translateChapter("Mind", currentLanguage)}
+                      {translateChapter("Mind", currentLanguage)} {matchedSectionHighlight === "Mind & Disposition" && "• [Matched Query]"}
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                       {activeAuthorText.mind}
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                  <div className={`p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5 transition-all ${matchedSectionHighlight === "Head & Neurological" ? "ring-2 ring-teal-500 shadow-md scale-[1.01]" : ""}`}>
                     <span className="font-bold text-teal-600 dark:text-teal-400 block uppercase text-[10px] tracking-wider">
-                      {translateChapter("Head", currentLanguage)} & Sensorium
+                      {translateChapter("Head", currentLanguage)} & Sensorium {matchedSectionHighlight === "Head & Neurological" && "• [Matched Query]"}
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                       {activeAuthorText.head}
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                  <div className={`p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-1.5 transition-all ${matchedSectionHighlight === "Gastrointestinal & Abdomen" ? "ring-2 ring-rose-500 shadow-md scale-[1.01]" : ""}`}>
                     <span className="font-bold text-rose-600 dark:text-rose-400 block uppercase text-[10px] tracking-wider">
-                      {translateChapter("Stomach", currentLanguage)} & GI Tract
+                      {translateChapter("Stomach", currentLanguage)} & GI Tract {matchedSectionHighlight === "Gastrointestinal & Abdomen" && "• [Matched Query]"}
                     </span>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                       {activeAuthorText.gastrointestinal}
@@ -473,7 +475,7 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
                 </div>
 
                 {/* Modalities Card */}
-                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 space-y-1.5 text-xs">
+                <div className={`p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 space-y-1.5 text-xs transition-all ${matchedSectionHighlight === "Modalities (< & >)" ? "ring-2 ring-amber-500 shadow-md scale-[1.01]" : ""}`}>
                   <span className="font-bold text-slate-800 dark:text-slate-200 uppercase text-[10px] tracking-wider block">
                     Modalities (&lt; Aggravation &amp; &gt; Amelioration) — {currentAuthorInfo.name}
                   </span>

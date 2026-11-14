@@ -69,14 +69,23 @@ export async function GET(request: NextRequest) {
         };
       }
 
-      // 3. Text & Modality Conditions with Orthography Expansion
+      // 3. Text & Modality Conditions with Orthography Expansion & Cross-References
       if (parsed.expandedTerms.length > 0) {
         const textConditions = parsed.expandedTerms.map((termVariants) => {
           if (termVariants.length === 1) {
-            return { fullPath: { contains: termVariants[0] } };
+            const v = termVariants[0];
+            return {
+              OR: [
+                { fullPath: { contains: v } },
+                { crossReferences: { contains: v } }
+              ]
+            };
           }
           return {
-            OR: termVariants.map((v) => ({ fullPath: { contains: v } }))
+            OR: termVariants.flatMap((v) => [
+              { fullPath: { contains: v } },
+              { crossReferences: { contains: v } }
+            ])
           };
         });
 
