@@ -1,17 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
   <defs>
-    <linearGradient id="vfGradient" x1="100%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="vfGradientIcon" x1="100%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#1d4ed8" />
       <stop offset="40%" stop-color="#2563eb" />
       <stop offset="100%" stop-color="#008f7e" />
     </linearGradient>
-    <filter id="vfGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#008f7e" flood-opacity="0.3" />
-    </filter>
   </defs>
 
-  <!-- Background Squircle -->
-  <rect x="12" y="12" width="176" height="176" rx="46" ry="46" fill="url(#vfGradient)" filter="url(#vfGlow)" />
+  <!-- Squircle Icon (NO drop shadow filter, NO background box) -->
+  <rect x="12" y="12" width="176" height="176" rx="46" ry="46" fill="url(#vfGradientIcon)" />
 
   <!-- Subtle Blueprint Circle & Crosshairs -->
   <circle cx="100" cy="100" r="44" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.22" />

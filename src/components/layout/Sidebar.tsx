@@ -127,24 +127,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
           title="Go to Home / Clinical Dashboard"
         >
           {!isCollapsed ? (
-            <div className="flex items-center h-10 w-full overflow-hidden">
+            <div className="flex items-center h-10">
               <img
                 src="/vitalfokus-logo.png"
                 alt="VitalFokus Clinical Intelligence Suite"
-                className="h-9 w-auto max-w-[172px] object-contain object-left block dark:hidden select-none transition-transform group-hover:scale-[1.02]"
+                className="h-9 sm:h-10 w-auto object-contain object-left block dark:hidden select-none transition-transform group-hover:scale-[1.02]"
               />
               <img
                 src="/vitalfokus-logo-dark.png"
                 alt="VitalFokus Clinical Intelligence Suite"
-                className="h-9 w-auto max-w-[172px] object-contain object-left hidden dark:block select-none transition-transform group-hover:scale-[1.02]"
+                className="h-9 sm:h-10 w-auto object-contain object-left hidden dark:block select-none transition-transform group-hover:scale-[1.02]"
               />
             </div>
           ) : (
-            <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center bg-white dark:bg-slate-900 group-hover:scale-105 mx-auto">
+            <div className="w-10 h-10 shrink-0 transition-transform group-hover:scale-105 flex items-center justify-center mx-auto">
               <img
                 src="/vitalfokus-icon.png"
                 alt="VitalFokus Icon"
-                className="w-full h-full object-cover"
+                className="w-9 h-9 object-contain"
               />
             </div>
           )}
