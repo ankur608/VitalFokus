@@ -74,11 +74,11 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
           <button
             onClick={() => setIsCookbookOpen(true)}
             className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white shadow-xl shadow-teal-500/25 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
-            title="VitalFokus Clinical Cookbook & Usage Guide"
+            title="VitalFokus Usage Guide"
           >
             <BookOpen className="w-4 h-4 group-hover:rotate-6 transition-transform" />
             <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
-              Cookbook &amp; User Guide
+              Usage Guide
             </span>
           </button>
 
@@ -378,11 +378,11 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
       <button
         onClick={() => setIsCookbookOpen(true)}
         className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white shadow-xl shadow-teal-500/25 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
-        title="VitalFokus Clinical Cookbook & Usage Guide"
+        title="VitalFokus Usage Guide"
       >
         <BookOpen className="w-4 h-4 group-hover:rotate-6 transition-transform" />
         <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
-          Cookbook &amp; User Guide
+          Usage Guide
         </span>
       </button>
     </aside>

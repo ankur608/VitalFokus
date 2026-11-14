@@ -116,11 +116,8 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                  VitalFokus Clinical Cookbook &amp; Usage Guide
+                  VitalFokus Usage Guide
                 </h3>
-                <span className="px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-[10px] font-bold border border-teal-500/20">
-                  v2.4 Practice Manual
-                </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Interactive reference guide, Kentian repertorial rules, and advanced clinical workflows.
@@ -135,7 +132,7 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search guide & recipes..."
+                placeholder="Search usage guide..."
                 className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-teal-500"
               />
             </div>
@@ -154,7 +151,7 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
           {/* Left Navigation Sidebar */}
           <div className="w-64 sm:w-72 border-r border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 p-3 space-y-1 overflow-y-auto custom-scrollbar shrink-0">
             <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-3 py-1">
-              Cookbook Chapters ({filteredSections.length})
+              Guide Chapters ({filteredSections.length})
             </div>
             {filteredSections.map((sec) => {
               const Icon = sec.icon;
@@ -238,7 +235,7 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
                   <div className="text-xs text-teal-900 dark:text-teal-200 space-y-1">
                     <span className="font-bold block">Quick Navigation Tip</span>
                     <p>
-                      Use the floating round icon at the bottom right on any page to open this cookbook at any time. Press <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 rounded border border-teal-300 dark:border-teal-700 font-mono text-[10px]">⌘K</kbd> to trigger Spotlight search across all 188 remedies and 700+ classical rubrics.
+                      Use the floating round icon at the bottom right on any page to open this usage guide at any time. Press <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 rounded border border-teal-300 dark:border-teal-700 font-mono text-[10px]">⌘K</kbd> to trigger Spotlight search across all 188 remedies and 700+ classical rubrics.
                     </p>
                   </div>
                 </div>
@@ -670,7 +667,7 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
                       </tr>
                       <tr>
                         <td className="p-3 font-bold text-teal-600 dark:text-teal-400">Esc</td>
-                        <td className="p-3 font-sans">Close Active Modal / Spotlight / Cookbook</td>
+                        <td className="p-3 font-sans">Close Active Modal / Spotlight / Guide</td>
                         <td className="p-3 font-sans">Global</td>
                       </tr>
                       <tr>

@@ -1,5 +1,5 @@
-# 📘 VitalFokus Clinical Intelligence Platform — Master Cookbook & Usage Guide
-> **Version 2.4** • *Enterprise-Grade Kentian Repertorisation, VitalAI Inference, Posology & Sovereign Practice Management*
+# 📘 VitalFokus Usage Guide
+> *Enterprise-Grade Kentian Repertorisation, VitalAI Inference, Posology & Sovereign Practice Management*
 
 ---
 
