@@ -28,20 +28,21 @@ graph TD
 ## 📑 Table of Contents
 
 1. [Quickstart & Global Navigation](#1-quickstart--global-navigation)
-2. [Dynamic Multi-Clipboard Repertorisation](#2-dynamic-multi-clipboard-repertorisation)
-3. [Bönninghausen Polarity Analysis (BPA) & Frei Algorithm](#3-bönninghausen-polarity-analysis-bpa--frei-algorithm)
-4. [Vithoulkas Expert System (VES) & 12 Levels of Health](#4-vithoulkas-expert-system-ves--12-levels-of-health)
-5. [Kingdom & Taxonomy Explorer (Scholten, Sankaran, Yakir)](#5-kingdom--taxonomy-explorer-scholten-sankaran-yakir)
-6. [Voice-to-EHR Ambient Case-Taking & Real-Time LSMC Extraction](#6-voice-to-ehr-ambient-case-taking--real-time-lsmc-extraction)
-7. [Remedy Relationship & Family Graph Visualizer](#7-remedy-relationship--family-graph-visualizer)
-8. [Hahnemannian Posology & Split-Dose Plussing Engine](#8-hahnemannian-posology--split-dose-plussing-engine)
-9. [1-Click Branded Prescription Generator & Organon § 260](#9-1-click-branded-prescription-generator--organon--260)
-10. [Visual Cure Trajectory & Hering's Law Verification](#10-visual-cure-trajectory--herings-law-verification)
-11. [Secure Remote Follow-Up Patient Portal](#11-secure-remote-follow-up-patient-portal)
-12. [Extended Classical Materia Medica Library](#12-extended-classical-materia-medica-library)
-13. [Multi-Language Repertory Engine](#13-multi-language-repertory-engine)
-14. [Automated Cloud Backup & HIPAA/GDPR Sovereign Encryption](#14-automated-cloud-backup--hipaagdpr-sovereign-encryption)
-15. [Master Clinical Cheat-Sheet & Keyboard Shortcuts](#15-master-clinical-cheat-sheet--keyboard-shortcuts)
+2. [Next-Gen Clinical Search Engine (RadarOpus-Surpassing)](#2-next-gen-clinical-search-engine-radaropus-surpassing)
+3. [Dynamic Multi-Clipboard Repertorisation](#3-dynamic-multi-clipboard-repertorisation)
+4. [Bönninghausen Polarity Analysis (BPA) & Frei Algorithm](#4-bönninghausen-polarity-analysis-bpa--frei-algorithm)
+5. [Vithoulkas Expert System (VES) & 12 Levels of Health](#5-vithoulkas-expert-system-ves--12-levels-of-health)
+6. [Kingdom & Taxonomy Explorer (Scholten, Sankaran, Yakir)](#6-kingdom--taxonomy-explorer-scholten-sankaran-yakir)
+7. [Voice-to-EHR Ambient Case-Taking & Real-Time LSMC Extraction](#7-voice-to-ehr-ambient-case-taking--real-time-lsmc-extraction)
+8. [Remedy Relationship & Family Graph Visualizer](#8-remedy-relationship--family-graph-visualizer)
+9. [Hahnemannian Posology & Split-Dose Plussing Engine](#9-hahnemannian-posology--split-dose-plussing-engine)
+10. [1-Click Branded Prescription Generator & Organon § 260](#10-1-click-branded-prescription-generator--organon--260)
+11. [Visual Cure Trajectory & Hering's Law Verification](#11-visual-cure-trajectory--herings-law-verification)
+12. [Secure Remote Follow-Up Patient Portal](#12-secure-remote-follow-up-patient-portal)
+13. [Extended Classical Materia Medica Library (Dual-Mode)](#13-extended-classical-materia-medica-library-dual-mode)
+14. [Multi-Language Repertory Engine](#14-multi-language-repertory-engine)
+15. [Automated Cloud Backup & HIPAA/GDPR Sovereign Encryption](#15-automated-cloud-backup--hipaagdpr-sovereign-encryption)
+16. [Master Clinical Cheat-Sheet & Keyboard Shortcuts](#16-master-clinical-cheat-sheet--keyboard-shortcuts)
 
 ---
 
@@ -69,7 +70,46 @@ graph TD
 
 ---
 
-## 2. Dynamic Multi-Clipboard Repertorisation
+---
+
+## 2. Next-Gen Clinical Search Engine (RadarOpus-Surpassing)
+
+VitalFokus features an intelligent, multi-layered clinical search engine that resolves the primary pain points of classical homoeopathic desktop software. Practitioners are no longer required to remember archaic 19th-century Kentian rubric phrasing or worry about missed rubrics due to regional spelling variations.
+
+### Comparison: VitalFokus vs. Legacy Repertory Software
+
+| Search Dimension | RadarOpus / Complete Dynamics | VitalFokus Enhanced Engine |
+| :--- | :--- | :--- |
+| **Medical Terminology** | Literal string match; searching `"headache"` fails if rubric is `"Head; pain"` | **Clinical Synonym Expansion:** `"headache"` automatically expands to `"Head; pain"`, `"breathlessness"` to `"Respiration; difficult"` with active translation cards. |
+| **Regional Orthography** | Strict character match; searching `"diarrhea"` misses classical `"diarrhoea"` | **Bi-Directional Normalizer:** Seamless parity for `diarrhea` &harr; `diarrhoea`, `hemorrhoids` &harr; `piles`, `edema` &harr; `dropsy`, `fetid` &harr; `foetid`. |
+| **Modality Notation** | Requires manual hierarchy traversal | **Operator Recognition:** Direct typing of `< cold` (aggravation), `> heat` (amelioration), `midnight`, or `3 am` filters modalities automatically. |
+| **Remedy Keynotes** | Requires opening separate lookup tools | **Reverse Remedy Query:** `@ars:3` or `remedy:lyc:2` surfaces rubrics containing the specified remedy at or above the designated Kentian grade threshold. |
+| **Cross-References** | Excluded from text search | **Cross-Reference Intersections:** Searches inside rubric cross-references (`"See also: Mind - Fear"`). |
+| **Materia Medica** | Single-author or slow book search | **Cross-Volume Full-Text Search:** Rapid simultaneous searching across Allen, Clarke, Boericke, Phatak, and Hahnemann with in-tab section highlighting. |
+
+### Search Syntax Cheat-Sheet
+
+* **Filter by Remedy & Grade:**
+  * `@ars` &rarr; Rubrics containing *Arsenicum album* at Grade &ge; 2 (default threshold).
+  * `@ars:3 stomach` &rarr; Rubrics in *Stomach* where *Arsenicum album* is Grade 3 or 4.
+  * `@nat-m:2 < sun` &rarr; Rubrics with *Natrum muriaticum* (Grade &ge; 2) aggravated by sun.
+  * `remedy:kali-p:3` &rarr; Rubrics with *Kali phosphoricum* at Grade &ge; 3.
+* **Modality Operators:**
+  * `< cold` or `agg. cold` &rarr; Aggravations from cold air, drinks, or weather.
+  * `> warmth` or `amel. warmth` &rarr; Ameliorations from heat or warm applications.
+  * `3 am` or `midnight` &rarr; Time periodicity keynotes.
+* **US/UK Spelling Equivalents:**
+  * `diarrhea` &harr; `diarrhoea`
+  * `hemorrhage` &harr; `haemorrhage`
+  * `hemorrhoids` &harr; `haemorrhoids` &harr; `piles`
+  * `edema` &harr; `oedema` &harr; `dropsy`
+  * `paralysis` &harr; `paralytic` &harr; `paralysed`
+* **Materia Medica Dual-Mode Search:**
+  * Toggle **Cross-Volume MM** in the Materia Medica tab.
+  * Search multi-term clinical symptoms like `"restlessness midnight"` or `"gastralgia worse eating"`.
+  * Click any result to jump directly to the unabridged text with section highlight cues.
+
+## 3. Dynamic Multi-Clipboard Repertorisation
 
 ### The Multi-Clipboard Concept
 In classical practice, mixing physical generals, mental symptoms, and local particulars into a single list can skew remedy weights. VitalFokus supports up to **5 simultaneous active clipboards**:
@@ -87,7 +127,7 @@ In classical practice, mixing physical generals, mental symptoms, and local part
 
 ---
 
-## 3. Bönninghausen Polarity Analysis (BPA) & Frei Algorithm
+## 4. Bönninghausen Polarity Analysis (BPA) & Frei Algorithm
 
 Dr. Heiner Frei demonstrated that selecting remedies solely on high rubric grades frequently fails if a remedy has the **opposite modality** in its pathogenesis.
 
@@ -113,7 +153,7 @@ VitalFokus automatically computes Contra-Indications and displays severe warning
 
 ---
 
-## 4. Vithoulkas Expert System (VES) & 12 Levels of Health
+## 5. Vithoulkas Expert System (VES) & 12 Levels of Health
 
 Classifies the patient’s constitutional vitality into one of **4 Groups** and **12 Levels**:
 
@@ -126,7 +166,7 @@ Classifies the patient’s constitutional vitality into one of **4 Groups** and 
 
 ---
 
-## 5. Kingdom & Taxonomy Explorer (Scholten, Sankaran, Yakir)
+## 6. Kingdom & Taxonomy Explorer (Scholten, Sankaran, Yakir)
 
 Navigate remedies according to their natural-order kingdoms and sub-families:
 
@@ -150,7 +190,7 @@ Navigate remedies according to their natural-order kingdoms and sub-families:
 
 ---
 
-## 6. Voice-to-EHR Ambient Case-Taking & Real-Time LSMC Extraction
+## 7. Voice-to-EHR Ambient Case-Taking & Real-Time LSMC Extraction
 
 During the clinical interview, open the **Ambient Case Recorder**:
 
@@ -165,7 +205,7 @@ During the clinical interview, open the **Ambient Case Recorder**:
 
 ---
 
-## 7. Remedy Relationship & Family Graph Visualizer
+## 8. Remedy Relationship & Family Graph Visualizer
 
 View clinical inter-remedy networks in a force-directed visual graph:
 * **Acute $\to$ Chronic Chains**:
@@ -176,7 +216,7 @@ View clinical inter-remedy networks in a force-directed visual graph:
 
 ---
 
-## 8. Hahnemannian Posology & Split-Dose Plussing Engine
+## 9. Hahnemannian Posology & Split-Dose Plussing Engine
 
 Implements the instructions of Samuel Hahnemann's *Organon of Medicine* (5th & 6th Editions):
 
@@ -189,7 +229,7 @@ Implements the instructions of Samuel Hahnemann's *Organon of Medicine* (5th & 6
 
 ---
 
-## 9. 1-Click Branded Prescription Generator & Organon § 260
+## 10. 1-Click Branded Prescription Generator & Organon § 260
 
 Generate clinic-ready, professional prescriptions in seconds:
 * **Doctor Credentials**: Customized doctor name, license number, institutional affiliation.
@@ -201,7 +241,7 @@ Generate clinic-ready, professional prescriptions in seconds:
 
 ---
 
-## 10. Visual Cure Trajectory & Hering's Law Verification
+## 11. Visual Cure Trajectory & Hering's Law Verification
 
 Plot numerical symptom severity ($0 \to 10$) across consultation visits:
 
@@ -218,7 +258,7 @@ Visit 3 (1-Month Check-in)    :  Severity 1.2 / 10  [Sac Lac - +88% Curative Evo
 
 ---
 
-## 11. Secure Remote Follow-Up Patient Portal
+## 12. Secure Remote Follow-Up Patient Portal
 
 Provide patients with zero-friction follow-up check-ins between clinic visits:
 1. In **Patient EHR**, click the **Send / Follow-up Portal** icon on the patient card.
@@ -234,7 +274,7 @@ Provide patients with zero-friction follow-up check-ins between clinic visits:
 
 ---
 
-## 12. Extended Classical Materia Medica Library
+## 13. Extended Classical Materia Medica Library (Dual-Mode)
 
 Search full unabridged historical texts across 5 authoritative works:
 * **Allen's Keynotes**: *Keynotes of the Materia Medica* by Dr. H. C. Allen.
@@ -245,7 +285,7 @@ Search full unabridged historical texts across 5 authoritative works:
 
 ---
 
-## 13. Multi-Language Repertory Engine
+## 14. Multi-Language Repertory Engine
 
 Switch language instantaneously using the globe selector in the top navbar:
 * 🇬🇧 **English**: Standard Kentian terminology (*Mind, Vertigo, Head, Stomach*).
@@ -256,7 +296,7 @@ Switch language instantaneously using the globe selector in the top navbar:
 
 ---
 
-## 14. Automated Cloud Backup & HIPAA/GDPR Sovereign Encryption
+## 15. Automated Cloud Backup & HIPAA/GDPR Sovereign Encryption
 
 Patient records contain sensitive health information. VitalFokus employs **zero-knowledge local-first architecture**:
 * **Encryption Algorithm**: AES-256-GCM.
@@ -267,7 +307,7 @@ Patient records contain sensitive health information. VitalFokus employs **zero-
 
 ---
 
-## 15. Master Clinical Cheat-Sheet & Keyboard Shortcuts
+## 16. Master Clinical Cheat-Sheet & Keyboard Shortcuts
 
 | Shortcut | Action | Scope |
 |---|---|---|

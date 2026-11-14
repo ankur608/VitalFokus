@@ -26,7 +26,8 @@ import {
   Lightbulb,
   HeartPulse,
   Activity,
-  Cpu
+  Cpu,
+  Award
 } from "lucide-react";
 import { ActiveTab } from "@/components/layout/Sidebar";
 
@@ -38,6 +39,7 @@ interface CookbookGuideModalProps {
 
 type GuideSectionId = 
   | "quickstart"
+  | "search-engine"
   | "clipboards"
   | "polarity"
   | "ves"
@@ -63,6 +65,7 @@ interface GuideSection {
 
 const GUIDE_SECTIONS: GuideSection[] = [
   { id: "quickstart", title: "Overview & Quickstart", icon: BookOpen, badge: "Intro", targetTab: "dashboard" },
+  { id: "search-engine", title: "Next-Gen Clinical Search", icon: Search, badge: "RadarOpus+", targetTab: "repertory" },
   { id: "clipboards", title: "Multi-Clipboard Repertorisation", icon: Layers, badge: "Pillar 1", targetTab: "repertorisation" },
   { id: "polarity", title: "Bönninghausen Polarity (BPA)", icon: Scale, badge: "Frei Method", targetTab: "polarity" },
   { id: "ves", title: "Vithoulkas Levels of Health", icon: HeartPulse, badge: "12 Levels", targetTab: "dashboard" },
@@ -238,6 +241,126 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
                       Use the floating round icon at the bottom right on any page to open this usage guide at any time. Press <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 rounded border border-teal-300 dark:border-teal-700 font-mono text-[10px]">⌘K</kbd> to trigger Spotlight search across all 188 remedies and 700+ classical rubrics.
                     </p>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Next-Gen Clinical Search Engine Guide View */}
+            {activeSection === "search-engine" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                      <Search className="w-5 h-5 text-teal-500" />
+                      Next-Gen Clinical Search Engine
+                    </h2>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      RadarOpus-surpassing intelligent query parsing: Clinical Synonyms, US/UK Orthography Normalization, Modality Operators, Reverse Remedy Keynotes, and Cross-Volume MM Search.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleLaunchTab("repertory")}
+                    className="px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition cursor-pointer"
+                  >
+                    Open Repertory Explorer <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* 5 Core Search Innovations Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  {/* 1. Clinical Synonym Expansion */}
+                  <div className="p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/60 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-blue-800 dark:text-blue-300 flex items-center gap-1.5 text-sm">
+                        <Sparkles className="w-4 h-4 text-blue-500" /> 1. Clinical Synonym Expansion
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                        Automatic
+                      </span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      Type modern pathology and medical terms naturally without needing to remember archaic 19th-century Kentian headings.
+                    </p>
+                    <div className="space-y-1 font-mono text-[11px] bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-blue-100 dark:border-blue-950">
+                      <div><span className="text-slate-400">Query:</span> <strong className="text-blue-600 dark:text-blue-400">headache</strong> &rarr; <span className="text-slate-600 dark:text-slate-300">Head; pain</span></div>
+                      <div><span className="text-slate-400">Query:</span> <strong className="text-blue-600 dark:text-blue-400">breathlessness</strong> &rarr; <span className="text-slate-600 dark:text-slate-300">Respiration; difficult</span></div>
+                      <div><span className="text-slate-400">Query:</span> <strong className="text-blue-600 dark:text-blue-400">insomnia</strong> &rarr; <span className="text-slate-600 dark:text-slate-300">Sleep; sleeplessness</span></div>
+                    </div>
+                  </div>
+
+                  {/* 2. US <-> UK Orthography Normalizer */}
+                  <div className="p-4 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/60 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-indigo-800 dark:text-indigo-300 flex items-center gap-1.5 text-sm">
+                        <Globe className="w-4 h-4 text-indigo-500" /> 2. Orthography Normalizer
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-200 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">
+                        Bi-Directional
+                      </span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      Zero missed rubrics due to regional spelling differences between American and British/Classical Homeopathic English.
+                    </p>
+                    <div className="space-y-1 font-mono text-[11px] bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-indigo-100 dark:border-indigo-950">
+                      <div><span className="text-slate-400">US:</span> diarrhea &harr; <span className="text-indigo-600 dark:text-indigo-400 font-bold">diarrhoea</span> (UK)</div>
+                      <div><span className="text-slate-400">US:</span> hemorrhoids &harr; <span className="text-indigo-600 dark:text-indigo-400 font-bold">haemorrhoids / piles</span></div>
+                      <div><span className="text-slate-400">US:</span> edema &harr; <span className="text-indigo-600 dark:text-indigo-400 font-bold">oedema / dropsy</span></div>
+                    </div>
+                  </div>
+
+                  {/* 3. Modality Operator Recognition */}
+                  <div className="p-4 rounded-2xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-rose-800 dark:text-rose-300 flex items-center gap-1.5 text-sm">
+                        <Clock className="w-4 h-4 text-rose-500" /> 3. Modality Operators (&lt; &amp; &gt;)
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-200">
+                        Syntactic
+                      </span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      Use standard homoeopathic notation directly in the search bar to filter aggravation or amelioration sub-rubrics.
+                    </p>
+                    <div className="space-y-1 font-mono text-[11px] bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-rose-100 dark:border-rose-950">
+                      <div><strong className="text-rose-600 dark:text-rose-400">&lt; cold</strong> &rarr; Aggravation from cold air/weather</div>
+                      <div><strong className="text-emerald-600 dark:text-emerald-400">&gt; warmth</strong> &rarr; Amelioration from warmth/heat</div>
+                      <div><strong className="text-amber-600 dark:text-amber-400">3 am / midnight</strong> &rarr; Exact time periodicity</div>
+                    </div>
+                  </div>
+
+                  {/* 4. Reverse Remedy Keynote Search */}
+                  <div className="p-4 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5 text-sm">
+                        <Award className="w-4 h-4 text-amber-500" /> 4. Reverse Remedy Query (@remedy)
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200">
+                        Grade Filter
+                      </span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      Instantly discover all rubrics containing a specific remedy at a minimum Kentian Grade threshold.
+                    </p>
+                    <div className="space-y-1 font-mono text-[11px] bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-amber-100 dark:border-amber-950">
+                      <div><strong className="text-amber-600 dark:text-amber-400">@ars:3 stomach</strong> &rarr; Ars in stomach at Grade &ge; 3</div>
+                      <div><strong className="text-amber-600 dark:text-amber-400">@nat-m &lt; sun</strong> &rarr; Nat-m rubrics worse from sun</div>
+                      <div><strong className="text-amber-600 dark:text-amber-400">remedy:kali-p:2</strong> &rarr; Kali-p with Grade &ge; 2</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 5. Cross-Volume Materia Medica Full-Text Retrieval */}
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-teal-50 to-indigo-50 dark:from-teal-950/40 dark:to-indigo-950/40 border border-teal-200 dark:border-teal-800 space-y-2 text-xs">
+                  <span className="font-bold text-teal-900 dark:text-teal-200 text-sm flex items-center gap-1.5">
+                    <Library className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    5. Cross-Volume Materia Medica Dual-Mode Search
+                  </span>
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Inside the Materia Medica tab, toggle from <strong>Remedy Index</strong> to <strong>Cross-Volume MM</strong>. Enter complex symptoms like <code className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 font-mono text-teal-600 dark:text-teal-400">"restlessness midnight"</code> or <code className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 font-mono text-teal-600 dark:text-teal-400">"gastralgia worse eating"</code>.
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    VitalFokus searches simultaneously across <strong>Dr. H. C. Allen</strong>, <strong>Dr. J. H. Clarke</strong>, <strong>Dr. William Boericke</strong>, <strong>Dr. S. R. Phatak</strong>, and <strong>Dr. Samuel Hahnemann</strong>. Selecting any result card auto-switches to that remedy and author, highlighting the exact matching clinical section in amber/indigo.
+                  </p>
                 </div>
               </div>
             )}
@@ -551,10 +674,10 @@ export const CookbookGuideModal: React.FC<CookbookGuideModalProps> = ({
                   <div>
                     <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                       <Library className="w-5 h-5 text-indigo-500" />
-                      Extended Classical Materia Medica Library
+                      Extended Classical Materia Medica Library (Dual-Mode)
                     </h2>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      Full searchable texts of Allen’s Keynotes, Clarke’s Dictionary, Phatak’s MM, and Hahnemann’s Chronic Diseases.
+                      Full searchable texts of Allen’s Keynotes, Clarke’s Dictionary, Phatak’s MM, Boericke's Manual, and Hahnemann’s Chronic Diseases with Dual-Mode (Remedy Index vs Cross-Volume Full-Text Search).
                     </p>
                   </div>
                   <button
