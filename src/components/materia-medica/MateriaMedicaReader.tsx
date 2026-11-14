@@ -52,6 +52,10 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [kingdomFilter, setKingdomFilter] = useState("All");
   const [isLoading, setIsLoading] = useState(false);
+  const [searchMode, setSearchMode] = useState<"remedy" | "fulltext">("remedy");
+  const [mmResults, setMmResults] = useState<any[]>([]);
+  const [isSearchingMM, setIsSearchingMM] = useState<boolean>(false);
+  const [mmAuthorFilter, setMmAuthorFilter] = useState<string>("all");
 
   const fetchRemedies = async () => {
     try {
@@ -95,6 +99,30 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
     }
   }, [selectedRemedyId]);
 
+  useEffect(() => {
+    if (searchMode === "fulltext" && searchQuery.trim().length > 1) {
+      const timer = setTimeout(async () => {
+        setIsSearchingMM(true);
+        try {
+          const params = new URLSearchParams({
+            q: searchQuery.trim(),
+            author: mmAuthorFilter
+          });
+          const res = await fetch(`/api/materia-medica/search?${params.toString()}`);
+          const data = await res.json();
+          setMmResults(data.results || []);
+        } catch (e) {
+          console.error("MM search failed:", e);
+        } finally {
+          setIsSearchingMM(false);
+        }
+      }, 200);
+      return () => clearTimeout(timer);
+    } else if (searchMode === "fulltext" && searchQuery.trim().length <= 1) {
+      setMmResults([]);
+    }
+  }, [searchQuery, searchMode, mmAuthorFilter]);
+
   const filteredRemedies = remedies.filter((r) => {
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
@@ -116,80 +144,191 @@ export const MateriaMedicaReader: React.FC<MateriaMedicaReaderProps> = ({
 
   return (
     <div className="flex h-full gap-5 overflow-hidden">
-      {/* Remedy Selector Left Rail */}
-      <aside className="w-72 shrink-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col overflow-hidden shadow-xs">
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <BookMarked className="w-4 h-4 text-amber-500" /> {ui.materiaMedica} ({remedies.length})
-            </span>
+      {/* Remedy & Full-Text Materia Medica Selector Rail */}
+      <aside className="w-80 sm:w-84 shrink-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col overflow-hidden shadow-xs">
+        <div className="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 space-y-2.5">
+          {/* Dual Mode Switcher */}
+          <div className="grid grid-cols-2 p-1 bg-slate-200/60 dark:bg-slate-800 rounded-xl text-[11px] font-bold">
+            <button
+              onClick={() => setSearchMode("remedy")}
+              className={`py-1 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer ${
+                searchMode === "remedy"
+                  ? "bg-white dark:bg-slate-700 text-amber-700 dark:text-amber-300 shadow-xs"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              }`}
+            >
+              <BookMarked className="w-3.5 h-3.5" />
+              Remedy Index ({remedies.length})
+            </button>
+            <button
+              onClick={() => setSearchMode("fulltext")}
+              className={`py-1 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer ${
+                searchMode === "fulltext"
+                  ? "bg-white dark:bg-slate-700 text-amber-700 dark:text-amber-300 shadow-xs"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              Cross-Volume MM
+            </button>
           </div>
 
+          {/* Search Box */}
           <div className="relative">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Filter remedies (#188, ars, etc.)..."
+              placeholder={
+                searchMode === "fulltext"
+                  ? "Search 5 authors ('restlessness midnight', 'gastralgia')..."
+                  : "Filter remedies (#188, ars, etc.)..."
+              }
               className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-amber-500"
             />
           </div>
 
-          <div className="flex items-center gap-1 overflow-x-auto text-[10px] font-semibold text-slate-500">
-            {["All", "Plant", "Mineral", "Animal", "Nosode"].map((k) => (
-              <button
-                key={k}
-                onClick={() => setKingdomFilter(k)}
-                className={`px-2 py-0.5 rounded-md transition ${
-                  kingdomFilter === k
-                    ? "bg-amber-600 text-white font-bold"
-                    : "bg-slate-200/60 dark:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200"
-                }`}
-              >
-                {k}
-              </button>
-            ))}
-          </div>
+          {/* Secondary Filters */}
+          {searchMode === "remedy" ? (
+            <div className="flex items-center gap-1 overflow-x-auto text-[10px] font-semibold text-slate-500">
+              {["All", "Plant", "Mineral", "Animal", "Nosode"].map((k) => (
+                <button
+                  key={k}
+                  onClick={() => setKingdomFilter(k)}
+                  className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                    kingdomFilter === k
+                      ? "bg-amber-600 text-white font-bold"
+                      : "bg-slate-200/60 dark:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200"
+                  }`}
+                >
+                  {k}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 overflow-x-auto text-[10px] font-semibold text-slate-500">
+              {[
+                { id: "all", label: "All Authors" },
+                { id: "allen", label: "Allen" },
+                { id: "clarke", label: "Clarke" },
+                { id: "phatak", label: "Phatak" },
+                { id: "hahnemann", label: "Hahnemann" },
+                { id: "boericke", label: "Boericke" }
+              ].map((a) => (
+                <button
+                  key={a.id}
+                  onClick={() => setMmAuthorFilter(a.id)}
+                  className={`px-2 py-0.5 rounded-md transition whitespace-nowrap cursor-pointer ${
+                    mmAuthorFilter === a.id
+                      ? "bg-amber-600 text-white font-bold"
+                      : "bg-slate-200/60 dark:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200"
+                  }`}
+                >
+                  {a.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Remedy List */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-1">
-          {filteredRemedies.map((r) => {
-            const isSelected = selectedRemedyId === r.id;
-            return (
-              <div
-                key={r.id}
-                onClick={() => setSelectedRemedyId(r.id)}
-                className={`p-2.5 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between ${
-                  isSelected
-                    ? "bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-900 dark:text-amber-200 shadow-xs"
-                    : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 hover:border-slate-200 text-slate-700 dark:text-slate-300"
-                }`}
-              >
-                <div className="flex items-center gap-2.5 truncate">
-                  <span
-                    className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                      isSelected
-                        ? "bg-amber-600 text-white"
-                        : "bg-slate-100 dark:bg-slate-800 text-slate-500"
-                    }`}
-                  >
-                    #{String(r.remedyNumber || 0).padStart(3, "0")}
-                  </span>
-                  <div className="truncate">
-                    <span className="font-semibold block truncate">
-                      {r.name}
+        {/* List Content: Either Remedy Index OR Cross-Volume Full-Text Results */}
+        <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+          {searchMode === "remedy" ? (
+            filteredRemedies.map((r) => {
+              const isSelected = selectedRemedyId === r.id;
+              return (
+                <div
+                  key={r.id}
+                  onClick={() => setSelectedRemedyId(r.id)}
+                  className={`p-2.5 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between ${
+                    isSelected
+                      ? "bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-900 dark:text-amber-200 shadow-xs"
+                      : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 hover:border-slate-200 text-slate-700 dark:text-slate-300"
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 truncate">
+                    <span
+                      className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                        isSelected
+                          ? "bg-amber-600 text-white"
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                      }`}
+                    >
+                      #{String(r.remedyNumber || 0).padStart(3, "0")}
                     </span>
-                    <span className="text-[10px] text-slate-400 truncate block">
-                      {r.abbreviation} • {r.kingdom}
+                    <div className="truncate">
+                      <span className="font-semibold block truncate">
+                        {r.name}
+                      </span>
+                      <span className="text-[10px] text-slate-400 truncate block">
+                        {r.abbreviation} • {r.kingdom}
+                      </span>
+                    </div>
+                  </div>
+                  {isSelected && <ChevronRight className="w-4 h-4 text-amber-600 shrink-0" />}
+                </div>
+              );
+            })
+          ) : isSearchingMM ? (
+            <div className="py-12 text-center text-slate-400 text-xs">
+              Searching unabridged texts across 5 classical authors...
+            </div>
+          ) : mmResults.length === 0 ? (
+            <div className="py-10 px-4 text-center text-slate-400 text-xs space-y-2">
+              <Sparkles className="w-5 h-5 mx-auto text-amber-500 opacity-60" />
+              <p>Type symptoms or modalities above to search across Allen, Clarke, Boericke, Phatak, and Hahnemann.</p>
+              <div className="pt-2 flex flex-wrap gap-1 justify-center text-[10px]">
+                <button
+                  onClick={() => setSearchQuery("restlessness midnight")}
+                  className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-amber-950/50 cursor-pointer"
+                >
+                  "restlessness midnight"
+                </button>
+                <button
+                  onClick={() => setSearchQuery("gastralgia")}
+                  className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-amber-950/50 cursor-pointer"
+                >
+                  "gastralgia"
+                </button>
+              </div>
+            </div>
+          ) : (
+            mmResults.map((item, idx) => (
+              <div
+                key={idx}
+                onClick={() => {
+                  setSelectedRemedyId(item.remedyId);
+                  setSelectedAuthor(item.author);
+                }}
+                className="p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-amber-400 dark:hover:border-amber-500 bg-white dark:bg-slate-900/80 cursor-pointer transition space-y-1.5 shadow-2xs group"
+              >
+                <div className="flex items-center justify-between gap-1">
+                  <div className="flex items-center gap-1.5 truncate">
+                    <span className="font-bold text-xs text-slate-900 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 truncate">
+                      {item.remedyName}
+                    </span>
+                    <span className="font-mono text-[10px] text-slate-400">
+                      ({item.abbreviation})
                     </span>
                   </div>
+                  <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold border ${item.badgeColor}`}>
+                    {item.authorName.replace("Dr. ", "")}
+                  </span>
                 </div>
-                {isSelected && <ChevronRight className="w-4 h-4 text-amber-600 shrink-0" />}
+
+                <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
+                  <span className="px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    {item.matchedSection}
+                  </span>
+                </div>
+
+                <p className="text-[11px] text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed italic bg-slate-50 dark:bg-slate-950/40 p-1.5 rounded-lg border border-slate-100 dark:border-slate-800/60">
+                  "{item.snippet}"
+                </p>
               </div>
-            );
-          })}
+            ))
+          )}
         </div>
       </aside>
 

@@ -98,7 +98,7 @@ export const CommandSpotlight: React.FC<CommandSpotlightProps> = ({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search rubrics (e.g. mind anxiety), remedies (e.g. ars), or patients..."
+            placeholder="Search rubrics (@ars:3, < cold, diarrhea), remedies, or patients..."
             className="flex-1 bg-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-hidden text-sm"
           />
           {query && (
@@ -120,9 +120,35 @@ export const CommandSpotlight: React.FC<CommandSpotlightProps> = ({
         {/* Results Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {!query.trim() ? (
-            <div className="py-8 text-center text-slate-400 dark:text-slate-500 text-xs">
+            <div className="py-8 text-center text-slate-400 dark:text-slate-500 text-xs space-y-2">
               <Sparkles className="w-6 h-6 mx-auto mb-2 text-teal-500 opacity-60" />
-              Type to instantly search across Kentian Rubrics, Materia Medica, and Clinical Records.
+              <p>Type to instantly search across Kentian Rubrics, Materia Medica, and Clinical Records.</p>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1 text-[11px]">
+                <button
+                  onClick={() => setQuery("@ars:3 ")}
+                  className="px-2 py-0.5 rounded-md bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 hover:bg-teal-100 cursor-pointer"
+                >
+                  @ars:3
+                </button>
+                <button
+                  onClick={() => setQuery("< cold ")}
+                  className="px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 cursor-pointer"
+                >
+                  &lt; cold
+                </button>
+                <button
+                  onClick={() => setQuery("diarrhea ")}
+                  className="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 cursor-pointer"
+                >
+                  diarrhea
+                </button>
+                <button
+                  onClick={() => setQuery("headache ")}
+                  className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 cursor-pointer"
+                >
+                  headache
+                </button>
+              </div>
             </div>
           ) : null}
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseClinicalQuery, ParsedSearchQuery } from "@/lib/searchEngine";
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,25 +11,9 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get("limit") || "60", 10), 200);
     const offset = parseInt(searchParams.get("offset") || "0", 10);
 
-    // 1. Check for modern medical lexicon synonym matches
+    let parsed: ParsedSearchQuery | null = null;
     let matchedSynonym = null;
     let extraRubricPaths: string[] = [];
-
-    if (query) {
-      const lowerQ = query.toLowerCase();
-      matchedSynonym = await prisma.synonymMap.findFirst({
-        where: {
-          OR: [
-            { modernTerm: { contains: lowerQ } },
-            { category: { contains: lowerQ } }
-          ]
-        }
-      });
-
-      if (matchedSynonym) {
-        extraRubricPaths.push(matchedSynonym.classicalRubricPath);
-      }
-    }
 
     const whereClause: any = {};
 
@@ -45,20 +30,72 @@ export async function GET(request: NextRequest) {
     }
 
     if (query) {
-      const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-      const textConditions = terms.map((term) => ({
-        fullPath: {
-          contains: term
-        }
-      }));
+      parsed = parseClinicalQuery(query);
+      const lowerQ = parsed.cleanTextQuery || query.toLowerCase();
 
-      if (extraRubricPaths.length > 0) {
-        whereClause.OR = [
-          { AND: textConditions },
-          { fullPath: { in: extraRubricPaths } }
-        ];
-      } else {
-        whereClause.AND = textConditions;
+      // 1. Check for modern medical lexicon synonym matches
+      matchedSynonym = await prisma.synonymMap.findFirst({
+        where: {
+          OR: [
+            { modernTerm: { contains: lowerQ } },
+            { category: { contains: lowerQ } }
+          ]
+        }
+      });
+
+      if (matchedSynonym) {
+        extraRubricPaths.push(matchedSynonym.classicalRubricPath);
+      }
+
+      // Add high-yield clinical synonym candidates from searchEngine
+      for (const cand of parsed.clinicalSynonymCandidates) {
+        if (!extraRubricPaths.includes(cand.targetRubric)) {
+          extraRubricPaths.push(cand.targetRubric);
+        }
+      }
+
+      // 2. Reverse Remedy Filter (e.g. @ars, @ars:3, remedy:phos)
+      if (parsed.remedyFilter) {
+        whereClause.remedies = {
+          some: {
+            grade: { gte: parsed.remedyFilter.minGrade },
+            remedy: {
+              OR: [
+                { abbreviation: { startsWith: parsed.remedyFilter.token } },
+                { name: { contains: parsed.remedyFilter.token } }
+              ]
+            }
+          }
+        };
+      }
+
+      // 3. Text & Modality Conditions with Orthography Expansion
+      if (parsed.expandedTerms.length > 0) {
+        const textConditions = parsed.expandedTerms.map((termVariants) => {
+          if (termVariants.length === 1) {
+            return { fullPath: { contains: termVariants[0] } };
+          }
+          return {
+            OR: termVariants.map((v) => ({ fullPath: { contains: v } }))
+          };
+        });
+
+        const pathConditions = extraRubricPaths.map((p) => ({
+          fullPath: { startsWith: p }
+        }));
+
+        if (extraRubricPaths.length > 0) {
+          whereClause.OR = [
+            { AND: textConditions },
+            ...pathConditions
+          ];
+        } else {
+          whereClause.AND = textConditions;
+        }
+      } else if (extraRubricPaths.length > 0) {
+        whereClause.OR = extraRubricPaths.map((p) => ({
+          fullPath: { startsWith: p }
+        }));
       }
     }
 
@@ -98,6 +135,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       total,
+      parsedQuery: parsed,
       matchedSynonym: matchedSynonym
         ? {
             modernTerm: matchedSynonym.modernTerm,
@@ -105,6 +143,14 @@ export async function GET(request: NextRequest) {
             category: matchedSynonym.category,
             explanation: matchedSynonym.clinicalExplanation,
             suggestedRemedies: matchedSynonym.suggestedRemedies
+          }
+        : parsed && parsed.clinicalSynonymCandidates.length > 0
+        ? {
+            modernTerm: parsed.clinicalSynonymCandidates[0].term,
+            classicalRubricPath: parsed.clinicalSynonymCandidates[0].targetRubric,
+            category: parsed.clinicalSynonymCandidates[0].category,
+            explanation: "Automatic Kentian conversion for clinical symptom '" + parsed.clinicalSynonymCandidates[0].term + "'",
+            suggestedRemedies: "Classical keynote indication"
           }
         : null,
       rubrics: rubrics.map((r) => ({

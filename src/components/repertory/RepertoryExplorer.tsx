@@ -30,6 +30,7 @@ export const RepertoryExplorer: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [rubrics, setRubrics] = useState<any[]>([]);
   const [matchedSynonym, setMatchedSynonym] = useState<any | null>(null);
+  const [parsedQuery, setParsedQuery] = useState<any | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -66,6 +67,7 @@ export const RepertoryExplorer: React.FC = () => {
       const data = await res.json();
       setRubrics(data.rubrics || []);
       setMatchedSynonym(data.matchedSynonym || null);
+      setParsedQuery(data.parsedQuery || null);
       setTotal(data.total || 0);
 
       if (data.chapters && chapters.length === 0) {
@@ -222,29 +224,95 @@ export const RepertoryExplorer: React.FC = () => {
       {/* Main Rubrics Browser Pane */}
       <main className="flex-1 flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xs">
         {/* Search & Actions Header */}
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50/60 dark:bg-slate-950/40">
-          <div className="flex items-center gap-3 flex-1 min-w-[280px]">
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search classical rubrics or modern medical terms (e.g. 'hypertension', 'insomnia', 'panic attack')..."
-                className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-hidden focus:border-teal-500 shadow-2xs"
-              />
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col gap-2.5 bg-slate-50/60 dark:bg-slate-950/40">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-[280px]">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search rubrics, @remedy:grade, < aggravation, > amel, or clinical terms ('diarrhea', 'headache')..."
+                  className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-hidden focus:border-teal-500 shadow-2xs"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsAddingClinicalRubric(true)}
+                className="px-3 py-1.5 rounded-xl border border-amber-300 dark:border-amber-700/80 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-100 dark:hover:bg-amber-900/40 transition flex items-center gap-1.5 shadow-xs"
+              >
+                <BadgeCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>+ Add Clinical Rubric [User Verified]</span>
+              </button>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Quick Syntax Suggestions Bar */}
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-500">
+            <span className="font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-teal-500" /> Quick Syntax:
+            </span>
             <button
-              onClick={() => setIsAddingClinicalRubric(true)}
-              className="px-3 py-1.5 rounded-xl border border-amber-300 dark:border-amber-700/80 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-100 dark:hover:bg-amber-900/40 transition flex items-center gap-1.5 shadow-xs"
+              onClick={() => setSearchQuery("@ars:3 ")}
+              className="px-2 py-0.5 rounded-md bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 hover:bg-teal-100 transition cursor-pointer"
+              title="Filter rubrics where Arsenicum album is Grade 3 or higher"
             >
-              <BadgeCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>+ Add Clinical Rubric [User Verified]</span>
+              @ars:3
+            </button>
+            <button
+              onClick={() => setSearchQuery("< cold ")}
+              className="px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition cursor-pointer"
+              title="Filter rubrics aggravated by cold"
+            >
+              &lt; cold
+            </button>
+            <button
+              onClick={() => setSearchQuery("> warmth ")}
+              className="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition cursor-pointer"
+              title="Filter rubrics ameliorated by warmth"
+            >
+              &gt; warmth
+            </button>
+            <button
+              onClick={() => setSearchQuery("diarrhea ")}
+              className="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition cursor-pointer"
+              title="Automatic US <-> UK orthography normalizer (diarrhea <-> diarrhoea)"
+            >
+              diarrhea ⇄ diarrhoea
+            </button>
+            <button
+              onClick={() => setSearchQuery("headache ")}
+              className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition cursor-pointer"
+              title="Clinical synonym mapped to 'Head; pain'"
+            >
+              headache ⇄ Head; pain
             </button>
           </div>
+
+          {/* Active Clinical Parsed Query Chips */}
+          {parsedQuery && (parsedQuery.remedyFilter || (parsedQuery.modalities && (parsedQuery.modalities.aggravations.length > 0 || parsedQuery.modalities.ameliorations.length > 0))) && (
+            <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Active Filters:</span>
+              {parsedQuery.remedyFilter && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-700">
+                  <span>Remedy: <strong>{parsedQuery.remedyFilter.token.toUpperCase()}</strong> (Grade ≥ {parsedQuery.remedyFilter.minGrade})</span>
+                </span>
+              )}
+              {parsedQuery.modalities?.aggravations?.map((agg: string) => (
+                <span key={agg} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-200 border border-rose-300 dark:border-rose-700">
+                  <span>Aggravation: <strong>&lt; {agg}</strong></span>
+                </span>
+              ))}
+              {parsedQuery.modalities?.ameliorations?.map((amel: string) => (
+                <span key={amel} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700">
+                  <span>Amelioration: <strong>&gt; {amel}</strong></span>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Modern Medical Lexicon Synonym Translation Banner */}
@@ -381,11 +449,15 @@ export const RepertoryExplorer: React.FC = () => {
                       else if (rem.grade === 4)
                         gradeClass = "remedy-grade-4 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800";
 
+                      const isFilterMatch = parsedQuery?.remedyFilter && 
+                        (rem.abbr.toLowerCase().startsWith(parsedQuery.remedyFilter.token) || 
+                         rem.name.toLowerCase().includes(parsedQuery.remedyFilter.token));
+
                       return (
                         <span
                           key={rem.id}
-                          className={`text-[11px] px-2 py-0.5 rounded-md font-mono cursor-pointer transition hover:scale-105 ${gradeClass}`}
-                          title={`${rem.name} • Grade ${rem.grade}`}
+                          className={`text-[11px] px-2 py-0.5 rounded-md font-mono cursor-pointer transition hover:scale-105 ${gradeClass} ${isFilterMatch ? "ring-2 ring-amber-400 dark:ring-amber-300 font-extrabold scale-105 shadow-xs" : ""}`}
+                          title={`${rem.name} • Grade ${rem.grade} ${isFilterMatch ? "(Matches Query Filter)" : ""}`}
                         >
                           {rem.abbr}
                         </span>
