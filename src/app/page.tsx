@@ -30,6 +30,15 @@ export default function Home() {
   const { activePatientId, setActivePatientId } = useClipboardStore();
   const [activePatientName, setActivePatientName] = useState<string | null>(null);
 
+  // Sync activeTab from URL query params (e.g. ?tab=vital-ai)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get("tab") as ActiveTab | null;
+      if (tabParam) setActiveTab(tabParam);
+    } catch (e) {}
+  }, []);
+
   // Initialize theme from localStorage or document attribute
   useEffect(() => {
     const saved = localStorage.getItem("vitalfokus_theme") as "dark" | "light" | null;

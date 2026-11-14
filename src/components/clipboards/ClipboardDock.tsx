@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Bot } from "lucide-react";
+import { ChatCopilotModal } from "@/components/vital-ai/ChatCopilotModal";
 import { CookbookGuideModal } from "@/components/guide/CookbookGuideModal";
 import { ActiveTab } from "@/components/layout/Sidebar";
 import {
@@ -30,6 +31,7 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
   onNavigateTab
 }) => {
   const [isCookbookOpen, setIsCookbookOpen] = useState(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const {
     clipboards,
     activeClipboardId,
@@ -70,6 +72,17 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
     return (
       <>
         <aside className="fixed bottom-4 right-6 z-40 flex flex-col items-end gap-2.5">
+                    {/* Floating Round VitalAI Chat Co-pilot Pop-up Trigger */}
+          <button
+            onClick={() => setIsCopilotOpen(true)}
+            className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white shadow-xl shadow-indigo-600/30 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
+            title="VitalAI Chat Co-pilot (Pop-up Window)"
+          >
+            <Bot className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
+              Chat Co-pilot
+            </span>
+          </button>
           {/* Floating Round Cookbook & App Guide Pop-up Trigger */}
           <button
             onClick={() => setIsCookbookOpen(true)}
@@ -98,6 +111,7 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
           onClose={() => setIsCookbookOpen(false)}
           onNavigateTab={onNavigateTab}
         />
+        <ChatCopilotModal isOpen={isCopilotOpen} onClose={() => setIsCopilotOpen(false)} />
       </>
     );
   }
@@ -374,7 +388,19 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
     </aside>
 
     {/* Floating Round Cookbook Trigger above Dock */}
-    <aside className="fixed bottom-36 right-6 z-40">
+    <aside className="fixed bottom-36 right-6 z-40 flex flex-col items-end gap-2.5">
+      {/* Floating Round VitalAI Chat Co-pilot Pop-up Trigger */}
+      <button
+        onClick={() => setIsCopilotOpen(true)}
+        className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white shadow-xl shadow-indigo-600/30 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
+        title="VitalAI Chat Co-pilot (Pop-up Window)"
+      >
+        <Bot className="w-4 h-4 group-hover:scale-110 transition-transform" />
+        <span className="absolute right-12 px-2.5 py-1 rounded-md bg-slate-900 text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md border border-slate-700">
+          Chat Co-pilot
+        </span>
+      </button>
+
       <button
         onClick={() => setIsCookbookOpen(true)}
         className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white shadow-xl shadow-teal-500/25 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer group relative border border-white/20"
@@ -392,6 +418,7 @@ export const ClipboardDock: React.FC<ClipboardDockProps> = ({
       onClose={() => setIsCookbookOpen(false)}
       onNavigateTab={onNavigateTab}
     />
+    <ChatCopilotModal isOpen={isCopilotOpen} onClose={() => setIsCopilotOpen(false)} />
   </>
   );
 };
