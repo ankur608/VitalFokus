@@ -206,10 +206,10 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
                     </div>
 
                     <div className="flex items-center gap-6 text-sm font-mono">
-                      <span className="w-14 text-center font-medium text-emerald-400">+{score.patientPolarScore}</span>
-                      <span className="w-14 text-center font-medium text-rose-400">-{score.oppositeContraScore}</span>
+                      <span className="w-14 text-center font-medium text-emerald-700 dark:text-emerald-400">+{score.patientPolarScore}</span>
+                      <span className="w-14 text-center font-medium text-rose-700 dark:text-rose-400">-{score.oppositeContraScore}</span>
                       <span className={`w-16 text-right font-bold text-base ${
-                        score.polarityDifference > 0 ? "text-teal-300" : "text-slate-400"
+                        score.polarityDifference > 0 ? "text-teal-700 dark:text-teal-300 font-extrabold" : "text-slate-600 dark:text-slate-400"
                       }`}>
                         {score.polarityDifference > 0 ? `+${score.polarityDifference}` : score.polarityDifference}
                       </span>
@@ -239,15 +239,15 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
               <div className="grid grid-cols-3 gap-2">
                 <div className="bg-white dark:bg-slate-900/80 p-3 rounded-lg border border-slate-200 dark:border-slate-700/80 text-center shadow-2xs">
                   <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block">Polar Score (P)</span>
-                  <span className="text-lg font-bold text-emerald-400">+{selectedRemedy.patientPolarScore}</span>
+                  <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400">+{selectedRemedy.patientPolarScore}</span>
                 </div>
                 <div className="bg-white dark:bg-slate-900/80 p-3 rounded-lg border border-slate-200 dark:border-slate-700/80 text-center shadow-2xs">
                   <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block">Contra (CI)</span>
-                  <span className="text-lg font-bold text-rose-400">-{selectedRemedy.oppositeContraScore}</span>
+                  <span className="text-lg font-bold text-rose-700 dark:text-rose-400">-{selectedRemedy.oppositeContraScore}</span>
                 </div>
                 <div className="bg-teal-50 dark:bg-teal-950/40 p-3 rounded-lg border border-teal-200 dark:border-teal-500/40 text-center shadow-2xs">
                   <span className="text-[10px] text-teal-700 dark:text-teal-300 font-bold uppercase tracking-wider block">Difference (PD)</span>
-                  <span className="text-lg font-bold text-teal-300">
+                  <span className="text-lg font-bold text-teal-700 dark:text-teal-300">
                     {selectedRemedy.polarityDifference > 0 ? `+${selectedRemedy.polarityDifference}` : selectedRemedy.polarityDifference}
                   </span>
                 </div>
@@ -302,7 +302,7 @@ export const PolarityAnalysisPanel: React.FC<PolarityAnalysisPanelProps> = ({
               </div>
             </>
           ) : (
-            <div className="text-center py-12 text-slate-600 dark:text-slate-400 text-xs font-medium">
+            <div className="text-center py-12 text-slate-700 dark:text-slate-300 text-xs font-semibold">
               Select a remedy from the ranking table to inspect polar modalities.
             </div>
           )}

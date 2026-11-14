@@ -113,7 +113,7 @@ export const RemotePortalModal: React.FC<RemotePortalModalProps> = ({
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 Secure Remote Follow-Up Portal
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-500/30 font-semibold">
                   Tokenized & Encrypted
                 </span>
               </h2>

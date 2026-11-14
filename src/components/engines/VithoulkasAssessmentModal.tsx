@@ -162,10 +162,10 @@ export const VithoulkasAssessmentModal: React.FC<VithoulkasAssessmentModalProps>
 
             <div className="flex items-center gap-2">
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${
-                result.group === "A" ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" :
-                result.group === "B" ? "bg-teal-500/20 text-teal-300 border-teal-500/40" :
-                result.group === "C" ? "bg-amber-500/20 text-amber-300 border-amber-500/40" :
-                "bg-rose-500/20 text-rose-300 border-rose-500/40"
+                result.group === "A" ? "bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40" :
+                result.group === "B" ? "bg-teal-100 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 border-teal-300 dark:border-teal-500/40" :
+                result.group === "C" ? "bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/40" :
+                "bg-rose-100 dark:bg-rose-500/20 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-500/40"
               }`}>
                 Group {result.group} Prognosis
               </span>
